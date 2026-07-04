@@ -79,7 +79,7 @@ export function ListingCard({
           )}
         </div>
 
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
           <RatingStars
             rating={listing.rating_average ?? 0}
             reviewCount={listing.review_count ?? 0}
@@ -87,7 +87,7 @@ export function ListingCard({
             showValue
           />
           {listing.price_range && (
-            <span className="text-sm font-semibold text-gold-600">{PRICE_LABEL[listing.price_range]}</span>
+            <span className="shrink-0 text-sm font-semibold text-gold-600">{PRICE_LABEL[listing.price_range]}</span>
           )}
         </div>
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo";
-import { getCategories } from "@/lib/data/categories";
 import { HeroSearch } from "@/components/home/hero-search";
+import { NeedsGrid } from "@/components/shared/needs-grid";
 import { FEATURED_CITIES } from "@/lib/constants";
 
 export const metadata = buildMetadata({
@@ -11,10 +11,7 @@ export const metadata = buildMetadata({
   path: "/directory",
 });
 
-export default async function DirectoryLandingPage() {
-  const categories = await getCategories();
-  const topLevel = categories.filter((c) => !c.parent_id);
-
+export default function DirectoryLandingPage() {
   return (
     <div>
       <section className="bg-charcoal-900 py-16 text-center">
@@ -34,18 +31,7 @@ export default async function DirectoryLandingPage() {
         <p className="mb-6 mt-2 max-w-xl text-charcoal-500">
           Start with what you need, then discover trusted fashion professionals who can help.
         </p>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {topLevel.map((cat) => (
-            <Link
-              key={cat.id}
-              href={`/directory/${cat.slug}`}
-              className="rounded-lg border border-charcoal-100 bg-white p-5 shadow-card transition hover:border-gold-300 hover:shadow-elevated"
-            >
-              <h3 className="font-serif text-base font-semibold text-charcoal-900">{cat.name}</h3>
-              {cat.description && <p className="mt-1 text-xs text-muted-foreground">{cat.description}</p>}
-            </Link>
-          ))}
-        </div>
+        <NeedsGrid />
       </section>
 
       <section className="section-container pb-16">

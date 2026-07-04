@@ -1,20 +1,20 @@
-import { Search, MessageCircle, CheckCircle2 } from "lucide-react";
+import { Search, ListChecks, MessageCircle } from "lucide-react";
 
 const STEPS = [
   {
     icon: Search,
     title: "Discover",
-    description: "Search verified designers, brands, stylists, and schools by city, category, or budget.",
+    description: "Search verified designers, brands, stylists, and schools by city, category, service, or budget.",
+  },
+  {
+    icon: ListChecks,
+    title: "Compare",
+    description: "Compare verified profiles, portfolios, reviews, pricing, services, and availability.",
   },
   {
     icon: MessageCircle,
     title: "Connect",
-    description: "Message on WhatsApp, request a quote, or submit a fashion request and let professionals come to you.",
-  },
-  {
-    icon: CheckCircle2,
-    title: "Compare & decide",
-    description: "Compare verified profiles, portfolios, reviews, and pricing before you contact a professional.",
+    description: "Message on WhatsApp, send an inquiry, request a quote, or submit a fashion request.",
   },
 ];
 

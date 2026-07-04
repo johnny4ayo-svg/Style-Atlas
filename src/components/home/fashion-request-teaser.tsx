@@ -228,9 +228,11 @@ export function FashionRequestTeaser() {
                 </label>
                 {errors.consent && <p className="text-xs text-destructive">{errors.consent.message}</p>}
 
-                <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? "Submitting…" : "Submit a Fashion Request"}
-                </Button>
+                <div className="pt-2">
+                  <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? "Submitting…" : "Submit a Fashion Request"}
+                  </Button>
+                </div>
               </form>
             )}
           </CardContent>
