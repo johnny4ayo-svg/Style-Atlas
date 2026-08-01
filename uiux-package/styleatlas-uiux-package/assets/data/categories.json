@@ -1,0 +1,10 @@
+[
+  {"slug":"designers","name":"Fashion Designers","count":25000,"icon":"user"},
+  {"slug":"brands","name":"Fashion Brands","count":10000,"icon":"bag"},
+  {"slug":"schools","name":"Fashion Schools","count":150,"icon":"school"},
+  {"slug":"stylists","name":"Stylists","count":2500,"icon":"spark"},
+  {"slug":"bridal","name":"Bridal Experts","count":1800,"icon":"heart"},
+  {"slug":"tailors","name":"Tailors and Ateliers","count":8300,"icon":"scissors"},
+  {"slug":"photographers","name":"Fashion Photographers","count":1000,"icon":"camera"},
+  {"slug":"fabric-stores","name":"Fabric and Textile Stores","count":1300,"icon":"grid"}
+]

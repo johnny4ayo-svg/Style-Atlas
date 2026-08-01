@@ -1,0 +1,6 @@
+[
+  {"id":"amina","name":"Amina Danjuma","type":"designer","verified":true,"city":"Abuja","state":"FCT","rating":4.9,"reviews":128,"startingPrice":180000,"leadTime":"3 to 6 weeks","specialities":["Luxury modest wear","Bespoke occasionwear","Civil bridal"],"image":"assets/images/designer-blue.jpg"},
+  {"id":"yusuf","name":"Yusuf Bello","type":"designer","verified":true,"city":"Kano","state":"Kano","rating":4.8,"reviews":96,"startingPrice":95000,"leadTime":"2 to 4 weeks","specialities":["Agbada","Kaftans","Modern menswear"],"image":"assets/images/designer-menswear.jpg"},
+  {"id":"ifeoma","name":"Ifeoma Atelier","type":"atelier","verified":true,"city":"Lagos","state":"Lagos","rating":5.0,"reviews":214,"startingPrice":420000,"leadTime":"8 to 12 weeks","specialities":["Bridal couture","Beadwork","Civil bridal"],"image":"assets/images/designer-bridal.jpg"},
+  {"id":"adaeze","name":"Adaeze Okoli","type":"designer","verified":true,"city":"Benin City","state":"Edo","rating":4.7,"reviews":83,"startingPrice":140000,"leadTime":"3 to 5 weeks","specialities":["Ankara couture","Occasionwear","Ready-to-wear"],"image":"assets/images/designer-green.jpg"}
+]

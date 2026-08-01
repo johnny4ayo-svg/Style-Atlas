@@ -1,0 +1,6 @@
+{
+  "colors":{"ink":"#080807","charcoal":"#12110F","ivory":"#F7F2E9","champagne":"#C69A52","bronze":"#8A6032","stone":"#B8B0A5","emerald":"#174C3C","white":"#FFFFFF"},
+  "fonts":{"display":"Playfair Display, Georgia, serif","interface":"Manrope, Arial, sans-serif"},
+  "radii":{"xs":8,"sm":12,"md":18,"lg":28,"xl":42},
+  "breakpoints":{"mobile":390,"tablet":768,"laptop":1024,"desktop":1440}
+}

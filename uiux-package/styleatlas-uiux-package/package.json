@@ -1,0 +1,7 @@
+{
+  "name":"styleatlas-uiux-handoff",
+  "version":"1.0.0",
+  "private":true,
+  "description":"Responsive multi-page STYLEATLAS frontend design and full-stack handoff package",
+  "scripts":{"serve":"python3 -m http.server 4173","check:links":"python3 scripts/check_links.py"}
+}

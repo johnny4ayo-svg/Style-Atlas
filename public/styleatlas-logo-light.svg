@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 120" role="img" aria-labelledby="title desc">
+  <title id="title">STYLEATLAS</title><desc id="desc">STYLEATLAS luxury fashion directory logo</desc>
+  <g transform="translate(8 8)">
+    <rect x="4" y="4" width="96" height="96" rx="48" fill="none" stroke="#A47439" stroke-width="2"/>
+    <path d="M52 15 62 42 89 52 62 62 52 89 42 62 15 52 42 42Z" fill="none" stroke="#A47439" stroke-width="2"/>
+    <path d="M37 70c5 8 25 9 31 0 7-10-7-13-17-16-10-3-23-7-15-19 7-11 28-9 34 1" fill="none" stroke="#080807" stroke-width="6" stroke-linecap="round"/>
+    <path d="M52 28 73 76M52 28 31 76M39 59h27" fill="none" stroke="#A47439" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <text x="132" y="59" fill="#080807" font-size="44" letter-spacing="5" font-family="Georgia, 'Times New Roman', serif">STYLEATLAS</text>
+  <text x="135" y="86" fill="#8A6032" font-size="12" letter-spacing="4" font-family="Arial, sans-serif">NIGERIA'S FASHION MAP</text>
+</svg>

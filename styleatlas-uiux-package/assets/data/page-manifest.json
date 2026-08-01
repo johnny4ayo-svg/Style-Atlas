@@ -1,0 +1,186 @@
+{
+  "brand": "STYLEATLAS",
+  "screenCount": 36,
+  "screens": [
+    {
+      "file": "404.html",
+      "title": "Page not found | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "about.html",
+      "title": "About STYLEATLAS | STYLEATLAS",
+      "description": "The thinking, standards and product purpose behind STYLEATLAS."
+    },
+    {
+      "file": "accessibility.html",
+      "title": "Accessibility | STYLEATLAS",
+      "description": "STYLEATLAS accessibility commitment."
+    },
+    {
+      "file": "add-business.html",
+      "title": "Add Your Fashion Business | STYLEATLAS",
+      "description": "Create a premium STYLEATLAS profile for your Nigerian fashion business, school, studio or professional practice."
+    },
+    {
+      "file": "admin-dashboard.html",
+      "title": "Platform Admin | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "advertise.html",
+      "title": "Advertise | STYLEATLAS",
+      "description": "Campaign opportunities for relevant fashion businesses."
+    },
+    {
+      "file": "article.html",
+      "title": "The Designers Making Ankara Feel New Again | STYLEATLAS Journal",
+      "description": "Meet Nigerian designers treating Ankara as structure, movement and modern luxury."
+    },
+    {
+      "file": "cart.html",
+      "title": "Your Bag | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "checkout.html",
+      "title": "Checkout | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "city.html",
+      "title": "Fashion in Lagos | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "compare.html",
+      "title": "Compare Fashion Professionals | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "concierge.html",
+      "title": "Fashion Concierge | STYLEATLAS",
+      "description": "Use the STYLEATLAS guided fashion concierge to narrow your search by occasion, location, budget and style."
+    },
+    {
+      "file": "contact.html",
+      "title": "Contact | STYLEATLAS",
+      "description": "Contact the STYLEATLAS team."
+    },
+    {
+      "file": "customer-dashboard.html",
+      "title": "Customer Dashboard | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "dashboard.html",
+      "title": "Business Dashboard | STYLEATLAS",
+      "description": "STYLEATLAS business dashboard UI prototype."
+    },
+    {
+      "file": "directory.html",
+      "title": "Nigerian Fashion Designers Directory | STYLEATLAS",
+      "description": "Compare verified Nigerian fashion designers by speciality, location, price and client reviews."
+    },
+    {
+      "file": "editorial-policy.html",
+      "title": "Editorial Policy | STYLEATLAS",
+      "description": "STYLEATLAS editorial standards."
+    },
+    {
+      "file": "event-detail.html",
+      "title": "Lagos Fashion Week 2026 | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "events.html",
+      "title": "Nigerian Fashion Events | STYLEATLAS",
+      "description": "Discover Nigerian fashion weeks, exhibitions, trunk shows, workshops and industry events."
+    },
+    {
+      "file": "feature.html",
+      "title": "Feature Preview | STYLEATLAS",
+      "description": "A prepared UI state for functionality that will be connected during full-stack implementation."
+    },
+    {
+      "file": "help.html",
+      "title": "Help Centre | STYLEATLAS",
+      "description": "Support information for customers and fashion businesses."
+    },
+    {
+      "file": "index.html",
+      "title": "STYLEATLAS | Discover Nigeria's Exceptional Fashion Talent",
+      "description": "Discover verified Nigerian fashion designers, luxury brands, bridal ateliers, stylists, schools and creative professionals."
+    },
+    {
+      "file": "job-detail.html",
+      "title": "Senior Pattern Cutter | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "jobs.html",
+      "title": "Nigerian Fashion Jobs | STYLEATLAS",
+      "description": "Find fashion design, styling, production, retail and creative jobs across Nigeria."
+    },
+    {
+      "file": "login.html",
+      "title": "Log in | STYLEATLAS",
+      "description": "Log in to save profiles, compare designers, manage enquiries and grow your STYLEATLAS business profile."
+    },
+    {
+      "file": "marketplace.html",
+      "title": "STYLEATLAS Marketplace | Shop Nigerian Fashion",
+      "description": "Shop Nigerian ready-to-wear, accessories, bridal pieces and made-to-order fashion from curated brands."
+    },
+    {
+      "file": "order-confirmation.html",
+      "title": "Order confirmed | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "pricing.html",
+      "title": "Business Membership Plans | STYLEATLAS",
+      "description": "Compare STYLEATLAS listing and growth plans for Nigerian fashion professionals, brands and schools."
+    },
+    {
+      "file": "privacy.html",
+      "title": "Privacy Policy | STYLEATLAS",
+      "description": "STYLEATLAS privacy policy interface."
+    },
+    {
+      "file": "product.html",
+      "title": "Emerald Ankara Statement Dress | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "profile.html",
+      "title": "Amina Danjuma | Luxury Nigerian Fashion Designer | STYLEATLAS",
+      "description": "View the verified STYLEATLAS profile, portfolio, services, reviews and consultation details for Amina Danjuma in Abuja."
+    },
+    {
+      "file": "saved.html",
+      "title": "Saved Profiles | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "school-profile.html",
+      "title": "Lagos Atelier Academy | STYLEATLAS",
+      "description": ""
+    },
+    {
+      "file": "style-guide.html",
+      "title": "STYLEATLAS Design System",
+      "description": ""
+    },
+    {
+      "file": "terms.html",
+      "title": "Terms of Use | STYLEATLAS",
+      "description": "STYLEATLAS terms of use interface."
+    },
+    {
+      "file": "verification.html",
+      "title": "Verification | STYLEATLAS",
+      "description": "How STYLEATLAS business verification works."
+    }
+  ]
+}
