@@ -1,0 +1,168 @@
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+
+export default async function JobsPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined }
+}) {
+  const supabase = createClient();
+  
+  const query = searchParams.q?.toLowerCase() || '';
+  const locationFilter = searchParams.location || 'All cities';
+  const typeFilter = searchParams.type || 'All types';
+
+  let dbQuery = supabase
+    .from('jobs')
+    .select('*, businesses!inner( business_name, address_city )')
+    .eq('is_active', true)
+    .order('created_at', { ascending: false });
+
+  if (query) {
+    // We search the title or description for the query
+    dbQuery = dbQuery.or(`title.ilike.%${query}%,description.ilike.%${query}%`);
+  }
+  
+  if (locationFilter !== 'All cities') {
+    dbQuery = dbQuery.ilike('location', `%${locationFilter}%`);
+  }
+
+  // Map the visual "type" to the DB enum if selected
+  if (typeFilter !== 'All types') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const dbType = typeFilter.toLowerCase().replace(' ', '-') as any;
+    dbQuery = dbQuery.eq('type', dbType);
+  }
+
+  const { data: jobs, error } = await dbQuery;
+  
+  if (error) console.error("Jobs fetch error:", error);
+
+  const Icon = ({ name }: { name: string }) => (
+    <svg className="icon" aria-hidden="true">
+      <use href={`/icons/sprite.svg#icon-${name}`}></use>
+    </svg>
+  );
+
+  return (
+    <main>
+      <section className="page-hero">
+        <div className="container page-hero-inner">
+          <div>
+            <div className="breadcrumb">
+              <Link href="/">Home</Link>
+              <span>/</span>
+              <span>Fashion jobs</span>
+            </div>
+            <span className="eyebrow light">Work in fashion</span>
+            <h1 className="page-title">Find the role where your craft becomes part of something bigger.</h1>
+            <p>Explore jobs in design, production, styling, retail, education, media and fashion operations.</p>
+          </div>
+          <div className="hero-aside-card">
+            <strong>{jobs?.length || 0}</strong>
+            <span>active roles across Nigerian fashion businesses and schools</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="section compact">
+        <div className="container">
+          <form className="search-dock" method="GET" action="/jobs" style={{ position: 'relative', left: 'auto', bottom: 'auto', transform: 'none', width: '100%', margin: '-30px 0 40px' }}>
+            <div className="search-row">
+              <div className="search-field">
+                <Icon name="search" />
+                <div>
+                  <label>Role or skill</label>
+                  <input name="q" defaultValue={query} placeholder="Pattern cutter, stylist, retail manager..." />
+                </div>
+              </div>
+              <div className="search-field">
+                <Icon name="pin" />
+                <div>
+                  <label>Location</label>
+                  <select name="location" defaultValue={locationFilter}>
+                    <option value="All cities">All cities</option>
+                    <option value="Lagos">Lagos</option>
+                    <option value="Abuja">Abuja</option>
+                    <option value="Remote">Remote</option>
+                  </select>
+                </div>
+              </div>
+              <div className="search-field">
+                <Icon name="briefcase" />
+                <div>
+                  <label>Work type</label>
+                  <select name="type" defaultValue={typeFilter}>
+                    <option value="All types">All types</option>
+                    <option value="Full time">Full time</option>
+                    <option value="Part time">Part time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" className="search-submit">
+                <Icon name="search" />
+              </button>
+            </div>
+          </form>
+
+          <div className="directory-layout">
+            <aside className="filter-panel">
+              <div className="filter-head">
+                <h3>Filter roles</h3>
+                <button type="button" className="filter-reset">Clear</button>
+              </div>
+              <div className="filter-group">
+                <h4>Department</h4>
+                <label className="filter-option"><span><input type="checkbox" /> Design</span><span>48</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Production</span><span>39</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Retail</span><span>31</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Marketing</span><span>28</span></label>
+              </div>
+              <div className="filter-group">
+                <h4>Experience</h4>
+                <label className="filter-option"><span><input type="checkbox" /> Entry level</span><span>46</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Mid level</span><span>92</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Senior</span><span>33</span></label>
+              </div>
+            </aside>
+
+            <div>
+              <div className="results-head">
+                <div>
+                  <h2>Open roles</h2>
+                  <span className="muted" style={{ fontSize: '10px' }}>{jobs?.length || 0} opportunities</span>
+                </div>
+                <button type="button" className="btn btn-gold">Post a fashion job</button>
+              </div>
+              
+              <div className="service-list">
+                {jobs && jobs.length > 0 ? jobs.map((job) => (
+                  <article className="service-item" key={job.id}>
+                    <div>
+                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                      <span className="eyebrow" style={{ fontSize: '8px' }}>{(job.businesses as any)?.business_name} · {(job.businesses as any)?.address_city || 'Nigeria'}</span>
+                      <h3 style={{ fontFamily: 'var(--serif)', fontSize: '25px', margin: '4px 0' }}>{job.title}</h3>
+                      <p>{job.description}</p>
+                      <div className="tag-row">
+                        <span className="tag" style={{ color: '#5d554d', borderColor: '#ded3c5' }}>{job.type}</span>
+                        <span className="tag" style={{ color: '#5d554d', borderColor: '#ded3c5' }}>{job.location}</span>
+                        {job.salary_range && <span className="tag" style={{ color: '#5d554d', borderColor: '#ded3c5' }}>{job.salary_range}</span>}
+                      </div>
+                    </div>
+                    <Link className="btn btn-outline-dark btn-sm" href={`/jobs/${job.id}`}>View role</Link>
+                  </article>
+                )) : (
+                  <div style={{ padding: '48px', textAlign: 'center', gridColumn: '1 / -1', color: '#666' }}>
+                    No roles found matching your search. Try adjusting your filters.
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}

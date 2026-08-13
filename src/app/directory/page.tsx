@@ -1,6 +1,42 @@
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import BusinessCard from "@/components/ui/BusinessCard";
 
-export default function Directory() {
+export default async function Directory() {
+  const supabase = createClient();
+  const { data: businesses } = await supabase
+    .from('businesses')
+    .select(`
+      id,
+      business_name,
+      slug,
+      city,
+      state,
+      rating,
+      review_count,
+      starting_price,
+      cover_image_url,
+      is_verified,
+      business_categories(
+        categories(name)
+      )
+    `)
+    .order('rating', { ascending: false });
+
+  const { data: sponsoredCampaigns } = await supabase
+    .from('promoted_campaigns')
+    .select('business_id')
+    .eq('status', 'active')
+    .eq('target_type', 'profile');
+
+  const sponsoredBusinessIds = sponsoredCampaigns?.map(c => c.business_id) || [];
+  
+  // Separate businesses into sponsored and regular
+  const sponsoredBusinesses = businesses?.filter(b => sponsoredBusinessIds.includes(b.id)) || [];
+  // For the demo, if we don't have sponsored businesses, we can just show the regular list.
+  // We remove sponsored ones from the main list so they don't duplicate, unless we want them to.
+  const regularBusinesses = businesses?.filter(b => !sponsoredBusinessIds.includes(b.id)) || [];
+
   return (
     <main>
       <section className="page-hero">
@@ -57,7 +93,7 @@ export default function Directory() {
                 <label className="filter-option"><span><input type="checkbox" /> Menswear</span><span>3,910</span></label>
                 <label className="filter-option"><span><input type="checkbox" /> Luxury ready-to-wear</span><span>2,870</span></label>
                 <label className="filter-option"><span><input type="checkbox" /> Modest fashion</span><span>1,460</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Children's occasionwear</span><span>680</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Children&apos;s occasionwear</span><span>680</span></label>
               </div>
               <div className="filter-group">
                 <h4>Budget range</h4>
@@ -99,108 +135,31 @@ export default function Directory() {
               </div>
 
               <div className="directory-grid">
-                <article className="designer-card">
-                  <div className="designer-media">
-                    <img src="/images/designer-blue.jpg" alt="Amina Danjuma in blue Nigerian couture" />
-                    <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>
-                    <button className="save-btn" aria-label="Save Amina Danjuma"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></button>
-                  </div>
-                  <div className="designer-body">
-                    <h3>Amina Danjuma <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg></h3>
-                    <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>Abuja, FCT</div>
-                    <div className="tag-row"><span className="tag">Luxury modest wear</span><span className="tag">Bespoke</span></div>
-                    <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>4.9 · 128</span><span className="price-level">From ₦180k</span></div>
-                    <div className="card-actions">
-                      <Link className="btn btn-gold btn-sm" href="/profile">View profile</Link>
-                      <button className="compare-btn" aria-label="Compare Amina"><svg className="icon"><use href="/icons/sprite.svg#icon-compare"></use></svg></button>
+                {/* Render Sponsored Businesses First */}
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {sponsoredBusinesses.length > 0 && sponsoredBusinesses.map((business: any) => (
+                  <div key={`sponsored-${business.id}`} style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 2, background: 'var(--gold)', color: '#000', padding: '2px 8px', fontSize: '10px', fontWeight: 'bold', borderRadius: '4px' }}>
+                      SPONSORED
                     </div>
+                    <BusinessCard business={business} />
                   </div>
-                </article>
-                <article className="designer-card">
-                  <div className="designer-media">
-                    <img src="/images/designer-menswear.jpg" alt="Yusuf Bello in Nigerian menswear" />
-                    <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>
-                    <button className="save-btn" aria-label="Save Yusuf Bello"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></button>
-                  </div>
-                  <div className="designer-body">
-                    <h3>Yusuf Bello <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg></h3>
-                    <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>Kano, Nigeria</div>
-                    <div className="tag-row"><span className="tag">Agbada</span><span className="tag">Kaftans</span></div>
-                    <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>4.8 · 96</span><span class="price-level">From ₦95k</span></div>
-                    <div className="card-actions">
-                      <Link className="btn btn-gold btn-sm" href="/profile">View profile</Link>
-                      <button className="compare-btn" aria-label="Compare Yusuf"><svg className="icon"><use href="/icons/sprite.svg#icon-compare"></use></svg></button>
+                ))}
+
+                {/* Render Regular Businesses */}
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {regularBusinesses.length > 0 ? (
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  regularBusinesses.map((business: any) => (
+                    <BusinessCard key={business.id} business={business} />
+                  ))
+                ) : (
+                  sponsoredBusinesses.length === 0 && (
+                    <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "3rem" }}>
+                      <p>No designers found. Please check back later or update your filters.</p>
                     </div>
-                  </div>
-                </article>
-                <article className="designer-card">
-                  <div className="designer-media">
-                    <img src="/images/designer-bridal.jpg" alt="Ifeoma Atelier bridal portrait" />
-                    <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>
-                    <button className="save-btn" aria-label="Save Ifeoma"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></button>
-                  </div>
-                  <div className="designer-body">
-                    <h3>Ifeoma Atelier <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg></h3>
-                    <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>Lekki, Lagos</div>
-                    <div className="tag-row"><span className="tag">Bridal couture</span><span className="tag">Beadwork</span></div>
-                    <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>5.0 · 214</span><span className="price-level">From ₦420k</span></div>
-                    <div className="card-actions">
-                      <Link className="btn btn-gold btn-sm" href="/profile">View profile</Link>
-                      <button className="compare-btn" aria-label="Compare Ifeoma"><svg className="icon"><use href="/icons/sprite.svg#icon-compare"></use></svg></button>
-                    </div>
-                  </div>
-                </article>
-                <article className="designer-card">
-                  <div className="designer-media">
-                    <img src="/images/designer-green.jpg" alt="Adaeze Okoli Ankara couture" />
-                    <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>
-                    <button className="save-btn" aria-label="Save Adaeze"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></button>
-                  </div>
-                  <div className="designer-body">
-                    <h3>Adaeze Okoli <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg></h3>
-                    <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>Benin City, Edo</div>
-                    <div className="tag-row"><span className="tag">Ankara couture</span><span className="tag">Occasionwear</span></div>
-                    <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>4.7 · 83</span><span className="price-level">From ₦140k</span></div>
-                    <div className="card-actions">
-                      <Link className="btn btn-gold btn-sm" href="/profile">View profile</Link>
-                      <button className="compare-btn" aria-label="Compare Adaeze"><svg className="icon"><use href="/icons/sprite.svg#icon-compare"></use></svg></button>
-                    </div>
-                  </div>
-                </article>
-                <article className="designer-card">
-                  <div className="designer-media">
-                    <img src="/images/bridal-black.jpg" alt="Zarah House black bridal attire" />
-                    <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>
-                    <button className="save-btn" aria-label="Save zarah"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></button>
-                  </div>
-                  <div className="designer-body">
-                    <h3>Zarah House <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg></h3>
-                    <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>Abuja, FCT</div>
-                    <div className="tag-row"><span className="tag">Traditional bridal</span><span className="tag">Gele styling</span></div>
-                    <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>4.9 · 147</span><span className="price-level">From ₦260k</span></div>
-                    <div className="card-actions">
-                      <Link className="btn btn-gold btn-sm" href="/profile">View profile</Link>
-                      <button className="compare-btn" aria-label="Compare zarah"><svg className="icon"><use href="/icons/sprite.svg#icon-compare"></use></svg></button>
-                    </div>
-                  </div>
-                </article>
-                <article className="designer-card">
-                  <div className="designer-media">
-                    <img src="/images/fashion-studio.jpg" alt="Nouveau Lagos fashion studio" />
-                    <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>
-                    <button className="save-btn" aria-label="Save nouveau"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></button>
-                  </div>
-                  <div className="designer-body">
-                    <h3>Nouveau Lagos <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg></h3>
-                    <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>Yaba, Lagos</div>
-                    <div className="tag-row"><span className="tag">Ready-to-wear</span><span className="tag">Small batch</span></div>
-                    <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>4.6 · 69</span><span className="price-level">From ₦48k</span></div>
-                    <div className="card-actions">
-                      <Link className="btn btn-gold btn-sm" href="/profile">View profile</Link>
-                      <button className="compare-btn" aria-label="Compare nouveau"><svg className="icon"><use href="/icons/sprite.svg#icon-compare"></use></svg></button>
-                    </div>
-                  </div>
-                </article>
+                  )
+                )}
               </div>
               <div className="pagination">
                 <button className="page-btn active">1</button>

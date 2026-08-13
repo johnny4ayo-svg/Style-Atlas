@@ -1,7 +1,44 @@
 import Link from "next/link";
 import Image from "next/image";
+import { createClient } from "@/lib/supabase/server";
+import SaveButton from "@/components/ui/SaveButton";
+import CompareButton from "@/components/ui/CompareButton";
+import StatCounter from "@/components/ui/StatCounter";
+import ConciergeWidget from "@/components/ui/ConciergeWidget";
+import SearchDock from "@/components/ui/SearchDock";
+export const dynamic = 'force-dynamic';
 
-export default function Home() {
+export default async function Home() {
+  const supabase = createClient();
+  const { data: businesses } = await supabase
+    .from('businesses')
+    .select(`
+      id,
+      business_name,
+      slug,
+      city,
+      state,
+      cover_image_url,
+      is_verified,
+      business_categories(
+        categories(name)
+      )
+    `)
+    .eq('business_type', 'designer')
+    .limit(5); // Increased to 5 so we have 1 large and 4 small
+
+  const { data: rawAds } = await supabase
+    .from('promoted_campaigns')
+    .select(`
+      id,
+      businesses!inner(id, business_name, slug, city, state, cover_image_url, is_verified, rating, review_count, business_categories(categories(name)))
+    `)
+    .eq('status', 'active');
+  
+  // Extract business objects from the ads wrapper and flag them as sponsored
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const adBusinesses = rawAds ? rawAds.map((ad: any) => ({ ...ad.businesses, is_sponsored: true })) : [];
+  const featuredList = [...adBusinesses, ...(businesses || [])].slice(0, 6); // Up to 6 items on the homepage
   return (
     <main>
       <section className="hero">
@@ -9,7 +46,7 @@ export default function Home() {
           <div className="hero-copy">
             <span className="eyebrow">Curated. Trusted. Distinctly Nigerian.</span>
             <h1>Find the talent behind your <em>next unforgettable look.</em></h1>
-            <p>Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria's creative future.</p>
+            <p>Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria&apos;s creative future.</p>
             <div className="hero-actions">
               <Link className="btn btn-gold" href="/directory">Explore fashion talent 
                 <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg>
@@ -18,64 +55,21 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-image-wrap">
-            <img className="hero-image" src="/images/hero-editorial.jpg" alt="Nigerian fashion model in a contemporary patterned dress" />
+            <Image className="hero-image" src="/images/hero-editorial.jpg" alt="Nigerian fashion model in a contemporary patterned dress" fill priority style={{ objectFit: 'cover' }} />
             <div className="hero-note"><strong>01 / 26</strong><span>STYLEATLAS editorial selection</span></div>
           </div>
         </div>
-        <form className="search-dock">
-          <div className="search-tabs">
-            <button type="button" className="search-tab active">I'm looking for</button>
-            <button type="button" className="search-tab">A designer</button>
-            <button type="button" className="search-tab">A brand</button>
-            <button type="button" className="search-tab">A school</button>
-            <button type="button" className="search-tab">A stylist</button>
-          </div>
-          <div className="search-row">
-            <div className="search-field">
-              <svg className="icon"><use href="/icons/sprite.svg#icon-search"></use></svg>
-              <div><label>What do you need?</label><input placeholder="Bridal designer, stylist, tailor..." /></div>
-            </div>
-            <div className="search-field">
-              <svg className="icon"><use href="/icons/sprite.svg#icon-scissors"></use></svg>
-              <div>
-                <label>Category</label>
-                <select><option>All categories</option><option>Designers</option><option>Brands</option><option>Fashion schools</option></select>
-              </div>
-            </div>
-            <div className="search-field">
-              <svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>
-              <div>
-                <label>Location</label>
-                <select><option>All cities</option><option>Lagos</option><option>Abuja</option><option>Benin City</option></select>
-              </div>
-            </div>
-            <div className="search-field">
-              <svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>
-              <div>
-                <label>Speciality</label>
-                <select><option>All styles</option><option>Luxury bridal</option><option>Menswear</option><option>Ready-to-wear</option></select>
-              </div>
-            </div>
-            <button className="search-submit" aria-label="Search" type="button"><svg className="icon"><use href="/icons/sprite.svg#icon-search"></use></svg></button>
-          </div>
-          <div className="trending-searches">
-            <span>Popular now:</span>
-            <Link href="/directory">Bridal designers in Lagos</Link>
-            <Link href="/directory">Abuja menswear</Link>
-            <Link href="/directory">Luxury ready-to-wear</Link>
-            <Link href="/directory">Fashion schools</Link>
-          </div>
-        </form>
+        <SearchDock />
       </section>
 
       <section className="stats-ribbon">
         <div className="container stats-grid">
-          <div className="stat"><strong>25,000+</strong><span>Verified professionals</span></div>
-          <div className="stat"><strong>10,000+</strong><span>Fashion businesses</span></div>
-          <div className="stat"><strong>150+</strong><span>Fashion schools</span></div>
-          <div className="stat"><strong>300+</strong><span>Fashion events</span></div>
-          <div className="stat"><strong>50k+</strong><span>Monthly connections</span></div>
-          <div className="stat"><strong>36</strong><span>States covered</span></div>
+          <StatCounter endValue={25000} suffix="+" label="Verified professionals" />
+          <StatCounter endValue={10000} suffix="+" label="Fashion businesses" />
+          <StatCounter endValue={150} suffix="+" label="Fashion schools" />
+          <StatCounter endValue={300} suffix="+" label="Fashion events" />
+          <StatCounter endValue={50000} suffix="+" label="Monthly connections" />
+          <StatCounter endValue={36} suffix="" label="States covered" />
         </div>
       </section>
       
@@ -106,115 +100,142 @@ export default function Home() {
             <div><span className="eyebrow light">STYLEATLAS selection</span><h2>Featured designers worth knowing before everyone else does.</h2></div>
             <Link className="text-link" href="/directory">View all designers <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
           </div>
-          <div className="designer-grid">
-            <article className="designer-card">
-              <div className="designer-media">
-                <img src="/images/designer-blue.jpg" alt="Amina Danjuma in blue Nigerian couture" />
-                <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>
-                <button className="save-btn" aria-label="Save Amina Danjuma"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></button>
+          <div className="designer-grid" style={{ gridAutoRows: 'minmax(min-content, max-content)' }}>
+            {featuredList && featuredList.length > 0 ? (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              featuredList.map((business: any, idx: number) => {
+                // Introduce an asymmetric layout: the first item is large, spanning full width or 2 columns
+                const isFeatured = idx === 0;
+                
+                return (
+                  <article 
+                    className="designer-card" 
+                    key={business.id}
+                    style={isFeatured ? { gridColumn: '1 / -1', display: 'flex', flexDirection: 'row', gap: '2rem', alignItems: 'center' } : {}}
+                  >
+                    <div className="designer-media" style={isFeatured ? { flex: '1', height: '400px' } : {}}>
+                      <Image src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name}`} fill sizes="(max-width: 900px) 100vw, 33vw" style={{ objectFit: 'cover' }} />
+                      {business.is_sponsored && <div className="card-badges" style={{ left: '10px', right: 'auto' }}><span className="badge" style={{ background: 'var(--gold)', color: '#000', border: 'none' }}>Sponsored</span></div>}
+                      {business.is_verified && !business.is_sponsored && <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>}
+                      <SaveButton businessId={business.id} businessName={business.business_name} />
+                    </div>
+                    <div className="designer-body" style={isFeatured ? { flex: '1' } : {}}>
+                      <h3 style={isFeatured ? { fontSize: '2.5rem', marginBottom: '1rem' } : {}}>{business.business_name} {business.is_verified && <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>}</h3>
+                      <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>{business.city}, {business.state}</div>
+                      
+                      {isFeatured && (
+                        <p style={{ margin: '1rem 0', color: 'var(--gray-400)', fontSize: '1.1rem' }}>
+                          A masterclass in modern Nigerian tailoring, delivering exceptional quality and unparalleled attention to detail for clients worldwide.
+                        </p>
+                      )}
+
+                      <div className="tag-row">
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                        {business.business_categories?.slice(0, 2).map((bc: any, i: number) => (
+                          <span key={i} className="tag">{bc.categories?.name}</span>
+                        ))}
+                      </div>
+                      <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>{Number(business.rating || 0).toFixed(1)} · {business.review_count || 0} reviews</span><span className="price-level">₦₦₦</span></div>
+                      <div className="card-actions">
+                        <Link className="btn btn-gold btn-sm" href={`/profile/${business.slug || 'amina-danjuma'}`}>View profile</Link>
+                        <CompareButton businessId={business.id} businessName={business.business_name} />
+                      </div>
+                    </div>
+                  </article>
+                );
+              })
+            ) : (
+              <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "2rem" }}>
+                <p>No featured designers available.</p>
               </div>
-              <div className="designer-body">
-                <h3>Amina Danjuma <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg></h3>
-                <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>Abuja, FCT</div>
-                <div className="tag-row"><span className="tag">Luxury modest wear</span><span className="tag">Bespoke</span></div>
-                <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>4.9 · 128 reviews</span><span className="price-level">₦₦₦</span></div>
-                <div className="card-actions">
-                  <Link className="btn btn-gold btn-sm" href="/profile">View profile</Link>
-                  <button className="compare-btn" aria-label="Compare Amina"><svg className="icon"><use href="/icons/sprite.svg#icon-compare"></use></svg></button>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Moved STORIES section UP to increase prominence */}
+      <section className="section">
+        <div className="container">
+          <div className="section-head" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '2rem', marginBottom: '3rem' }}>
+            <div><span className="eyebrow">STYLEATLAS journal</span><h2 style={{ fontSize: '3rem' }}>Stories that explain the craft, business and culture behind the clothes.</h2></div>
+            <Link className="text-link" href="/article">Read all stories <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
+          </div>
+          <div className="story-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem' }}>
+            <article className="story-card" style={{ gridColumn: '1 / -1', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'center' }}>
+              <Image src="/images/designer-green.jpg" alt="Ankara couture" width={800} height={600} style={{ width: '100%', height: '500px', objectFit: 'cover', borderRadius: '8px' }} />
+              <div className="story-body">
+                <span className="meta" style={{ marginBottom: '1rem', display: 'block', color: 'var(--gold)', fontWeight: 'bold' }}>Design · 7 min read</span>
+                <h3 style={{ fontSize: '3.5rem', lineHeight: 1.1, marginBottom: '1.5rem' }}>The designers making Ankara feel new again</h3>
+                <p style={{ fontSize: '1.25rem', color: 'var(--text-light)', marginBottom: '2rem' }}>Inside the studios treating pattern as architecture rather than decoration, redefining what traditional wear looks like on the global stage.</p>
+                <div className="story-footer" style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#eee' }}></div>
+                    <span style={{ fontWeight: 500 }}>By Zainab Musa</span>
+                  </div>
+                  <span className="muted">July 22, 2026</span>
                 </div>
               </div>
             </article>
-            <article className="designer-card">
-              <div className="designer-media">
-                <img src="/images/designer-menswear.jpg" alt="Yusuf Bello in contemporary Nigerian menswear" />
-                <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>
-                <button className="save-btn" aria-label="Save Yusuf Bello"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></button>
-              </div>
-              <div className="designer-body">
-                <h3>Yusuf Bello <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg></h3>
-                <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>Kano, Nigeria</div>
-                <div className="tag-row"><span className="tag">Agbada</span><span className="tag">Modern menswear</span></div>
-                <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>4.8 · 96 reviews</span><span className="price-level">₦₦</span></div>
-                <div className="card-actions">
-                  <Link className="btn btn-gold btn-sm" href="/profile">View profile</Link>
-                  <button className="compare-btn" aria-label="Compare Yusuf"><svg className="icon"><use href="/icons/sprite.svg#icon-compare"></use></svg></button>
-                </div>
+            <article className="story-card">
+              <Image src="/images/designer-bridal.jpg" alt="Bridal fashion" width={800} height={600} style={{ width: '100%', height: 'auto', aspectRatio: '4/3', objectFit: 'cover' }} />
+              <div className="story-body">
+                <span className="meta">Bridal · 6 min read</span>
+                <h3 style={{ fontSize: '1.5rem' }}>How to choose a bridal designer</h3>
+                <p>A practical guide to timelines, fittings, budgets and creative fit.</p>
+                <div className="story-footer"><span>Ada Ibe</span><span>July 18</span></div>
               </div>
             </article>
-            <article className="designer-card">
-              <div className="designer-media">
-                <img src="/images/designer-bridal.jpg" alt="Nigerian bridal designer portrait" />
-                <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>
-                <button className="save-btn" aria-label="Save Ifeoma"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></button>
-              </div>
-              <div className="designer-body">
-                <h3>Ifeoma Atelier <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg></h3>
-                <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>Lekki, Lagos</div>
-                <div className="tag-row"><span className="tag">Bridal couture</span><span className="tag">Beadwork</span></div>
-                <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>5.0 · 214 reviews</span><span className="price-level">₦₦₦₦</span></div>
-                <div className="card-actions">
-                  <Link className="btn btn-gold btn-sm" href="/profile">View profile</Link>
-                  <button className="compare-btn" aria-label="Compare Ifeoma"><svg className="icon"><use href="/icons/sprite.svg#icon-compare"></use></svg></button>
-                </div>
+            <article className="story-card">
+              <Image src="/images/fashion-studio.jpg" alt="Fashion studio" width={800} height={600} style={{ width: '100%', height: 'auto', aspectRatio: '4/3', objectFit: 'cover' }} />
+              <div className="story-body">
+                <span className="meta">Business · 9 min read</span>
+                <h3 style={{ fontSize: '1.5rem' }}>A stronger fashion studio</h3>
+                <p>Processes that protect the designer, the team and the client.</p>
+                <div className="story-footer"><span>Kemi Falade</span><span>July 12</span></div>
               </div>
             </article>
-            <article className="designer-card">
-              <div className="designer-media">
-                <img src="/images/designer-green.jpg" alt="Adaeze Okoli in green Ankara couture" />
-                <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>
-                <button className="save-btn" aria-label="Save Adaeze"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></button>
-              </div>
-              <div className="designer-body">
-                <h3>Adaeze Okoli <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg></h3>
-                <div className="location-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>Benin City, Edo</div>
-                <div className="tag-row"><span className="tag">Ankara couture</span><span className="tag">Occasionwear</span></div>
-                <div className="card-meta"><span className="rating"><svg className="icon"><use href="/icons/sprite.svg#icon-star"></use></svg>4.7 · 83 reviews</span><span className="price-level">₦₦₦</span></div>
-                <div className="card-actions">
-                  <Link className="btn btn-gold btn-sm" href="/profile">View profile</Link>
-                  <button className="compare-btn" aria-label="Compare Adaeze"><svg className="icon"><use href="/icons/sprite.svg#icon-compare"></use></svg></button>
-                </div>
+            <article className="story-card">
+              <Image src="/images/designer-menswear.jpg" alt="Nigerian menswear" width={800} height={600} style={{ width: '100%', height: 'auto', aspectRatio: '4/3', objectFit: 'cover' }} />
+              <div className="story-body">
+                <span className="meta">Menswear · 5 min read</span>
+                <h3 style={{ fontSize: '1.5rem' }}>Contemporary kaftans</h3>
+                <p>The cut, cloth and cultural confidence behind the shift.</p>
+                <div className="story-footer"><span>Tobi Akin</span><span>July 8</span></div>
               </div>
             </article>
           </div>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section section-ivory-2">
         <div className="container">
           <div className="section-head">
             <div><span className="eyebrow">Curated inspiration</span><h2>Start with a feeling. Find the people who can create it.</h2></div>
             <p>Editorial collections turn broad ideas into a direct path to designers, brands and specialists.</p>
           </div>
-          <div className="editorial-grid">
-            <Link className="editorial-card" href="/article">
-              <img src="/images/designer-green.jpg" alt="Green Nigerian couture" />
-              <div className="editorial-copy">
+          {/* Implement masonry / asymmetric layout for editorial inspiration */}
+          <div className="editorial-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'repeat(2, 300px)', gap: '1rem' }}>
+            <Link className="editorial-card" href="/article" style={{ gridColumn: '1 / 3', gridRow: '1 / 3', position: 'relative' }}>
+              <Image src="/images/designer-green.jpg" alt="Green Nigerian couture" fill style={{ objectFit: 'cover' }} />
+              <div className="editorial-copy" style={{ position: 'absolute', bottom: 0, left: 0, padding: '2rem', zIndex: 2 }}>
                 <span className="eyebrow">The new classics</span>
-                <h3>Ankara, reimagined</h3>
+                <h3 style={{ fontSize: '2.5rem' }}>Ankara, reimagined</h3>
                 <p>Designers pushing familiar textiles into sculptural, modern territory.</p>
               </div>
             </Link>
-            <Link className="editorial-card" href="/directory">
-              <img src="/images/designer-bridal.jpg" alt="Modern Nigerian bride" />
-              <div className="editorial-copy"><span className="eyebrow">Occasion</span><h3>Modern bridal</h3></div>
+            <Link className="editorial-card" href="/directory" style={{ gridColumn: '3 / 4', gridRow: '1 / 2', position: 'relative' }}>
+              <Image src="/images/designer-bridal.jpg" alt="Modern Nigerian bride" fill style={{ objectFit: 'cover' }} />
+              <div className="editorial-copy" style={{ position: 'absolute', bottom: 0, left: 0, padding: '2rem', zIndex: 2 }}><span className="eyebrow">Occasion</span><h3>Modern bridal</h3></div>
             </Link>
-            <Link className="editorial-card" href="/directory">
-              <img src="/images/designer-menswear.jpg" alt="Nigerian menswear" />
-              <div className="editorial-copy"><span className="eyebrow">Menswear</span><h3>New tradition</h3></div>
-            </Link>
-            <Link className="editorial-card" href="/marketplace">
-              <img src="/images/fashion-studio.jpg" alt="Nigerian fashion studio" />
-              <div className="editorial-copy">
-                <span className="eyebrow">Independent labels</span>
-                <h3>Made in Nigerian studios</h3>
-                <p>Small teams, thoughtful production and clothes with a clear point of view.</p>
-              </div>
+            <Link className="editorial-card" href="/directory" style={{ gridColumn: '3 / 4', gridRow: '2 / 3', position: 'relative' }}>
+              <Image src="/images/designer-menswear.jpg" alt="Nigerian menswear" fill style={{ objectFit: 'cover' }} />
+              <div className="editorial-copy" style={{ position: 'absolute', bottom: 0, left: 0, padding: '2rem', zIndex: 2 }}><span className="eyebrow">Menswear</span><h3>New tradition</h3></div>
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="section compact section-ivory-2">
+      <section className="section compact">
         <div className="container">
           <div className="section-head">
             <div><span className="eyebrow">Discover by city</span><h2>Fashion scenes shaped by place, culture and pace.</h2></div>
@@ -244,66 +265,15 @@ export default function Home() {
                 <div className="spotlight-stat"><strong>3 wks</strong><span>average lead time</span></div>
               </div>
               <div className="spotlight-actions">
-                <Link className="btn btn-gold" href="/profile">View full profile</Link>
+                <Link className="btn btn-gold" href="/profile/amina-danjuma">View full profile</Link>
                 <button className="btn btn-outline-light"><svg className="icon"><use href="/icons/sprite.svg#icon-play"></use></svg>Watch studio story</button>
               </div>
             </div>
-            <div className="spotlight-gallery">
-              <img src="/images/designer-blue.jpg" alt="Amina Danjuma portrait" />
-              <img src="/images/bridal-black.jpg" alt="Black Nigerian occasionwear" />
-              <img src="/images/fashion-couple.jpg" alt="Nigerian ceremonial fashion" />
+            <div className="spotlight-gallery" style={{ display: 'flex', gap: '10px', overflow: 'hidden' }}>
+              <div style={{ position: 'relative', flex: 1, minHeight: '300px' }}><Image src="/images/designer-blue.jpg" alt="Amina Danjuma portrait" fill style={{ objectFit: 'cover' }} /></div>
+              <div style={{ position: 'relative', flex: 1, minHeight: '300px' }}><Image src="/images/bridal-black.jpg" alt="Black Nigerian occasionwear" fill style={{ objectFit: 'cover' }} /></div>
+              <div style={{ position: 'relative', flex: 1, minHeight: '300px' }}><Image src="/images/fashion-couple.jpg" alt="Nigerian ceremonial fashion" fill style={{ objectFit: 'cover' }} /></div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <div><span className="eyebrow">One connected platform</span><h2>Search, shop, learn, work and show up where fashion happens.</h2></div>
-            <p>Each area feeds the next. A school can post a course, a graduate can find a job, and a designer can reach a client.</p>
-          </div>
-          <div className="service-hub">
-            <article className="service-column">
-              <div className="service-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-bag"></use></svg></div>
-              <h3>Marketplace</h3>
-              <p>Shop ready-to-wear, accessories and made-to-order pieces from Nigerian labels.</p>
-              <div className="mini-list">
-                <div className="mini-item"><img className="mini-thumb" src="/images/designer-green.jpg" alt="" /><div><strong>Emerald Ankara Dress</strong><span>From ₦78,000</span></div></div>
-                <div className="mini-item"><img className="mini-thumb" src="/images/designer-menswear.jpg" alt="" /><div><strong>Contemporary Kaftan</strong><span>From ₦64,500</span></div></div>
-              </div>
-              <Link className="text-link" href="/marketplace">Shop the marketplace <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-            </article>
-            <article className="service-column">
-              <div className="service-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-briefcase"></use></svg></div>
-              <h3>Fashion jobs</h3>
-              <p>Roles for designers, pattern cutters, stylists, retail teams and creative operators.</p>
-              <div className="mini-list">
-                <div className="mini-item"><span className="mini-thumb" style={{ display:'grid', placeItems:'center', background:'#111', color:'#c69a52' }}>SA</span><div><strong>Senior Pattern Cutter</strong><span>Lagos · Full time</span></div></div>
-                <div className="mini-item"><span className="mini-thumb" style={{ display:'grid', placeItems:'center', background:'#174c3c', color:'white' }}>NA</span><div><strong>Brand Content Lead</strong><span>Remote · Contract</span></div></div>
-              </div>
-              <Link className="text-link" href="/jobs">View fashion jobs <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-            </article>
-            <article className="service-column">
-              <div className="service-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-calendar"></use></svg></div>
-              <h3>Upcoming events</h3>
-              <p>Runways, trunk shows, workshops, exhibitions and business gatherings.</p>
-              <div className="mini-list">
-                <div className="mini-item"><span className="mini-thumb" style={{ display:'grid', placeItems:'center', background:'#c69a52', color:'#080807', fontWeight:800 }}>18</span><div><strong>Lagos Fashion Week</strong><span>Victoria Island · Oct 18</span></div></div>
-                <div className="mini-item"><span className="mini-thumb" style={{ display:'grid', placeItems:'center', background:'#080807', color:'#c69a52', fontWeight:800 }}>22</span><div><strong>Bridal Business Forum</strong><span>Abuja · Nov 22</span></div></div>
-              </div>
-              <Link className="text-link" href="/events">Explore events <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-            </article>
-            <article className="service-column">
-              <div className="service-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-school"></use></svg></div>
-              <h3>Fashion schools</h3>
-              <p>Compare programmes, fees, locations and graduate outcomes before applying.</p>
-              <div className="mini-list">
-                <div className="mini-item"><span className="mini-thumb" style={{ display:'grid', placeItems:'center', background:'#f0e7da', color:'#8a6032', fontWeight:800 }}>LA</span><div><strong>Lagos Atelier Academy</strong><span>4.9 · Pattern cutting</span></div></div>
-                <div className="mini-item"><span className="mini-thumb" style={{ display:'grid', placeItems:'center', background:'#e4ebe7', color:'#174c3c', fontWeight:800 }}>NA</span><div><strong>Nouveau Arts Institute</strong><span>4.7 · Fashion business</span></div></div>
-              </div>
-              <Link className="text-link" href="/directory">Compare schools <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-            </article>
           </div>
         </div>
       </section>
@@ -343,19 +313,19 @@ export default function Home() {
           </div>
           <div className="review-grid">
             <article className="review-card featured">
-              <div className="review-person"><img className="review-avatar" src="/images/designer-blue.jpg" alt="Amaka client portrait" /><div><strong>Amaka O.</strong><span>Lagos · Verified bridal client</span></div></div>
+              <div className="review-person"><Image className="review-avatar" src="/images/designer-blue.jpg" alt="Amaka client portrait" width={48} height={48} style={{ borderRadius: '50%' }} /><div><strong>Amaka O.</strong><span>Lagos · Verified bridal client</span></div></div>
               <div className="review-stars">★★★★★</div>
-              <blockquote>“I felt heard from the first sketch. My dress looked like me, not like a copy of someone else's wedding.”</blockquote>
+              <blockquote>“I felt heard from the first sketch. My dress looked like me, not like a copy of someone else&apos;s wedding.”</blockquote>
               <div className="review-context">Reviewed Ifeoma Atelier</div>
             </article>
             <article className="review-card">
-              <div className="review-person"><img className="review-avatar" src="/images/designer-menswear.jpg" alt="Tunde client portrait" /><div><strong>Tunde B.</strong><span>Abuja · Verified menswear client</span></div></div>
+              <div className="review-person"><Image className="review-avatar" src="/images/designer-menswear.jpg" alt="Tunde client portrait" width={48} height={48} style={{ borderRadius: '50%' }} /><div><strong>Tunde B.</strong><span>Abuja · Verified menswear client</span></div></div>
               <div className="review-stars">★★★★★</div>
               <blockquote>“The fit was precise, the communication was calm, and the final agbada arrived two days early.”</blockquote>
               <div className="review-context">Reviewed Yusuf Bello</div>
             </article>
             <article className="review-card">
-              <div className="review-person"><img className="review-avatar" src="/images/designer-green.jpg" alt="Bisi client portrait" /><div><strong>Bisi A.</strong><span>Port Harcourt · Verified occasionwear client</span></div></div>
+              <div className="review-person"><Image className="review-avatar" src="/images/designer-green.jpg" alt="Bisi client portrait" width={48} height={48} style={{ borderRadius: '50%' }} /><div><strong>Bisi A.</strong><span>Port Harcourt · Verified occasionwear client</span></div></div>
               <div className="review-stars">★★★★★</div>
               <blockquote>“The profile made it easy to understand pricing before I sent an enquiry.”</blockquote>
               <div className="review-context">Reviewed Adaeze Okoli</div>
@@ -369,70 +339,11 @@ export default function Home() {
           <div className="concierge">
             <div>
               <span className="eyebrow light">STYLEATLAS concierge</span>
-              <h2>Tell us the moment. We'll narrow the map.</h2>
+              <h2>Tell us the moment. We&apos;ll narrow the map.</h2>
               <p>Choose your event, city, budget and style. The guided concierge matches those details against relevant profile information.</p>
               <Link className="btn btn-gold" href="/concierge">Find my fashion expert</Link>
             </div>
-            <div className="concierge-panel">
-              <div className="concierge-progress"><span></span></div>
-              <span className="kicker">Step 3 of 5</span>
-              <h3>What kind of look are you planning?</h3>
-              <div className="choice-grid">
-                <button className="choice selected">Traditional bridal</button>
-                <button className="choice">Civil ceremony</button>
-                <button className="choice">Red carpet</button>
-                <button className="choice">Corporate wardrobe</button>
-                <button className="choice">Menswear occasion</button>
-                <button className="choice">Campaign styling</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <div><span className="eyebrow">STYLEATLAS journal</span><h2>Stories that explain the craft, business and culture behind the clothes.</h2></div>
-            <Link className="text-link" href="/article">Read all stories <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-          </div>
-          <div className="story-grid">
-            <article className="story-card">
-              <img src="/images/designer-green.jpg" alt="Ankara couture" />
-              <div className="story-body">
-                <span className="meta">Design · 7 min read</span>
-                <h3>The designers making Ankara feel new again</h3>
-                <p>Inside the studios treating pattern as architecture rather than decoration.</p>
-                <div className="story-footer"><span>By Zainab Musa</span><span>July 22, 2026</span></div>
-              </div>
-            </article>
-            <article className="story-card">
-              <img src="/images/designer-bridal.jpg" alt="Bridal fashion" />
-              <div className="story-body">
-                <span className="meta">Bridal · 6 min read</span>
-                <h3>How to choose a bridal designer without second-guessing every detail</h3>
-                <p>A practical guide to timelines, fittings, budgets and creative fit.</p>
-                <div className="story-footer"><span>By Ada Ibe</span><span>July 18, 2026</span></div>
-              </div>
-            </article>
-            <article className="story-card">
-              <img src="/images/fashion-studio.jpg" alt="Fashion studio" />
-              <div className="story-body">
-                <span className="meta">Business · 9 min read</span>
-                <h3>What a stronger fashion studio looks like behind the photos</h3>
-                <p>Processes that protect the designer, the team and the client.</p>
-                <div className="story-footer"><span>By Kemi Falade</span><span>July 12, 2026</span></div>
-              </div>
-            </article>
-            <article className="story-card">
-              <img src="/images/designer-menswear.jpg" alt="Nigerian menswear" />
-              <div className="story-body">
-                <span className="meta">Menswear · 5 min read</span>
-                <h3>Why contemporary kaftans are becoming everyday luxury</h3>
-                <p>The cut, cloth and cultural confidence behind the shift.</p>
-                <div className="story-footer"><span>By Tobi Akin</span><span>July 8, 2026</span></div>
-              </div>
-            </article>
+            <ConciergeWidget />
           </div>
         </div>
       </section>

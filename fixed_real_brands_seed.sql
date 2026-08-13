@@ -1,0 +1,44 @@
+-- Real Brands Seed for STYLEATLAS
+-- Generated on 2026-08-11T05:27:14.967Z
+
+BEGIN;
+
+-- 1. Create a dummy admin user to own these unclaimed real brands
+INSERT INTO auth.users (id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at) VALUES
+('66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'authenticated', 'authenticated', 'real_brands_admin@styleatlas.com', 'dummy', now(), now(), now()) ON CONFLICT DO NOTHING;
+
+INSERT INTO public.profiles (id, first_name, last_name, role, avatar_url) VALUES
+('66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'STYLEATLAS', 'Concierge', 'admin', '/images/designer-blue.jpg') ON CONFLICT DO NOTHING;
+
+-- 2. Generate Real Brands
+INSERT INTO public.businesses (id, owner_id, business_name, slug, business_type, description, cover_image_url, is_verified, city, state) VALUES
+('a53c379f-aa1f-4985-920c-e21349823eeb', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Deola Sagoe', 'deola-sagoe', 'designer', 'A titan in the industry, recognized for timeless haute couture and expertise in transforming traditional fabrics like Aso-Oke into sophisticated, modern luxury pieces.', '/images/designer-blue.jpg', false, 'Lagos', 'Lagos'),
+('25eb4e12-7ef7-44ef-b243-13795ab0a953', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Lisa Folawiyo', 'lisa-folawiyo', 'designer', 'A pioneer who revolutionized the use of Ankara fabric, known globally for her creative print-mixing and intricate, handcrafted embellishments.', '/images/designer-green.jpg', false, 'Lagos', 'Lagos'),
+('3e61df2d-1645-4ca5-8a78-745e6245e30c', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Mai Atafo', 'mai-atafo', 'brand', 'Renowned for exceptional tailoring and luxury menswear, his brand is a go-to for celebrities, business executives, and grooms seeking elegant, perfectly fitted suits and wedding attire.', '/images/designer-menswear.jpg', false, 'Lagos', 'Lagos'),
+('c14657e1-d748-40f1-a7b0-476f0136100b', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Orange Culture', 'orange-culture', 'brand', 'A label that challenges traditional ideas of masculinity and gender norms through fluid construction, bold colors, and street-inspired, narrative-driven designs.', '/images/designer-bridal.jpg', false, 'Lagos', 'Lagos'),
+('9e5670ca-9538-4a85-9eb5-fdcf20e31fc3', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Andrea Iyamah', 'andrea-iyamah', 'brand', 'Highly acclaimed for her vibrant, structured resort wear and swimwear that celebrates cultural identity and femininity.', '/images/fashion-studio.jpg', false, 'Lagos', 'Lagos'),
+('a078a6e8-6bfb-4bb0-acb7-d1f8140957f2', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Tokyo James', 'tokyo-james', 'designer', 'Known for a distinctively bold, architectural, and luxury aesthetic, his brand often features sculptural tailoring and heavy textures like leather and velvet.', '/images/fashion-couple.jpg', false, 'Lagos', 'Lagos'),
+('55e8c4ba-752d-47db-9aae-7d43d9656a30', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Veekee James', 'veekee-james', 'designer', 'A leading name in the bridal and red-carpet scene, celebrated for glamorous, figure-enhancing corset gowns.', '/images/designer-blue.jpg', false, 'Lagos', 'Lagos'),
+('8bcfc74c-3a96-4c3c-8a3e-72c416e27c1b', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Maki Oh', 'maki-oh', 'brand', 'Internationally recognized for blending traditional African textiles with avant-garde design, often focusing on storytelling through clothing.', '/images/designer-green.jpg', false, 'Lagos', 'Lagos'),
+('726bd873-e129-43e8-8199-ca781f96025a', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'IAMISIGO', 'iamisigo', 'brand', 'Known for creating an immersive, artistic world, this brand uses African philosophies, natural dyes, and prehistoric-inspired techniques.', '/images/designer-menswear.jpg', false, 'Lagos', 'Lagos'),
+('0c0b52b5-cf5e-499a-a437-cb90d2455535', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'CLAN', 'clan', 'brand', 'A brand praised for its excellent tailoring, sophisticated style, and vibrant use of colors and prints.', '/images/designer-bridal.jpg', false, 'Lagos', 'Lagos'),
+('df4055f3-8e4a-49c2-82ca-218873992ca8', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Fruché', 'fruch', 'brand', 'An emerging label that explores historical and modern Nigerian stories, challenging traditional dress codes through innovative silhouettes.', '/images/fashion-studio.jpg', false, 'Lagos', 'Lagos'),
+('50ef2375-a450-45e9-92ec-4843c9ace9c9', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Outterspace Integrated Luxury', 'outterspace-integrated-luxury', 'brand', 'A collective-founded brand that bridges the gap between high-end luxury and modern streetwear.', '/images/fashion-couple.jpg', false, 'Lagos', 'Lagos'),
+('5c14acec-69ac-4b26-b541-b40a401f3483', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'MOT The Label', 'mot-the-label', 'brand', 'Popular for versatile workwear and contemporary silhouettes.', '/images/designer-blue.jpg', false, 'Lagos', 'Lagos'),
+('4bde57ad-79e0-444d-8d11-20bd6914b9bc', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Hertunba', 'hertunba', 'designer', 'Noted for intricate detailing, draping, and sustainable fashion practices.', '/images/designer-green.jpg', false, 'Lagos', 'Lagos'),
+('6b8d80cc-622f-4427-a4e3-7427e9b955a9', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Kilentar', 'kilentar', 'brand', 'Fusing African heritage with modern design through ethically sourced materials.', '/images/designer-menswear.jpg', false, 'Lagos', 'Lagos'),
+('6eaf7e13-6b34-4114-ae33-abe186e470e1', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Kai Collective', 'kai-collective', 'brand', 'A London/Nigeria based womenswear brand famous for its signature Gaia print and confidence-boosting designs.', '/images/designer-bridal.jpg', false, 'Abuja', 'FCT'),
+('fccae885-5fbf-4822-836b-5d658f813273', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Tia Adeola', 'tia-adeola', 'designer', 'Known for her renaissance-inspired ruffles and sheer fabrics that challenge traditional female dress.', '/images/fashion-studio.jpg', false, 'Lagos', 'Lagos'),
+('1b9a6b92-f5c7-4608-8f56-32a85e41c821', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Kenneth Ize', 'kenneth-ize', 'designer', 'Celebrated for his modern interpretation of traditional Nigerian Asoke fabric and collaborations with global luxury houses.', '/images/fashion-couple.jpg', false, 'Lagos', 'Lagos'),
+('20b6c506-332b-44c3-9bdb-e524e44da28a', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Atafo Bridal', 'atafo-bridal', 'designer', 'The bridal arm of Mai Atafo, creating some of the most sought-after wedding gowns in West Africa.', '/images/designer-blue.jpg', false, 'Lagos', 'Lagos'),
+('75ffb525-629b-438e-8983-5a515fbb4e3b', '66ddd9a0-d8f9-4e67-b3d7-1ef77d48b509', 'Matopeda', 'matopeda', 'designer', 'Creating show-stopping luxury gowns for women to feel powerful and beautiful.', '/images/designer-green.jpg', false, 'Lagos', 'Lagos') ON CONFLICT DO NOTHING;
+
+COMMIT;
+
+
+-- Generate active ad campaigns for a few of these brands
+INSERT INTO public.promoted_campaigns (id, business_id, target_type, status, amount_paid, starts_at, expires_at, impressions, clicks) VALUES
+(gen_random_uuid(), 'a53c379f-aa1f-4985-920c-e21349823eeb', 'profile', 'active', 50000, now() - interval '2 days', now() + interval '28 days', 1542, 87),
+(gen_random_uuid(), '25eb4e12-7ef7-44ef-b243-13795ab0a953', 'profile', 'active', 25000, now() - interval '5 days', now() + interval '25 days', 3491, 142),
+(gen_random_uuid(), 'c14657e1-d748-40f1-a7b0-476f0136100b', 'profile', 'active', 100000, now() - interval '1 day', now() + interval '29 days', 890, 41)
+ON CONFLICT DO NOTHING;

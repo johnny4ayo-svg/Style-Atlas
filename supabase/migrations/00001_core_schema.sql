@@ -109,10 +109,22 @@ CREATE POLICY "Owners can update own businesses" ON public.businesses FOR UPDATE
 
 -- Business Categories: Public read, owners can modify
 CREATE POLICY "Business categories are viewable by everyone" ON public.business_categories FOR SELECT USING (true);
+CREATE POLICY "Owners can insert business categories" ON public.business_categories FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.businesses b WHERE b.id = business_id AND b.owner_id = auth.uid()));
+CREATE POLICY "Owners can delete business categories" ON public.business_categories FOR DELETE USING (EXISTS (SELECT 1 FROM public.businesses b WHERE b.id = business_id AND b.owner_id = auth.uid()));
 
 -- Services: Public read, owners can modify
 CREATE POLICY "Services are viewable by everyone" ON public.services FOR SELECT USING (true);
+CREATE POLICY "Owners can insert services" ON public.services FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.businesses b WHERE b.id = business_id AND b.owner_id = auth.uid()));
+CREATE POLICY "Owners can update services" ON public.services FOR UPDATE USING (EXISTS (SELECT 1 FROM public.businesses b WHERE b.id = business_id AND b.owner_id = auth.uid()));
+CREATE POLICY "Owners can delete services" ON public.services FOR DELETE USING (EXISTS (SELECT 1 FROM public.businesses b WHERE b.id = business_id AND b.owner_id = auth.uid()));
 
 -- Portfolios and Media: Public read, owners can modify
 CREATE POLICY "Portfolios are viewable by everyone" ON public.portfolios FOR SELECT USING (true);
+CREATE POLICY "Owners can insert portfolios" ON public.portfolios FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.businesses b WHERE b.id = business_id AND b.owner_id = auth.uid()));
+CREATE POLICY "Owners can update portfolios" ON public.portfolios FOR UPDATE USING (EXISTS (SELECT 1 FROM public.businesses b WHERE b.id = business_id AND b.owner_id = auth.uid()));
+CREATE POLICY "Owners can delete portfolios" ON public.portfolios FOR DELETE USING (EXISTS (SELECT 1 FROM public.businesses b WHERE b.id = business_id AND b.owner_id = auth.uid()));
+
 CREATE POLICY "Portfolio media is viewable by everyone" ON public.portfolio_media FOR SELECT USING (true);
+CREATE POLICY "Owners can insert portfolio media" ON public.portfolio_media FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.portfolios p JOIN public.businesses b ON p.business_id = b.id WHERE p.id = portfolio_id AND b.owner_id = auth.uid()));
+CREATE POLICY "Owners can update portfolio media" ON public.portfolio_media FOR UPDATE USING (EXISTS (SELECT 1 FROM public.portfolios p JOIN public.businesses b ON p.business_id = b.id WHERE p.id = portfolio_id AND b.owner_id = auth.uid()));
+CREATE POLICY "Owners can delete portfolio media" ON public.portfolio_media FOR DELETE USING (EXISTS (SELECT 1 FROM public.portfolios p JOIN public.businesses b ON p.business_id = b.id WHERE p.id = portfolio_id AND b.owner_id = auth.uid()));

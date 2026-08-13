@@ -37,7 +37,7 @@ const config: Config = {
       },
       fontFamily: {
         serif: ["var(--font-playfair)", "serif"],
-        sans: ["var(--font-manrope)", "sans-serif"],
+        sans: ["var(--font-outfit)", "sans-serif"],
       },
     },
   },

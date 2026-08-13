@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Manrope } from "next/font/google";
+import { Playfair_Display, Outfit } from "next/font/google";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -7,18 +7,41 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
 });
 
-const manrope = Manrope({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  variable: "--font-outfit",
 });
 
 export const metadata: Metadata = {
-  title: "STYLEATLAS | Nigeria's Premium Fashion Directory",
-  description: "Discover, compare, and contact premium fashion designers, brands, schools, and professionals in Nigeria.",
+  title: "STYLEATLAS | The Premier Nigerian Fashion Directory",
+  description: "Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria's creative future.",
+  openGraph: {
+    title: "STYLEATLAS | The Premier Nigerian Fashion Directory",
+    description: "Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria's creative future.",
+    url: 'https://styleatlas.com',
+    siteName: 'STYLEATLAS',
+    images: [
+      {
+        url: '/images/hero-editorial.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'STYLEATLAS',
+      },
+    ],
+    locale: 'en_NG',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "STYLEATLAS",
+    description: "The Premier Nigerian Fashion Directory.",
+    images: ['/images/hero-editorial.jpg'],
+  },
 };
 
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { CartProvider } from "@/components/CartProvider";
 
 export default function RootLayout({
   children,
@@ -28,11 +51,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${manrope.variable} font-sans antialiased bg-ivory text-charcoal`}
+        className={`${playfair.variable} ${outfit.variable} font-sans antialiased`}
       >
-        <Header />
-        {children}
-        <Footer />
+        <CartProvider>
+          <Header />
+          {children}
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

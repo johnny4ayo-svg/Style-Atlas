@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container footer-top">
         <div className="footer-brand">
           <Image src="/brand/styleatlas-logo-dark.svg" alt="STYLEATLAS" width={180} height={30} />
-          <p>Nigeria's premium fashion discovery platform for trusted designers, brands, schools and creative professionals.</p>
+          <p>Nigeria&apos;s premium fashion discovery platform for trusted designers, brands, schools and creative professionals.</p>
           <div className="socials">
             <Link className="social" href="/feature" aria-label="Instagram">IG</Link>
             <Link className="social" href="/feature" aria-label="TikTok">TT</Link>
