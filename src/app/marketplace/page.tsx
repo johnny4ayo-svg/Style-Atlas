@@ -38,7 +38,8 @@ export default async function MarketplacePage({
 
   dbQuery = dbQuery.range(start, end);
 
-  let { data: products, count } = await dbQuery;
+  const { data, count } = await dbQuery;
+  let products = data;
   const totalPages = count ? Math.ceil(count / limit) : 0;
 
   // VISUAL FIX: The seed data generated artificially low prices and repeated local images.

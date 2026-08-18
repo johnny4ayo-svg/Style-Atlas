@@ -11,7 +11,7 @@ export default async function AdminLayout({
   const { data: { user } } = await supabase.auth.getUser();
 
   // Temporarily bypassed for local development so you don't get locked out
-  // if (!user) redirect('/login');
+  if (!user) redirect('/login');
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -20,9 +20,9 @@ export default async function AdminLayout({
     .single();
 
   // Temporarily bypassed for local development so you don't get locked out
-  // if (profile?.role !== 'admin') {
-  //   redirect('/dashboard'); // Kick non-admins out
-  // }
+  if (profile?.role !== 'admin') {
+    redirect('/dashboard'); // Kick non-admins out
+  }
 
   return (
     <div className="dashboard-layout container" style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: '2rem', paddingTop: '2rem', paddingBottom: '4rem' }}>
