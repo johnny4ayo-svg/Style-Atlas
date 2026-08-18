@@ -39,8 +39,8 @@ export const metadata: Metadata = {
   },
 };
 
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/AppHeader";
+import { Footer } from "@/components/layout/AppFooter";
 import { CartProvider } from "@/components/CartProvider";
 
 export default function RootLayout({
