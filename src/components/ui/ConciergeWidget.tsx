@@ -96,7 +96,7 @@ export default function ConciergeWidget() {
             &larr; Back
           </button>
         ) : (
-          <button type="button" className="text-link" style={{ background: 'none', border: 'none', color: 'var(--text-light)', cursor: 'pointer' }}>
+          <button type="button" className="text-link" onClick={() => setStep(2)} style={{ background: 'none', border: 'none', color: 'var(--text-light)', cursor: 'pointer' }}>
             Skip
           </button>
         )}

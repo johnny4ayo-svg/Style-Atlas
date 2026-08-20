@@ -24,7 +24,6 @@ export default async function Home() {
         categories(name)
       )
     `)
-    .eq('type', 'designer')
     .limit(5); // Increased to 5 so we have 1 large and 4 small
 
   const { data: rawAds } = await supabase
