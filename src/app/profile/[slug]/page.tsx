@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import ProfileActions from "@/components/ui/ProfileActions";
 import SaveButton from "@/components/ui/SaveButton";
+import Image from "next/image";
 import type { Metadata, ResolvingMetadata } from "next";
 
 export async function generateMetadata(
@@ -68,11 +69,13 @@ export default async function Profile({ params }: { params: { slug: string } }) 
   return (
     <main>
       <section className="profile-hero">
-        <div className="profile-cover">
-          <img src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name} cover`} />
+        <div className="profile-cover relative h-[300px] md:h-[400px]">
+          <Image src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name} cover`} fill className="object-cover" priority />
         </div>
         <div className="container profile-summary">
-          <img className="profile-avatar" src={business.logo_url || business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name} logo`} />
+          <div className="profile-avatar relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white bg-gray-100">
+            <Image src={business.logo_url || business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name} logo`} fill className="object-cover" priority />
+          </div>
           <div className="profile-title">
             <div className="eyebrow light">Verified profile</div>
             <h1>
@@ -133,7 +136,9 @@ export default async function Profile({ params }: { params: { slug: string } }) 
                 <div className="portfolio-grid">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {portfolioMedia.map((media: any) => (
-                    <img key={media.id} src={media.image_url} alt={media.caption || 'Portfolio image'} />
+                    <div key={media.id} className="relative w-full aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                      <Image src={media.image_url} alt={media.caption || 'Portfolio image'} fill className="object-cover hover:scale-105 transition-transform duration-500" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+                    </div>
                   ))}
                 </div>
               </article>
@@ -184,7 +189,9 @@ export default async function Profile({ params }: { params: { slug: string } }) 
                   {reviews.map((review: any) => (
                     <article className="review-card" key={review.id}>
                       <div className="review-person">
-                        <img className="review-avatar" src={review.profiles?.avatar_url || "/images/designer-green.jpg"} alt="Client" />
+                        <div className="review-avatar relative w-12 h-12 rounded-full overflow-hidden bg-gray-100">
+                          <Image src={review.profiles?.avatar_url || "/images/designer-green.jpg"} alt="Client" fill className="object-cover" />
+                        </div>
                         <div><strong>{review.profiles?.first_name || 'Anonymous'}</strong><span>{review.is_verified_purchase ? 'Verified client' : 'Client'}</span></div>
                       </div>
                       <div className="review-stars">{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</div>

@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";

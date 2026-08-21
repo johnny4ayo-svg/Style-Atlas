@@ -110,6 +110,10 @@ svg.icon{width:20px;height:20px;display:block;pointer-events:none}
 .header-cta:hover{background:#d7aa64;transform:translateY(-1px)}
 .mobile-toggle{display:none}
 .mobile-panel{display:none}
+@media (max-width: 900px) {
+  .mobile-toggle{display:flex}
+  .main-nav{display:none}
+}
 
 .btn{border:0;border-radius:999px;min-height:48px;padding:0 22px;display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:12px;font-weight:800;letter-spacing:.02em;transition:.2s ease}
 .btn:hover{transform:translateY(-2px)}

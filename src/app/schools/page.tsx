@@ -1,9 +1,10 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@/lib/supabase/server'
 import { SchoolCard } from '@/components/ui/SchoolCard'
 import { MapPin, Search } from '@/components/ui/icons'
 import Link from 'next/link'
+
+export const revalidate = 3600;
 
 export const metadata = {
   title: 'Fashion Schools | STYLEATLAS',
