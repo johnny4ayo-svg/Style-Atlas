@@ -12,7 +12,7 @@ export async function generateMetadata(
   const supabase = createClient();
   const { data: business } = await supabase
     .from("businesses")
-    .select("business_name, description, cover_image_url")
+    .select("business_name, description, cover_image_url, city, state, business_categories(categories(name))")
     .eq("slug", params.slug)
     .single();
 
@@ -24,18 +24,26 @@ export async function generateMetadata(
 
   const previousImages = (await parent).openGraph?.images || [];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const primaryCategory = business.business_categories?.[0]?.categories?.name || 'Fashion Designer';
+  
+  const optimizedTitle = `${business.business_name} | Top ${primaryCategory} in ${business.city} | STYLEATLAS`;
+  const optimizedDescription = business.description 
+    ? `${business.description.substring(0, 150)}...` 
+    : `View portfolio, services, and pricing for ${business.business_name}, a verified ${primaryCategory} in ${business.city}, ${business.state}. Contact directly on STYLEATLAS.`;
+
   return {
-    title: `${business.business_name} | STYLEATLAS`,
-    description: business.description || `View the portfolio and services of ${business.business_name} on STYLEATLAS.`,
+    title: optimizedTitle,
+    description: optimizedDescription,
     openGraph: {
-      title: `${business.business_name} | STYLEATLAS`,
-      description: business.description || `View the portfolio and services of ${business.business_name} on STYLEATLAS.`,
+      title: optimizedTitle,
+      description: optimizedDescription,
       images: business.cover_image_url ? [business.cover_image_url, ...previousImages] : previousImages,
     },
     twitter: {
       card: "summary_large_image",
-      title: `${business.business_name} | STYLEATLAS`,
-      description: business.description || `View the portfolio and services of ${business.business_name} on STYLEATLAS.`,
+      title: optimizedTitle,
+      description: optimizedDescription,
       images: business.cover_image_url ? [business.cover_image_url] : [],
     },
   };
@@ -66,8 +74,32 @@ export default async function Profile({ params }: { params: { slug: string } }) 
   const services = business.services || [];
   const reviews = business.reviews || [];
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: business.business_name,
+    image: business.cover_image_url || business.logo_url || "https://styleatlas.com/images/designer-blue.jpg",
+    description: business.description || `Fashion professional in ${business.city}`,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: business.city,
+      addressRegion: business.state,
+      addressCountry: 'NG'
+    },
+    url: `https://styleatlas.com/profile/${business.slug}`,
+    ...((business.rating ?? 0) > 0 && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: business.rating,
+        reviewCount: business.review_count || 1
+      }
+    }),
+    priceRange: business.starting_price ? `₦${business.starting_price / 1000}k+` : '$$'
+  };
+
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="profile-hero">
         <div className="profile-cover relative h-[300px] md:h-[400px]">
           <Image src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name} cover`} fill className="object-cover" priority />

@@ -43,14 +43,14 @@ export default async function Home() {
       <section className="hero">
         <div className="container hero-grid">
           <div className="hero-copy">
-            <span className="eyebrow">Curated. Trusted. Distinctly Nigerian.</span>
-            <h1>Find the talent behind your <em>next unforgettable look.</em></h1>
-            <p>Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria&apos;s creative future.</p>
+            <span className="eyebrow">The Premier Nigerian Fashion Directory</span>
+            <h1>Find the perfect Nigerian fashion professional for your <em>most important moments.</em></h1>
+            <p>From breathtaking bridal gowns to impeccable bespoke tailoring—explore verified designers, boutiques, and stylists who deliver on their promises.</p>
             <div className="hero-actions">
-              <Link className="btn btn-gold" href="/directory">Explore fashion talent 
+              <Link className="btn btn-gold" href="/directory">Find a fashion professional near you 
                 <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg>
               </Link>
-              <Link className="btn btn-outline-light" href="/add-business">List your fashion business</Link>
+              <Link className="btn btn-outline-light" href="/add-business">Add your fashion business</Link>
             </div>
           </div>
           <div className="hero-image-wrap">
@@ -75,8 +75,8 @@ export default async function Home() {
       <section className="section compact">
         <div className="container">
           <div className="section-head">
-            <div><span className="eyebrow">Browse by expertise</span><h2>Every part of Nigerian fashion, in one beautifully mapped place.</h2></div>
-            <p>Move from inspiration to a trusted professional without starting your search again.</p>
+            <div><span className="eyebrow">Browse Top Categories</span><h2>Every part of Nigerian fashion, in one trusted directory.</h2></div>
+            <p>Stop scrolling through unverified social media pages. Find rated professionals and contact them directly on WhatsApp.</p>
           </div>
           <div className="category-shell">
             <div className="category-grid">
@@ -96,8 +96,8 @@ export default async function Home() {
       <section className="section section-dark">
         <div className="container">
           <div className="section-head">
-            <div><span className="eyebrow light">STYLEATLAS selection</span><h2>Featured designers worth knowing before everyone else does.</h2></div>
-            <Link className="text-link" href="/directory">View all designers <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
+            <div><span className="eyebrow light">Featured Businesses</span><h2>Discover top-rated designers worth knowing before everyone else does.</h2></div>
+            <Link className="text-link" href="/directory">Browse all verified businesses <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
           </div>
           <div className="designer-grid" style={{ gridAutoRows: 'minmax(min-content, max-content)' }}>
             {featuredList && featuredList.length > 0 ? (
@@ -280,7 +280,7 @@ export default async function Home() {
       <section className="section section-ivory-2">
         <div className="container">
           <div className="section-head">
-            <div><span className="eyebrow">How STYLEATLAS works</span><h2>A clearer path for clients. A stronger presence for fashion businesses.</h2></div>
+            <div><span className="eyebrow">How STYLEATLAS works</span><h2>A safer way for shoppers to buy. A smarter way for brands to grow.</h2></div>
           </div>
           <div className="journey-grid">
             <article className="journey-card">
@@ -308,7 +308,7 @@ export default async function Home() {
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <div><span className="eyebrow">Verified client stories</span><h2>Good work earns more than attention. It earns trust.</h2></div>
+            <div><span className="eyebrow">Verified client stories</span><h2>Don&apos;t just take our word for it. Read real customer experiences.</h2></div>
           </div>
           <div className="review-grid">
             <article className="review-card featured">
@@ -356,13 +356,13 @@ export default async function Home() {
               <h2>Put your fashion business where Nigeria can find it.</h2>
               <p>Build a trusted profile, show your strongest work, receive better enquiries and reach customers already searching for your exact services.</p>
               <div className="business-benefits">
-                <span className="benefit-pill"><svg className="icon"><use href="/icons/sprite.svg#icon-check"></use></svg>Professional profile</span>
-                <span className="benefit-pill"><svg className="icon"><use href="/icons/sprite.svg#icon-check"></use></svg>Qualified enquiries</span>
-                <span className="benefit-pill"><svg className="icon"><use href="/icons/sprite.svg#icon-check"></use></svg>Portfolio and analytics</span>
+                <span className="benefit-pill"><svg className="icon"><use href="/icons/sprite.svg#icon-check"></use></svg>Rank higher on Google</span>
+                <span className="benefit-pill"><svg className="icon"><use href="/icons/sprite.svg#icon-check"></use></svg>Get direct WhatsApp leads</span>
+                <span className="benefit-pill"><svg className="icon"><use href="/icons/sprite.svg#icon-check"></use></svg>Build trust with client reviews</span>
               </div>
               <div>
-                <Link className="btn btn-gold" href="/add-business">Add your business</Link>
-                <Link className="btn btn-outline-light" href="/pricing" style={{ marginLeft: '10px' }}>View business plans</Link>
+                <Link className="btn btn-gold" href="/add-business">Get discovered by more customers</Link>
+                <Link className="btn btn-outline-light" href="/pricing" style={{ marginLeft: '10px' }}>View membership plans</Link>
               </div>
             </div>
           </div>

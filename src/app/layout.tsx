@@ -14,10 +14,10 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "STYLEATLAS | The Premier Nigerian Fashion Directory",
-  description: "Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria's creative future.",
+  description: "Find the best fashion designers, boutiques, tailors, and bridal experts in Nigeria. Browse verified reviews, portfolios, and contact local fashion businesses directly.",
   openGraph: {
     title: "STYLEATLAS | The Premier Nigerian Fashion Directory",
-    description: "Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria's creative future.",
+    description: "Find the best fashion designers, boutiques, tailors, and bridal experts in Nigeria. Browse verified reviews, portfolios, and contact local fashion businesses directly.",
     url: 'https://styleatlas.com',
     siteName: 'STYLEATLAS',
     images: [

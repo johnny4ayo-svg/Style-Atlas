@@ -4,6 +4,24 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import ArticleClientFeatures from "@/components/ui/ArticleClientFeatures";
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const supabase = createClient();
+  const { data: article } = await supabase.from('articles').select('title, content, cover_image_url').eq('slug', params.slug).single();
+  if (!article) return { title: 'Article Not Found' };
+  
+  return {
+    title: `${article.title} | STYLEATLAS Journal`,
+    description: article.content.substring(0, 160) + '...',
+    openGraph: {
+      title: `${article.title} | STYLEATLAS Journal`,
+      description: article.content.substring(0, 160) + '...',
+      images: [article.cover_image_url || '/images/designer-green.jpg'],
+      type: 'article'
+    }
+  };
+}
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
   const supabase = createClient();
@@ -23,8 +41,21 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     .neq('slug', params.slug)
     .limit(4);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    image: [article.cover_image_url || 'https://styleatlas.com/images/designer-green.jpg'],
+    datePublished: article.published_at || new Date().toISOString(),
+    author: [{
+      '@type': 'Person',
+      name: (article.profiles as any)?.first_name ? `${(article.profiles as any).first_name} ${(article.profiles as any).last_name}` : 'STYLEATLAS Editor',
+    }]
+  };
+
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="article-hero">
         <div className="container">
           <div>
