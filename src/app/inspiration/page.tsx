@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
+import NewsletterSignup from "@/components/ui/NewsletterSignup";
 
 export const metadata = {
   title: 'Editorial & Inspiration | StyleAtlas',
@@ -31,10 +32,19 @@ export default async function InspirationPage() {
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="mb-12 text-center max-w-2xl mx-auto">
           <span className="eyebrow uppercase tracking-widest text-brand-gold font-bold text-sm mb-4 block">Editorial</span>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-brand-black mb-4">Inspiration Hub</h1>
+          <h1 className="font-serif text-4xl md:text-5xl font-bold text-brand-black mb-4">The Journal</h1>
           <p className="text-gray-600 text-lg">
             Discover the stories, trends, and creatives shaping the future of Nigerian fashion.
           </p>
+        </div>
+
+        {/* Category Filters */}
+        <div className="flex overflow-x-auto gap-4 pb-4 mb-12 justify-center hide-scrollbar">
+          <button className="px-6 py-2 rounded-full bg-brand-black text-white text-sm font-medium whitespace-nowrap">All Stories</button>
+          <button className="px-6 py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:border-brand-gold text-sm font-medium whitespace-nowrap transition-colors">Runway</button>
+          <button className="px-6 py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:border-brand-gold text-sm font-medium whitespace-nowrap transition-colors">Business</button>
+          <button className="px-6 py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:border-brand-gold text-sm font-medium whitespace-nowrap transition-colors">Profiles</button>
+          <button className="px-6 py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:border-brand-gold text-sm font-medium whitespace-nowrap transition-colors">Street Style</button>
         </div>
 
         {/* Featured Article */}
@@ -110,6 +120,9 @@ export default async function InspirationPage() {
             </div>
           )
         )}
+        
+        {/* Newsletter Section */}
+        <NewsletterSignup />
       </div>
     </main>
   );

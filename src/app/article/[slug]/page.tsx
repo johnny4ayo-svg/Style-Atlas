@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
+import ArticleClientFeatures from "@/components/ui/ArticleClientFeatures";
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
   const supabase = createClient();
@@ -64,8 +65,9 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             </div>
           </aside>
           
-          <article className="article-content">
-            <p>{article.content}</p>
+          <article className="article-content relative">
+            <p className="whitespace-pre-line">{article.content}</p>
+            <ArticleClientFeatures articleId={article.id} />
           </article>
           
           <aside className="article-toc">
