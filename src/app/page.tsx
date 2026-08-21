@@ -47,7 +47,7 @@ export default async function Home() {
           <div className="hero-copy">
             <span className="eyebrow">The Premier Nigerian Fashion Directory</span>
             <h1>Find the talent behind your <em>next unforgettable look.</em></h1>
-            <p>Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria's creative future.</p>
+            <p>Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria&apos;s creative future.</p>
             <div className="hero-actions">
               <Link className="btn btn-gold" href="/directory">Explore fashion talent <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
               <Link className="btn btn-outline-light" href="/add-business">List your fashion business</Link>
@@ -291,7 +291,7 @@ export default async function Home() {
             <article className="review-card featured">
               <div className="review-person"><Image className="review-avatar" src="/images/designer-blue.jpg" alt="Amaka client portrait" width={48} height={48} style={{ borderRadius: '50%' }} /><div><strong>Amaka O.</strong><span>Lagos · Verified bridal client</span></div></div>
               <div className="review-stars">★★★★★</div>
-              <blockquote>“I felt heard from the first sketch. My dress looked like me, not like a copy of someone else's wedding.”</blockquote>
+              <blockquote>“I felt heard from the first sketch. My dress looked like me, not like a copy of someone else&apos;s wedding.”</blockquote>
               <div className="review-context">Reviewed Ifeoma Atelier</div>
             </article>
             <article className="review-card">
@@ -316,7 +316,7 @@ export default async function Home() {
           <div className="concierge">
             <div>
               <span className="eyebrow light">STYLEATLAS concierge</span>
-              <h2>Tell us the moment. We'll narrow the map.</h2>
+              <h2>Tell us the moment. We&apos;ll narrow the map.</h2>
               <p>Choose your event, city, budget and style. The guided concierge matches those details against relevant profile information.</p>
               <Link className="btn btn-gold" href="/concierge" style={{ marginTop: '1.5rem' }}>Find my fashion expert</Link>
             </div>
