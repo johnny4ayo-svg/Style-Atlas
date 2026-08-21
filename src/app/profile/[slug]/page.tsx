@@ -215,7 +215,7 @@ export default async function Profile({ params }: { params: { slug: string } }) 
                 <p className="muted" style={{ fontSize: '13px', marginBottom: '16px' }}>
                   Manage your portfolio, reply directly to clients, and upgrade your directory presence.
                 </p>
-                <a href={`mailto:hello@styleatlas.com?subject=Claiming Profile: ${business.business_name}&body=Hello, I am the owner of ${business.business_name} and I would like to claim my STYLEATLAS profile.`} className="btn btn-outline-dark" style={{ width: '100%', padding: '12px', fontSize: '14px', textAlign: 'center' }}>
+                <a href={`/claim-business/${business.slug}`} className="btn btn-outline-dark" style={{ width: '100%', padding: '12px', fontSize: '14px', textAlign: 'center' }}>
                   Claim Profile
                 </a>
               </div>

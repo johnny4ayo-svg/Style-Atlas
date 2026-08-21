@@ -69,56 +69,75 @@ export default async function MeasurementsPage() {
     <>
       <div className="dashboard-top">
         <div>
-          <span className="eyebrow">Customer workspace</span>
-          <h1>My Measurements</h1>
-          <p className="muted" style={{ fontSize: '10px', marginTop: '4px' }}>
-            Save your measurements for bespoke orders and faster checkout.
+          <span className="eyebrow uppercase tracking-widest text-brand-gold font-bold text-xs mb-2 block">Customer workspace</span>
+          <h1 className="font-serif text-3xl font-bold text-brand-black">Digital Measurement Passport</h1>
+          <p className="text-gray-500 mt-2 max-w-xl">
+            Save your precise bespoke measurements to seamlessly share with tailors and designers for faster, more accurate commissions.
           </p>
         </div>
       </div>
       
-      <section className="dashboard-grid">
-        <article className="dashboard-card" style={{ maxWidth: '800px' }}>
-          <form action={saveMeasurements} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <h3>Upper Body (cm)</h3>
-              <div className="form-group">
-                <label htmlFor="neck">Neck</label>
-                <input type="number" id="neck" name="neck" className="form-control" defaultValue={measurements.neck} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="chest">Chest / Bust</label>
-                <input type="number" id="chest" name="chest" className="form-control" defaultValue={measurements.chest} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="sleeve">Sleeve Length</label>
-                <input type="number" id="sleeve" name="sleeve" className="form-control" defaultValue={measurements.sleeve} />
-              </div>
+      <section className="mt-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden max-w-4xl">
+          <div className="bg-gray-50 p-6 border-b border-gray-100 flex items-center gap-4">
+            <div className="w-12 h-12 bg-brand-gold/20 rounded-full flex items-center justify-center text-brand-gold font-serif text-xl font-bold">
+              M
             </div>
+            <div>
+              <h3 className="font-bold text-brand-black">Your Core Measurements</h3>
+              <p className="text-sm text-gray-500">All measurements should be in centimeters (cm).</p>
+            </div>
+          </div>
+          
+          <form action={saveMeasurements} className="p-8">
+            <div className="grid md:grid-cols-2 gap-12">
+              
+              <div className="space-y-6">
+                <h4 className="font-serif text-xl font-bold border-b border-gray-100 pb-2">Upper Body</h4>
+                
+                <div>
+                  <label htmlFor="neck" className="block text-sm font-bold text-brand-black mb-2">Neck</label>
+                  <input type="number" id="neck" name="neck" defaultValue={measurements.neck} className="w-full border border-gray-200 rounded-lg p-3 bg-gray-50 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold" />
+                </div>
+                
+                <div>
+                  <label htmlFor="chest" className="block text-sm font-bold text-brand-black mb-2">Chest / Bust</label>
+                  <input type="number" id="chest" name="chest" defaultValue={measurements.chest} className="w-full border border-gray-200 rounded-lg p-3 bg-gray-50 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold" />
+                </div>
+                
+                <div>
+                  <label htmlFor="sleeve" className="block text-sm font-bold text-brand-black mb-2">Sleeve Length</label>
+                  <input type="number" id="sleeve" name="sleeve" defaultValue={measurements.sleeve} className="w-full border border-gray-200 rounded-lg p-3 bg-gray-50 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold" />
+                </div>
+              </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <h3>Lower Body (cm)</h3>
-              <div className="form-group">
-                <label htmlFor="waist">Waist</label>
-                <input type="number" id="waist" name="waist" className="form-control" defaultValue={measurements.waist} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="hips">Hips</label>
-                <input type="number" id="hips" name="hips" className="form-control" defaultValue={measurements.hips} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="inseam">Inseam</label>
-                <input type="number" id="inseam" name="inseam" className="form-control" defaultValue={measurements.inseam} />
+              <div className="space-y-6">
+                <h4 className="font-serif text-xl font-bold border-b border-gray-100 pb-2">Lower Body</h4>
+                
+                <div>
+                  <label htmlFor="waist" className="block text-sm font-bold text-brand-black mb-2">Waist</label>
+                  <input type="number" id="waist" name="waist" defaultValue={measurements.waist} className="w-full border border-gray-200 rounded-lg p-3 bg-gray-50 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold" />
+                </div>
+                
+                <div>
+                  <label htmlFor="hips" className="block text-sm font-bold text-brand-black mb-2">Hips</label>
+                  <input type="number" id="hips" name="hips" defaultValue={measurements.hips} className="w-full border border-gray-200 rounded-lg p-3 bg-gray-50 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold" />
+                </div>
+                
+                <div>
+                  <label htmlFor="inseam" className="block text-sm font-bold text-brand-black mb-2">Inseam</label>
+                  <input type="number" id="inseam" name="inseam" defaultValue={measurements.inseam} className="w-full border border-gray-200 rounded-lg p-3 bg-gray-50 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold" />
+                </div>
               </div>
             </div>
             
-            <div style={{ gridColumn: '1 / -1', marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
-              <button type="submit" className="btn btn-gold">
-                Save Measurements
+            <div className="mt-12 pt-6 border-t border-gray-100 flex justify-end">
+              <button type="submit" className="bg-brand-gold text-brand-black font-bold px-8 py-3 rounded-lg hover:bg-brand-gold/90 transition-colors shadow-sm">
+                Save Passport
               </button>
             </div>
           </form>
-        </article>
+        </div>
       </section>
     </>
   );

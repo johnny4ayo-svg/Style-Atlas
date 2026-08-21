@@ -158,6 +158,10 @@ export interface Database {
           review_count: number | null
           starting_price: number | null
           response_time_hours: number | null
+          is_claimed: boolean | null
+          claim_token: string | null
+          claim_requested_at: string | null
+          verification_status: string | null
           created_at: string
           updated_at: string
         }
@@ -178,6 +182,10 @@ export interface Database {
           review_count?: number | null
           starting_price?: number | null
           response_time_hours?: number | null
+          is_claimed?: boolean | null
+          claim_token?: string | null
+          claim_requested_at?: string | null
+          verification_status?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -198,6 +206,10 @@ export interface Database {
           review_count?: number | null
           starting_price?: number | null
           response_time_hours?: number | null
+          is_claimed?: boolean | null
+          claim_token?: string | null
+          claim_requested_at?: string | null
+          verification_status?: string | null
           created_at?: string
           updated_at?: string
         }
