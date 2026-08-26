@@ -2,6 +2,20 @@ export const revalidate = 3600;
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
+import EmptyState from "@/components/ui/EmptyState";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined }
+}): Promise<Metadata> {
+  const q = searchParams.q ? ` - ${searchParams.q}` : "";
+  return {
+    title: `Marketplace${q} | STYLEATLAS`,
+    description: "Shop ready-to-wear, accessories and made-to-order pieces from independent Nigerian labels.",
+  };
+}
 
 export default async function MarketplacePage({
   searchParams,
@@ -145,26 +159,11 @@ export default async function MarketplacePage({
           </div>
 
           <div className="market-grid" id="products">
-            {products && products.length > 0 ? products.map((product) => (
-              <Link key={product.id} href={`/marketplace/${product.id}`} className="product-card" style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
-                <div className="save-btn" data-save={product.id}>
-                  <Icon name="heart" />
-                </div>
-                <Image src={product.image_url || "/images/designer-green.jpg"} alt={product.name} width={300} height={400} />
-                <div className="product-body">
-                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                  <span className="eyebrow" style={{ fontSize: '10px' }}>{(product.businesses as any)?.business_name || 'Designer'}</span>
-                  <h3>{product.name}</h3>
-                  <div className="product-price">
-                    <strong>₦{(product.base_price / 100).toLocaleString()}</strong>
-                  </div>
-                </div>
-              </Link>
-            )) : (
-              <div style={{ padding: '48px', textAlign: 'center', gridColumn: '1 / -1', color: '#666' }}>
-                No products found matching your search.
-              </div>
-            )}
+            <EmptyState 
+              icon="spark" 
+              title="Marketplace launching soon" 
+              message="We are currently onboarding verified designers to the new Escrow marketplace. Check back soon for exclusive pieces from Nigeria's best talent."
+            />
           </div>
           
           {totalPages > 1 && (

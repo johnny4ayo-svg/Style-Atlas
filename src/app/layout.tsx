@@ -58,6 +58,36 @@ export default function RootLayout({
           {children}
           <Footer />
         </CartProvider>
+        
+        {/* Basic analytics tracking */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.trackEvent = function(eventName, eventData) {
+              // Basic event tracking implementation
+              console.log('[Analytics Event]', eventName, eventData);
+              // In production, this would send to PostHog, GA4, or custom endpoint
+              if (window.gtag) {
+                window.gtag('event', eventName, eventData);
+              }
+            };
+            
+            // Track pageviews
+            document.addEventListener('DOMContentLoaded', () => {
+              window.trackEvent('page_view', { path: window.location.pathname });
+            });
+            
+            // Track clicks on primary CTAs
+            document.addEventListener('click', (e) => {
+              const target = e.target.closest('a.btn, button.btn');
+              if (target) {
+                window.trackEvent('cta_click', {
+                  text: target.innerText,
+                  href: target.href || 'button'
+                });
+              }
+            });
+          `
+        }} />
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 export const revalidate = 3600;
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-
+import EmptyState from "@/components/ui/EmptyState";
 export default async function JobsPage({
   searchParams,
 }: {
@@ -116,16 +116,16 @@ export default async function JobsPage({
               </div>
               <div className="filter-group">
                 <h4>Department</h4>
-                <label className="filter-option"><span><input type="checkbox" /> Design</span><span>48</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Production</span><span>39</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Retail</span><span>31</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Marketing</span><span>28</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Design</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Production</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Retail</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Marketing</span></label>
               </div>
               <div className="filter-group">
                 <h4>Experience</h4>
-                <label className="filter-option"><span><input type="checkbox" /> Entry level</span><span>46</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Mid level</span><span>92</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Senior</span><span>33</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Entry level</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Mid level</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Senior</span></label>
               </div>
             </aside>
 
@@ -155,8 +155,12 @@ export default async function JobsPage({
                     <Link className="btn btn-outline-dark btn-sm" href={`/jobs/${job.id}`}>View role</Link>
                   </article>
                 )) : (
-                  <div style={{ padding: '48px', textAlign: 'center', gridColumn: '1 / -1', color: '#666' }}>
-                    No roles found matching your search. Try adjusting your filters.
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <EmptyState 
+                      icon="briefcase"
+                      title="No roles found"
+                      message="We couldn't find any fashion jobs matching your search criteria. Try adjusting your filters or check back later."
+                    />
                   </div>
                 )}
               </div>

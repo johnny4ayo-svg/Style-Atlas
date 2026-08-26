@@ -45,7 +45,7 @@ export default async function PricingPage() {
             <li>✓ Unlimited portfolio images</li>
             <li>✓ Escrow payments integration</li>
             <li>✓ Advanced analytics dashboard</li>
-            <li className="muted" style={{ textDecoration: 'line-through' }}>Virtual Showrooms</li>
+            <li className="muted" style={{ textDecoration: 'line-through' }}>Custom domain mapping</li>
           </ul>
           <form action={createSubscription} style={{ marginTop: 'auto', width: '100%' }}>
             <input type="hidden" name="tier" value="pro" />
@@ -62,7 +62,7 @@ export default async function PricingPage() {
           <p style={{ color: '#aaa', marginBottom: '24px' }}>For established brands running high-volume sales.</p>
           <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 32px 0', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <li>✓ Everything in Pro</li>
-            <li>✓ &quot;See Now, Buy Now&quot; Virtual Showrooms</li>
+            <li>✓ Priority homepage placement</li>
             <li>✓ Dedicated account manager</li>
             <li>✓ Custom domain mapping</li>
             <li>✓ Reduced Escrow fees (1.5%)</li>

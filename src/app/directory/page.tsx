@@ -5,9 +5,36 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import BusinessCard from "@/components/ui/BusinessCard";
 
-export default async function Directory() {
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}): Promise<Metadata> {
+  const category = searchParams.category ? String(searchParams.category) : "Fashion Professionals";
+  const location = searchParams.location ? String(searchParams.location) : "Nigeria";
+  const title = `Find ${category} in ${location} | STYLEATLAS Directory`;
+  const description = `Browse our verified directory of ${category.toLowerCase()} in ${location}. Compare portfolios, read reviews, and connect directly with top Nigerian fashion talent.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+  };
+}
+
+export default async function Directory({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
   const supabase = createClient();
-  const { data: businesses } = await supabase
+  
+  let query = supabase
     .from('businesses')
     .select(`
       id,
@@ -25,7 +52,35 @@ export default async function Directory() {
         categories(name)
       )
     `)
-    .order('rating', { ascending: false });
+    .eq('status', 'approved');
+
+  // Apply URL filters
+  if (searchParams.location) {
+    query = query.ilike('city', `%${searchParams.location}%`);
+  }
+  if (searchParams.city) {
+    query = query.ilike('city', `%${searchParams.city}%`);
+  }
+  if (searchParams.q) {
+    query = query.ilike('business_name', `%${searchParams.q}%`);
+  }
+
+  // Execute query
+  const { data: businesses } = await query.order('rating', { ascending: false });
+
+  // Optional: If 'category' or 'type' filter is present, filter in memory since joining categories in Supabase can be complex
+  let filteredBusinesses = businesses || [];
+  if (searchParams.category) {
+    const term = String(searchParams.category).toLowerCase();
+    // basic category filtering
+    if (term !== 'all' && term !== '') {
+       filteredBusinesses = filteredBusinesses.filter(b => {
+         const cats = b.business_categories?.map(bc => bc.categories?.name?.toLowerCase()) || [];
+         // e.g. if term is "designers", check if "designer" is in cats
+         return cats.some(c => c && c.includes(term.replace(/s$/, '')));
+       });
+    }
+  }
 
   const { data: sponsoredCampaigns } = await supabase
     .from('promoted_campaigns')
@@ -36,10 +91,8 @@ export default async function Directory() {
   const sponsoredBusinessIds = sponsoredCampaigns?.map(c => c.business_id) || [];
   
   // Separate businesses into sponsored and regular
-  const sponsoredBusinesses = businesses?.filter(b => sponsoredBusinessIds.includes(b.id)) || [];
-  // For the demo, if we don't have sponsored businesses, we can just show the regular list.
-  // We remove sponsored ones from the main list so they don't duplicate, unless we want them to.
-  const regularBusinesses = businesses?.filter(b => !sponsoredBusinessIds.includes(b.id)) || [];
+  const sponsoredBusinesses = filteredBusinesses?.filter(b => sponsoredBusinessIds.includes(b.id)) || [];
+  const regularBusinesses = filteredBusinesses?.filter(b => !sponsoredBusinessIds.includes(b.id)) || [];
 
   return (
     <main>
@@ -49,15 +102,11 @@ export default async function Directory() {
             <div className="breadcrumb">
               <Link href="/">Home</Link>
               <span>/</span>
-              <span>Designers</span>
+              <span>Directory</span>
             </div>
             <span className="eyebrow light">Verified fashion talent</span>
-            <h1 className="page-title">Designers for the moment you have in mind.</h1>
+            <h1 className="page-title">Professionals for the moment you have in mind.</h1>
             <p>Compare portfolios, specialities, pricing signals, response times and verified client reviews across Nigeria.</p>
-          </div>
-          <div className="hero-aside-card">
-            <strong>25,000+</strong>
-            <span>designer and atelier profiles in the demo taxonomy</span>
           </div>
         </div>
       </section>
@@ -66,20 +115,20 @@ export default async function Directory() {
         <div className="container">
           <div className="result-notice">
             <svg className="icon"><use href="/icons/sprite.svg#icon-spark"></use></svg>
-            Showing strong matches for bridal, occasionwear and modern Nigerian fashion. Adjust the filters to refine your shortlist.
+            Showing strong matches for your search. Adjust the filters to refine your shortlist.
           </div>
           <div className="directory-layout">
             <aside className="filter-panel">
               <div className="filter-head">
                 <h3>Refine</h3>
-                <button className="filter-reset">Clear all</button>
+                <Link href="/directory" className="filter-reset">Clear all</Link>
               </div>
               <div className="filter-group">
                 <h4>Category</h4>
-                <label className="filter-option"><span><input type="checkbox" defaultChecked /> Fashion designers</span><span>25,000</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Bridal ateliers</span><span>1,840</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Fashion brands</span><span>10,200</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Bespoke tailors</span><span>8,320</span></label>
+                <label className="filter-option"><span><input type="checkbox" defaultChecked /> Fashion designers</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Bridal ateliers</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Fashion brands</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Bespoke tailors</span></label>
               </div>
               <div className="filter-group">
                 <h4>Location</h4>
@@ -93,24 +142,17 @@ export default async function Directory() {
               </div>
               <div className="filter-group">
                 <h4>Speciality</h4>
-                <label className="filter-option"><span><input type="checkbox" /> Bridal couture</span><span>1,240</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Menswear</span><span>3,910</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Luxury ready-to-wear</span><span>2,870</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Modest fashion</span><span>1,460</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Children&apos;s occasionwear</span><span>680</span></label>
-              </div>
-              <div className="filter-group">
-                <h4>Budget range</h4>
-                <div className="range-row">
-                  <input placeholder="Min ₦" />
-                  <input placeholder="Max ₦" />
-                </div>
+                <label className="filter-option"><span><input type="checkbox" /> Bridal couture</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Menswear</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Luxury ready-to-wear</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Modest fashion</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Children&apos;s occasionwear</span></label>
               </div>
               <div className="filter-group">
                 <h4>Trust signals</h4>
-                <label className="filter-option"><span><input type="checkbox" defaultChecked /> Verified only</span><span>8,530</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Rating 4.5+</span><span>4,910</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Responds within 24 hrs</span><span>3,260</span></label>
+                <label className="filter-option"><span><input type="checkbox" defaultChecked /> Verified only</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Rating 4.5+</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Responds within 24 hrs</span></label>
               </div>
               <button className="btn btn-dark" style={{ width: '100%' }}>Apply filters</button>
             </aside>
@@ -118,8 +160,8 @@ export default async function Directory() {
             <div>
               <div className="results-head">
                 <div>
-                  <h2>Fashion designers</h2>
-                  <span className="muted" style={{ fontSize: '10px' }}>1,284 curated matches</span>
+                  <h2>Results</h2>
+                  <span className="muted" style={{ fontSize: '10px' }}>{filteredBusinesses.length} curated matches</span>
                 </div>
                 <div className="results-controls">
                   <button className="btn btn-outline-dark btn-sm mobile-filter-btn">
@@ -131,16 +173,10 @@ export default async function Directory() {
                     <option>Recently added</option>
                     <option>Price: low to high</option>
                   </select>
-                  <div className="view-toggle">
-                    <button className="active" aria-label="Grid view"><svg className="icon"><use href="/icons/sprite.svg#icon-grid"></use></svg></button>
-                    <button aria-label="List view"><svg className="icon"><use href="/icons/sprite.svg#icon-list"></use></svg></button>
-                  </div>
                 </div>
               </div>
 
               <div className="directory-grid">
-                {/* Render Sponsored Businesses First */}
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {sponsoredBusinesses.length > 0 && sponsoredBusinesses.map((business: any) => (
                   <div key={`sponsored-${business.id}`} style={{ position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 2, background: 'var(--gold)', color: '#000', padding: '2px 8px', fontSize: '10px', fontWeight: 'bold', borderRadius: '4px' }}>
@@ -150,27 +186,17 @@ export default async function Directory() {
                   </div>
                 ))}
 
-                {/* Render Regular Businesses */}
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {regularBusinesses.length > 0 ? (
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   regularBusinesses.map((business: any) => (
                     <BusinessCard key={business.id} business={business} />
                   ))
                 ) : (
                   sponsoredBusinesses.length === 0 && (
                     <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "3rem" }}>
-                      <p>No designers found. Please check back later or update your filters.</p>
+                      <p>No professionals found matching your criteria. Please adjust your filters.</p>
                     </div>
                   )
                 )}
-              </div>
-              <div className="pagination">
-                <button className="page-btn active">1</button>
-                <button className="page-btn">2</button>
-                <button className="page-btn">3</button>
-                <button className="page-btn">4</button>
-                <button className="page-btn">›</button>
               </div>
             </div>
           </div>

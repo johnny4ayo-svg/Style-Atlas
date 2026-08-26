@@ -1,7 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 export function Footer() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [openSection, setOpenSection] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 600);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const toggleSection = (section: string) => {
+    if (!isMobile) return;
+    setOpenSection(openSection === section ? null : section);
+  };
+
+  const isSectionOpen = (section: string) => !isMobile || openSection === section;
+
   return (
     <footer className="site-footer">
       <div className="container footer-top">
@@ -15,47 +35,68 @@ export function Footer() {
             <Link className="social" href="/feature" aria-label="LinkedIn">IN</Link>
           </div>
         </div>
+        
         <div className="footer-col">
-          <h4>Directory</h4>
-          <Link href="/directory">Designers</Link>
-          <Link href="/directory">Brands</Link>
-          <Link href="/directory">Stylists</Link>
-          <Link href="/directory">Schools</Link>
-          <Link href="/directory">Photographers</Link>
-          <Link href="/directory">Fabric stores</Link>
+          <h4 onClick={() => toggleSection('directory')} style={{ cursor: isMobile ? 'pointer' : 'default', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            Directory {isMobile && <span>{isSectionOpen('directory') ? '−' : '+'}</span>}
+          </h4>
+          {isSectionOpen('directory') && (
+            <div className="footer-col-links">
+              <Link href="/directory?category=designers">Designers</Link>
+              <Link href="/directory?category=brands">Brands</Link>
+              <Link href="/directory?category=stylists">Stylists</Link>
+              <Link href="/directory?category=schools">Schools</Link>
+              <Link href="/directory?category=photographers">Photographers</Link>
+              <Link href="/directory?category=tailors">Tailors</Link>
+            </div>
+          )}
         </div>
+
         <div className="footer-col">
-          <h4>Explore</h4>
-          <Link href="/marketplace">Marketplace</Link>
-          <Link href="/jobs">Fashion jobs</Link>
-          <Link href="/events">Events</Link>
-          <Link href="/article">Editorial</Link>
-          <Link href="/directory">Cities</Link>
-          <Link href="/concierge">AI concierge</Link>
+          <h4 onClick={() => toggleSection('explore')} style={{ cursor: isMobile ? 'pointer' : 'default', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            Explore {isMobile && <span>{isSectionOpen('explore') ? '−' : '+'}</span>}
+          </h4>
+          {isSectionOpen('explore') && (
+            <div className="footer-col-links">
+              <Link href="/marketplace">Marketplace</Link>
+              <Link href="/jobs">Fashion jobs</Link>
+              <Link href="/events">Events</Link>
+              <Link href="/journal">Journal</Link>
+            </div>
+          )}
         </div>
+
         <div className="footer-col">
-          <h4>For business</h4>
-          <Link href="/add-business">Add a listing</Link>
-          <Link href="/pricing">Membership plans</Link>
-          <Link href="/dashboard">Business dashboard</Link>
-          <Link href="/advertise">Advertise</Link>
-          <Link href="/verification">Get verified</Link>
-          <Link href="/jobs">Post a job</Link>
+          <h4 onClick={() => toggleSection('business')} style={{ cursor: isMobile ? 'pointer' : 'default', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            For business {isMobile && <span>{isSectionOpen('business') ? '−' : '+'}</span>}
+          </h4>
+          {isSectionOpen('business') && (
+            <div className="footer-col-links">
+              <Link href="/add-business">Add a listing</Link>
+              <Link href="/pricing">Membership plans</Link>
+              <Link href="/dashboard">Business dashboard</Link>
+              <Link href="/verification">Get verified</Link>
+            </div>
+          )}
         </div>
+
         <div className="footer-col">
           <h4>Stay in style</h4>
-          <p style={{ fontSize: '10px' }}>Weekly designer stories, openings, jobs and fashion events.</p>
-          <form className="newsletter">
+          <p style={{ fontSize: '12px', opacity: 0.7, marginBottom: '16px' }}>Weekly designer stories, openings, jobs and fashion events.</p>
+          <form className="newsletter" style={{ marginBottom: '24px' }}>
             <input type="email" required placeholder="Email address" aria-label="Email address" />
             <button type="submit">Subscribe</button>
           </form>
-          <Link href="/about">About STYLEATLAS</Link>
-          <Link href="/contact">Contact</Link>
-          <Link href="/help">Help centre</Link>
+          <div className="footer-col-links">
+            <Link href="/about">About STYLEATLAS</Link>
+            <Link href="/contact">Contact</Link>
+            <Link href="/help">Help centre</Link>
+          </div>
         </div>
       </div>
+      
       <div className="container footer-bottom">
-        <span>© 2026 STYLEATLAS. Demo UI kit with fictional profiles.</span>
+        <span>© {new Date().getFullYear()} STYLEATLAS. All rights reserved.</span>
         <div className="footer-bottom-links">
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>

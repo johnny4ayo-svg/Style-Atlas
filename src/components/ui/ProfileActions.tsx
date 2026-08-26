@@ -74,7 +74,7 @@ export default function ProfileActions({ businessId, businessName, style = 'asid
       {isQuoteOpen && (
         <div className="modal-backdrop open">
           <form className="modal" onSubmit={handleQuoteSubmit}>
-            <button type="button" className="modal-close" onClick={closeModals}><svg className="icon"><use href="/icons/sprite.svg#icon-close"></use></svg></button>
+            <button type="button" className="modal-close" onClick={closeModals} aria-label="Close dialog"><svg className="icon"><use href="/icons/sprite.svg#icon-close"></use></svg></button>
             <span className="eyebrow">Request a quote</span>
             <h2>Tell {businessName} what you&apos;re planning.</h2>
             <p>Your request will be sent directly to their studio dashboard.</p>
@@ -106,7 +106,7 @@ export default function ProfileActions({ businessId, businessName, style = 'asid
       {isConsultationOpen && (
         <div className="modal-backdrop open">
           <form className="modal" onSubmit={(e) => { e.preventDefault(); alert('Consultation slot selected in demo mode'); closeModals(); }}>
-            <button type="button" className="modal-close" onClick={closeModals}><svg className="icon"><use href="/icons/sprite.svg#icon-close"></use></svg></button>
+            <button type="button" className="modal-close" onClick={closeModals} aria-label="Close dialog"><svg className="icon"><use href="/icons/sprite.svg#icon-close"></use></svg></button>
             <span className="eyebrow">Paid consultation</span>
             <h2>Choose how you&apos;d like to meet {businessName}.</h2>
             <div className="choice-grid">

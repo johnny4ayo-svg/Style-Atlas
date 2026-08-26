@@ -2,6 +2,7 @@ export const revalidate = 3600;
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
+import EmptyState from "@/components/ui/EmptyState";
 
 export default async function EventsPage() {
   const supabase = createClient();
@@ -37,73 +38,101 @@ export default async function EventsPage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section compact">
         <div className="container">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">Featured calendar</span>
-              <h2>Plan around the moments shaping the industry.</h2>
+          <form className="search-dock" method="GET" action="/events" style={{ position: 'relative', left: 'auto', bottom: 'auto', transform: 'none', width: '100%', margin: '-30px 0 40px' }}>
+            <div className="search-row">
+              <div className="search-field">
+                <Icon name="search" />
+                <div>
+                  <label>Search events</label>
+                  <input name="q" placeholder="Fashion week, exhibition..." />
+                </div>
+              </div>
+              <div className="search-field">
+                <Icon name="pin" />
+                <div>
+                  <label>Location</label>
+                  <select name="location">
+                    <option value="All cities">All cities</option>
+                    <option value="Lagos">Lagos</option>
+                    <option value="Abuja">Abuja</option>
+                    <option value="Port Harcourt">Port Harcourt</option>
+                  </select>
+                </div>
+              </div>
+              <div className="search-field">
+                <Icon name="calendar" />
+                <div>
+                  <label>When</label>
+                  <select name="date">
+                    <option value="Any date">Any date</option>
+                    <option value="This week">This week</option>
+                    <option value="This month">This month</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" className="search-submit">
+                <Icon name="search" />
+              </button>
             </div>
-            <button type="button" className="btn btn-gold">Submit an event</button>
-          </div>
-          
-          <div className="editorial-grid">
-            {events && events.map((event) => {
-              const date = new Date(event.event_date);
-              const formattedDate = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-              return (
-                <article className="editorial-card" key={event.id}>
-                  <Image src={event.image_url || "/images/hero-editorial.jpg"} alt={event.title} width={600} height={400} />
-                  <div className="editorial-copy">
-                    <span className="eyebrow">{formattedDate} · {event.location}</span>
-                    <h3>{event.title}</h3>
-                    {event.description && <p>{event.description}</p>}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+          </form>
 
-      <section className="section compact section-ivory-2">
-        <div className="container">
-          <div className="section-head">
+          <div className="directory-layout">
+            <aside className="filter-panel">
+              <div className="filter-head">
+                <h3>Filter events</h3>
+                <button type="button" className="filter-reset">Clear</button>
+              </div>
+              <div className="filter-group">
+                <h4>Event type</h4>
+                <label className="filter-option"><span><input type="checkbox" /> Runway show</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Exhibition</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Pop-up shop</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Trade show</span></label>
+                <label className="filter-option"><span><input type="checkbox" /> Workshop</span></label>
+              </div>
+            </aside>
+
             <div>
-              <span className="eyebrow">Coming next</span>
-              <h2>Events you can add to your calendar.</h2>
-            </div>
-          </div>
-          
-          <div className="service-hub">
-            {events && events.slice(0, 4).map((event) => {
-              const date = new Date(event.event_date);
-              const shortMonth = date.toLocaleDateString('en-US', { month: 'short' });
-              const day = date.getDate().toString().padStart(2, '0');
-              return (
-                <article className="service-column" key={event.id}>
-                  <div className="service-icon">
-                    <Icon name="calendar" />
-                  </div>
-                  <h3>{event.title}</h3>
-                  <p>{shortMonth} {day} · {event.location}</p>
-                  <div className="mini-list">
-                    <div className="mini-item">
-                      <span className="mini-thumb" style={{ display: 'grid', placeItems: 'center', background: '#080807', color: '#c69a52', fontWeight: 800 }}>
-                        {day}
-                      </span>
-                      <div>
-                        <strong>{event.description?.substring(0, 50) || 'Fashion event'}</strong>
-                        <span>Open to the public</span>
+              <div className="results-head">
+                <div>
+                  <h2>Upcoming events</h2>
+                  <span className="muted" style={{ fontSize: '10px' }}>{events?.length || 0} events scheduled</span>
+                </div>
+                <button type="button" className="btn btn-gold">Submit an event</button>
+              </div>
+              
+              <div className="service-list">
+                {events && events.length > 0 ? events.map((event) => {
+                  const date = new Date(event.event_date);
+                  const formattedDate = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                  return (
+                    <article className="service-item" key={event.id} style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '24px', alignItems: 'start' }}>
+                      <div className="event-media" style={{ width: '100%', aspectRatio: '1', position: 'relative', borderRadius: '8px', overflow: 'hidden', background: '#f5f5f5' }}>
+                        <Image src={event.image_url || "/images/hero-editorial.jpg"} alt={event.title} fill style={{ objectFit: 'cover' }} />
                       </div>
-                    </div>
+                      <div>
+                        <span className="eyebrow" style={{ fontSize: '10px' }}>{formattedDate}</span>
+                        <h3 style={{ fontFamily: 'var(--serif)', fontSize: '25px', margin: '4px 0' }}>{event.title}</h3>
+                        <p>{event.description}</p>
+                        <div className="tag-row">
+                          <span className="tag" style={{ color: '#5d554d', borderColor: '#ded3c5' }}><Icon name="pin" /> {event.location}</span>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                }) : (
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <EmptyState 
+                      icon="calendar"
+                      title="No upcoming events"
+                      message="There are currently no events matching your criteria. Check back later or submit your own fashion event."
+                    />
                   </div>
-                  <Link className="text-link" href="#">
-                    View event <Icon name="arrow" />
-                  </Link>
-                </article>
-              );
-            })}
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -68,6 +68,7 @@ export function Header() {
                   className="nav-item" 
                   key={item.label}
                   onMouseEnter={() => hasMegaMenu ? setActiveMegaMenu(item.label) : setActiveMegaMenu(null)}
+                  onFocus={() => hasMegaMenu ? setActiveMegaMenu(item.label) : setActiveMegaMenu(null)}
                 >
                   <Link href={item.href} className={`nav-link ${isActive ? 'active' : ''}`}>
                     {item.label}
@@ -139,6 +140,9 @@ export function Header() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Mobile menu"
               aria-hidden={!isMobileMenuOpen}
               style={{ display: 'block', visibility: 'visible' }}
             >
