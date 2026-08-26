@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { createSubscription } from "@/app/actions/subscription-actions";
 
 export default async function PricingPage() {
   const supabase = createClient();
@@ -46,9 +47,12 @@ export default async function PricingPage() {
             <li>✓ Advanced analytics dashboard</li>
             <li className="muted" style={{ textDecoration: 'line-through' }}>Virtual Showrooms</li>
           </ul>
-          <button className="btn btn-gold" style={{ marginTop: 'auto', width: '100%' }}>
-            Upgrade to Pro
-          </button>
+          <form action={createSubscription} style={{ marginTop: 'auto', width: '100%' }}>
+            <input type="hidden" name="tier" value="pro" />
+            <button type="submit" className="btn btn-gold" style={{ width: '100%' }}>
+              Upgrade to Pro
+            </button>
+          </form>
         </div>
 
         {/* Premium Tier */}
@@ -63,9 +67,12 @@ export default async function PricingPage() {
             <li>✓ Custom domain mapping</li>
             <li>✓ Reduced Escrow fees (1.5%)</li>
           </ul>
-          <button className="btn btn-outline-dark" style={{ marginTop: 'auto', width: '100%', borderColor: '#333', color: '#fff' }}>
-            Upgrade to Premium
-          </button>
+          <form action={createSubscription} style={{ marginTop: 'auto', width: '100%' }}>
+            <input type="hidden" name="tier" value="premium" />
+            <button type="submit" className="btn btn-outline-dark" style={{ width: '100%', borderColor: '#333', color: '#fff' }}>
+              Upgrade to Premium
+            </button>
+          </form>
         </div>
       </div>
     </div>

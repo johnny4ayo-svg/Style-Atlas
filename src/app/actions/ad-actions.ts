@@ -10,13 +10,22 @@ export async function createAdCampaign(formData: FormData) {
   if (!user) throw new Error("Not authenticated");
 
   const targetType = formData.get('target_type') as 'profile' | 'product' | 'event';
-  const durationDays = parseInt(formData.get('duration_days') as string, 10);
+  const packageTier = formData.get('package_tier') as 'basic' | 'premium' | 'enterprise';
   
   let amount = 0;
-  if (durationDays === 7) amount = 5000;
-  else if (durationDays === 14) amount = 9000;
-  else if (durationDays === 30) amount = 15000;
-  else throw new Error("Invalid duration");
+  let durationDays = 0;
+  if (packageTier === 'basic') {
+    amount = 5000;
+    durationDays = 7;
+  } else if (packageTier === 'premium') {
+    amount = 15000;
+    durationDays = 14;
+  } else if (packageTier === 'enterprise') {
+    amount = 30000;
+    durationDays = 30;
+  } else {
+    throw new Error("Invalid package tier");
+  }
 
   // Get business ID and email
   const { data: business } = await supabase
@@ -33,6 +42,7 @@ export async function createAdCampaign(formData: FormData) {
     .insert({
       business_id: business.id,
       target_type: targetType,
+      package_tier: packageTier,
       status: 'pending_payment',
       amount_paid: 0, // Will be updated by webhook
     })
@@ -59,6 +69,7 @@ export async function createAdCampaign(formData: FormData) {
       metadata: {
         type: 'ad_campaign',
         campaign_id: campaign.id,
+        package_tier: packageTier,
         duration_days: durationDays
       },
       callback_url: `${baseUrl}/dashboard/business/ads`

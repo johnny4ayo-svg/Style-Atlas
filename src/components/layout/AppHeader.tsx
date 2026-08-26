@@ -58,7 +58,9 @@ export function Header() {
           </Link>
           <nav className="main-nav" aria-label="Primary navigation">
             {navItems.map((item, index) => {
-              const isActive = pathname === item.href;
+              // Only consider the first '/directory' item active by default when on the directory page, 
+              // to prevent all 4 dropdowns from being highlighted simultaneously.
+              const isActive = pathname === item.href && (item.href !== '/directory' || index === 0);
               const hasMegaMenu = index < 4;
               
               return (

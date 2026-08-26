@@ -76,39 +76,23 @@ export async function POST(req: Request) {
           return NextResponse.json({ error: 'Database error' }, { status: 500 });
         }
       }
-    }
+      // If this was a business subscription payment
+      if (metadata && metadata.tier && metadata.type === 'subscription' && metadata.business_id) {
+        const { error } = await supabaseAdmin
+          .from('businesses')
+          .update({
+            subscription_tier: metadata.tier,
+          })
+          .eq('id', metadata.business_id);
 
-    // Handle Subscriptions
-    if (event.event === 'subscription.create') {
-      const { customer, plan } = event.data;
-      
-      // Map Paystack plan code to our subscription tiers
-      let tier = 'pro';
-      if (plan.name?.toLowerCase().includes('premium')) {
-        tier = 'premium';
-      }
-
-      // Update business subscription tier based on customer email
-      // In a real app, you'd want to map Paystack customer code to your business ID
-      if (customer.email) {
-        // Find user by email (this requires a custom DB query or RPC in production)
-        const { data: profiles } = await supabaseAdmin
-          .from('profiles')
-          .select('id')
-          .eq('email', customer.email) // Note: Profiles table doesn't have email in Tranche 1, you'd need to fetch auth.users or store it
-          .limit(1);
-
-        if (profiles && profiles.length > 0) {
-          await supabaseAdmin
-            .from('businesses')
-            .update({ 
-              subscription_tier: tier,
-              stripe_customer_id: customer.customer_code // Repurposing column for Paystack customer code
-            })
-            .eq('owner_id', profiles[0].id);
+        if (error) {
+          console.error('Failed to update business subscription:', error);
+          return NextResponse.json({ error: 'Database error' }, { status: 500 });
         }
       }
     }
+
+
 
     return NextResponse.json({ received: true });
   } catch (error) {

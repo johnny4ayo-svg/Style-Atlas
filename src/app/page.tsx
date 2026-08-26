@@ -40,7 +40,7 @@ export default async function Home() {
   const featuredList = [...adBusinesses, ...(businesses || [])].slice(0, 6); 
 
   return (
-    <main className="mobile-app-layout">
+    <main>
       {/* 1. HERO SECTION */}
       <section className="hero">
         <div className="container hero-grid">

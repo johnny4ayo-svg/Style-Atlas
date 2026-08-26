@@ -795,7 +795,9 @@ textarea.form-control{height:120px;padding-top:12px;resize:vertical}
   gap: 12px;
 }
 .mobile-app-layout .category-grid {
-  grid-template-columns: repeat(4, 1fr);
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  width: 100% !important;
 }
 .mobile-app-layout .category-card {
   min-width: 0 !important;

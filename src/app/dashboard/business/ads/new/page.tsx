@@ -23,9 +23,9 @@ export default async function NewAdCampaign() {
         </div>
       </div>
 
-      <section className="dashboard-grid" style={{ maxWidth: '600px' }}>
+      <section className="dashboard-grid" style={{ maxWidth: '1000px' }}>
         <article className="dashboard-card" style={{ gridColumn: '1 / -1', padding: '32px' }}>
-          <form action={createAdCampaign} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <form action={createAdCampaign} style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
             
             <div>
               <label htmlFor="target_type" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>What would you like to promote?</label>
@@ -33,7 +33,7 @@ export default async function NewAdCampaign() {
                 id="target_type" 
                 name="target_type" 
                 className="input-field" 
-                style={{ width: '100%', padding: '12px', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-color)' }}
+                style={{ width: '100%', maxWidth: '600px', padding: '12px', borderRadius: '4px', border: '1px solid var(--border-color)', background: 'var(--bg-color)' }}
                 required
               >
                 <option value="profile">My Business Profile (Directory placement)</option>
@@ -46,39 +46,65 @@ export default async function NewAdCampaign() {
             </div>
 
             <div>
-              <label style={{ display: 'block', marginBottom: '12px', fontWeight: 600 }}>Duration & Pricing</label>
+              <label style={{ display: 'block', marginBottom: '16px', fontWeight: 600 }}>Select Package</label>
               
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', padding: '16px', border: '1px solid var(--border-color)', borderRadius: '8px', cursor: 'pointer' }}>
-                  <input type="radio" name="duration_days" value="7" defaultChecked style={{ marginRight: '16px' }} />
-                  <div style={{ flex: 1 }}>
-                    <strong style={{ display: 'block' }}>7 Days</strong>
-                    <span className="muted" style={{ fontSize: '12px' }}>Quick boost for visibility</span>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+                {/* Basic Boost */}
+                <label style={{ display: 'flex', flexDirection: 'column', padding: '24px', border: '1px solid var(--border-color)', borderRadius: '12px', cursor: 'pointer', background: 'var(--bg-color)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+                    <input type="radio" name="package_tier" value="basic" defaultChecked style={{ marginRight: '12px' }} />
+                    <strong style={{ fontSize: '18px' }}>Basic Boost</strong>
                   </div>
-                  <strong style={{ fontSize: '16px' }}>₦5,000</strong>
+                  <div style={{ marginBottom: '16px' }}>
+                    <strong style={{ fontSize: '24px', display: 'block' }}>₦5,000</strong>
+                    <span className="muted" style={{ fontSize: '12px' }}>for 7 Days</span>
+                  </div>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '13px', display: 'flex', flexDirection: 'column', gap: '8px', color: 'var(--muted)' }}>
+                    <li>✓ Standard directory placement</li>
+                    <li>✓ Category page visibility</li>
+                  </ul>
                 </label>
 
-                <label style={{ display: 'flex', alignItems: 'center', padding: '16px', border: '1px solid var(--border-color)', borderRadius: '8px', cursor: 'pointer' }}>
-                  <input type="radio" name="duration_days" value="14" style={{ marginRight: '16px' }} />
-                  <div style={{ flex: 1 }}>
-                    <strong style={{ display: 'block' }}>14 Days</strong>
-                    <span className="muted" style={{ fontSize: '12px' }}>Recommended for events</span>
+                {/* Premium Spotlight */}
+                <label style={{ display: 'flex', flexDirection: 'column', padding: '24px', border: '1px solid var(--border-color)', borderRadius: '12px', cursor: 'pointer', background: 'var(--bg-color)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+                    <input type="radio" name="package_tier" value="premium" style={{ marginRight: '12px' }} />
+                    <strong style={{ fontSize: '18px' }}>Premium Spotlight</strong>
                   </div>
-                  <strong style={{ fontSize: '16px' }}>₦9,000</strong>
+                  <div style={{ marginBottom: '16px' }}>
+                    <strong style={{ fontSize: '24px', display: 'block' }}>₦15,000</strong>
+                    <span className="muted" style={{ fontSize: '12px' }}>for 14 Days</span>
+                  </div>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '13px', display: 'flex', flexDirection: 'column', gap: '8px', color: 'var(--muted)' }}>
+                    <li>✓ Higher ranking in search</li>
+                    <li>✓ Highlighted border in directory</li>
+                    <li>✓ Top of category pages</li>
+                  </ul>
                 </label>
 
-                <label style={{ display: 'flex', alignItems: 'center', padding: '16px', border: '1px solid var(--gold)', borderRadius: '8px', cursor: 'pointer', background: 'rgba(255, 215, 0, 0.05)' }}>
-                  <input type="radio" name="duration_days" value="30" style={{ marginRight: '16px' }} />
-                  <div style={{ flex: 1 }}>
-                    <strong style={{ display: 'block' }}>30 Days <span style={{ background: 'var(--gold)', color: '#000', fontSize: '10px', padding: '2px 6px', borderRadius: '4px', marginLeft: '8px' }}>BEST VALUE</span></strong>
-                    <span className="muted" style={{ fontSize: '12px' }}>Maximum exposure for the month</span>
+                {/* Enterprise Featured */}
+                <label style={{ display: 'flex', flexDirection: 'column', padding: '24px', border: '2px solid var(--gold)', borderRadius: '12px', cursor: 'pointer', background: 'rgba(212, 163, 115, 0.05)', position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: '-10px', right: '16px', background: 'var(--gold)', color: '#000', fontSize: '10px', fontWeight: 'bold', padding: '4px 8px', borderRadius: '4px' }}>
+                    MAX VISIBILITY
                   </div>
-                  <strong style={{ fontSize: '16px' }}>₦15,000</strong>
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+                    <input type="radio" name="package_tier" value="enterprise" style={{ marginRight: '12px' }} />
+                    <strong style={{ fontSize: '18px' }}>Enterprise Featured</strong>
+                  </div>
+                  <div style={{ marginBottom: '16px' }}>
+                    <strong style={{ fontSize: '24px', display: 'block' }}>₦30,000</strong>
+                    <span className="muted" style={{ fontSize: '12px' }}>for 30 Days</span>
+                  </div>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '13px', display: 'flex', flexDirection: 'column', gap: '8px', color: 'var(--muted)' }}>
+                    <li>✓ Homepage featured section</li>
+                    <li>✓ Newsletter inclusion</li>
+                    <li>✓ Social media shoutout</li>
+                  </ul>
                 </label>
               </div>
             </div>
 
-            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '24px', marginTop: '8px' }}>
+            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '24px', marginTop: '8px', maxWidth: '600px' }}>
               <button type="submit" className="btn btn-gold" style={{ width: '100%', padding: '16px', fontSize: '16px' }}>
                 Proceed to Payment
               </button>
