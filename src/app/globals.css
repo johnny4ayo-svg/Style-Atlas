@@ -662,22 +662,14 @@ textarea.form-control{height:120px;padding-top:12px;resize:vertical}
     border: none;
     box-shadow: none;
     padding: 0;
-    margin-left: -20px;
-    margin-right: -20px;
-    padding-left: 20px;
-    padding-right: 20px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
   }
-  .category-shell::-webkit-scrollbar { display: none; }
   .category-grid {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    width: max-content;
+    width: 100%;
   }
   .category-card {
-    min-width: 140px;
     border: 1px solid #dfd5c8 !important;
     border-radius: 12px;
     padding: 16px;
