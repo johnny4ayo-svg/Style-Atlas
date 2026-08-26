@@ -659,20 +659,25 @@ textarea.form-control{height:120px;padding-top:12px;resize:vertical}
 /* Mobile Swiping Grids Override */
 @media (max-width: 900px) {
   .category-shell {
-    border: none;
-    box-shadow: none;
-    padding: 0;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+    width: 100% !important;
+    display: block !important;
   }
   .category-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    width: 100% !important;
   }
   .category-card {
     border: 1px solid #dfd5c8 !important;
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    background: var(--white) !important;
+    width: 100% !important;
   }
   .city-grid {
     display: flex;
