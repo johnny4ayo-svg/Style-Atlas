@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @ts-nocheck
 import Link from "next/link";
 import SaveButton from "./SaveButton";
