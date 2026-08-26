@@ -90,15 +90,17 @@ export function Footer() {
         </div>
 
         <div className="footer-col">
-          <h4>Stay in style</h4>
-          <p style={{ fontSize: '12px', opacity: 0.7, marginBottom: '16px' }}>Get launch updates, new verified profiles, jobs, events and STYLEATLAS stories.</p>
-          <form className="newsletter" style={{ marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label htmlFor="newsletter-email" style={{ fontSize: '12px', fontWeight: 'bold' }}>Email address</label>
-            <div style={{ display: 'flex', width: '100%' }}>
-              <input type="email" id="newsletter-email" name="email" autoComplete="email" required placeholder="Enter your email" aria-label="Email address" style={{ flexGrow: 1, padding: '10px' }} />
-              <button type="submit" style={{ padding: '10px 16px' }}>Subscribe</button>
-            </div>
-          </form>
+          <section id="newsletter-email" aria-labelledby="newsletter-heading">
+            <h4 id="newsletter-heading">Stay in style</h4>
+            <p style={{ fontSize: '12px', opacity: 0.7, marginBottom: '16px' }}>Get launch updates, new verified profiles, jobs, events and STYLEATLAS stories.</p>
+            <form className="newsletter" style={{ marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label htmlFor="email-input" style={{ fontSize: '12px', fontWeight: 'bold' }}>Email address</label>
+              <div style={{ display: 'flex', width: '100%' }}>
+                <input type="email" id="email-input" name="email" autoComplete="email" required placeholder="Enter your email" aria-label="Email address" style={{ flexGrow: 1, padding: '10px' }} />
+                <button type="submit" style={{ padding: '10px 16px' }}>Subscribe</button>
+              </div>
+            </form>
+          </section>
           <div className="footer-col-links">
             <Link href="/about">About STYLEATLAS</Link>
             <Link href="/contact">Contact</Link>

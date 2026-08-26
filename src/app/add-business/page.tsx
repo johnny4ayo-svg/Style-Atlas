@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+// Moved metadata to layout.tsx
+
+
 export default function AddBusinessPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);

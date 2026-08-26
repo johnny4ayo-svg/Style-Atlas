@@ -4,7 +4,13 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Membership Plans for Fashion Businesses | STYLEATLAS",
-  description: "Choose the plan that fits your needs. Reach more clients and showcase your portfolio to our verified audience.",
+  description: "View membership plans and pricing for fashion professionals on STYLEATLAS. Choose the plan that fits your business needs.",
+  alternates: {
+    canonical: '/pricing'
+  },
+  openGraph: {
+    url: '/pricing'
+  }
 };
 
 export default async function PricingPage() {
@@ -45,30 +51,30 @@ export default async function PricingPage() {
         <div className="dashboard-card" style={{ padding: '32px', display: 'flex', flexDirection: 'column', border: '2px solid var(--gold)', position: 'relative' }}>
           <div style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: 'var(--gold)', color: '#000', padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold' }}>RECOMMENDED</div>
           <h3>Pro</h3>
-          <div style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '16px 0' }}>₦15,000<span style={{ fontSize: '1rem', color: 'var(--muted)' }}>/mo (excl. VAT)</span></div>
+          <div style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: '16px 0' }}>Planned launch price: ₦15,000/month</div>
           <p className="muted" style={{ marginBottom: '24px' }}>Everything you need to run a professional fashion business.</p>
           <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 32px 0', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <li>✓ Priority directory ranking</li>
-            <li>✓ Unlimited portfolio images</li>
-            <li>✓ Early access to new features</li>
+            <li>Planned for launch: Priority directory ranking</li>
+            <li>Planned for launch: Unlimited portfolio images</li>
+            <li>Planned for launch: Early access to new features</li>
           </ul>
-          <button type="button" className="btn btn-gold" disabled style={{ marginTop: 'auto', width: '100%', opacity: 0.7, cursor: 'not-allowed' }}>
-            Paid Enrolment Opening Soon
-          </button>
+          <Link href="/#newsletter-email" className="btn btn-gold" style={{ marginTop: 'auto', width: '100%', textAlign: 'center' }}>
+            Join the waitlist
+          </Link>
         </div>
 
         {/* Premium Tier */}
         <div className="dashboard-card" style={{ padding: '32px', display: 'flex', flexDirection: 'column', background: '#111', color: '#fff' }}>
           <h3 style={{ color: '#fff' }}>Premium</h3>
-          <div style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '16px 0' }}>₦45,000<span style={{ fontSize: '1rem', color: '#888' }}>/mo (excl. VAT)</span></div>
+          <div style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: '16px 0' }}>Planned launch price: ₦45,000/month</div>
           <p style={{ color: '#aaa', marginBottom: '24px' }}>For established brands running high-volume sales.</p>
           <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 32px 0', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <li>✓ Everything in Pro</li>
-            <li>✓ Priority homepage placement</li>
+            <li>Planned for launch: Everything in Pro</li>
+            <li>Planned for launch: Priority homepage placement</li>
           </ul>
-          <button type="button" className="btn btn-outline-dark" disabled style={{ marginTop: 'auto', width: '100%', borderColor: '#333', color: '#fff', opacity: 0.7, cursor: 'not-allowed' }}>
-            Paid Enrolment Opening Soon
-          </button>
+          <Link href="/#newsletter-email" className="btn btn-outline-light" style={{ marginTop: 'auto', width: '100%', textAlign: 'center' }}>
+            Join the waitlist
+          </Link>
         </div>
       </div>
 
@@ -77,15 +83,15 @@ export default async function PricingPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px', fontSize: '14px', lineHeight: '1.6' }}>
           <div>
             <strong>Billing & VAT</strong>
-            <p>All paid plans are billed monthly. Displayed amounts exclude 7.5% Nigerian VAT, which will be added at checkout. Subscriptions renew automatically unless cancelled.</p>
+            <p>Paid enrolment is not yet available. Final terms regarding billing cycles and VAT treatment will be published before enrolment opens.</p>
           </div>
           <div>
             <strong>Cancellation & Refunds</strong>
-            <p>You may cancel your subscription at any time. Cancellations take effect at the end of the current billing period. We do not offer partial refunds for mid-cycle cancellations.</p>
+            <p>Final terms for cancellation, downgrade policies, and refunds will be published alongside our full membership terms before launch.</p>
           </div>
           <div>
             <strong>After Cancellation</strong>
-            <p>If you cancel a paid plan, your account will downgrade to the Basic tier. Any portfolio images above the Basic limit (10) will be hidden until you upgrade again.</p>
+            <p>If you cancel a paid plan after launch, your account will downgrade to the Basic tier. Any portfolio images above the Basic limit (10) will be hidden until you upgrade again.</p>
           </div>
           <div>
             <strong>Marketplace & Verification</strong>

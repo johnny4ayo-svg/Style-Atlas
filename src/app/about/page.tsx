@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us | STYLEATLAS",
-  description: "Learn about STYLEATLAS and how we are solving the discovery problem in Nigerian fashion through our verified directory.",
+  title: "About STYLEATLAS | Nigerian Fashion Directory",
+  description: "Learn about our mission to organize and elevate the Nigerian fashion industry by connecting trusted professionals with buyers.",
+  alternates: {
+    canonical: '/about'
+  },
+  openGraph: {
+    url: '/about'
+  }
 };
 
 export default function AboutPage() {

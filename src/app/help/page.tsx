@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Help Centre | STYLEATLAS",
-  description: "Get support for using STYLEATLAS, managing your account, and safety.",
+  title: "STYLEATLAS Help Centre",
+  description: "Find answers, guides and support for using the STYLEATLAS platform as a shopper, professional or brand.",
+  alternates: {
+    canonical: '/help'
+  },
+  openGraph: {
+    url: '/help'
+  }
 };
 
 export default function HelpPage() {

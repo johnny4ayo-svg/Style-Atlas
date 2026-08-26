@@ -1,13 +1,21 @@
-export const revalidate = 3600;
+
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import EmptyState from "@/components/ui/EmptyState";
 import type { Metadata } from "next";
 
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: "Nigerian Fashion Events | STYLEATLAS",
-  description: "Find fashion weeks, workshops, exhibitions, trunk shows, school showcases and business events across Nigeria.",
+  description: "Discover upcoming fashion shows, masterclasses, exhibitions and networking events in the Nigerian fashion industry.",
+  alternates: {
+    canonical: '/events'
+  },
+  openGraph: {
+    url: '/events'
+  }
 };
 export default async function EventsPage() {
   const supabase = createClient();

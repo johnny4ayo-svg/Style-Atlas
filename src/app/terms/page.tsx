@@ -1,3 +1,16 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms of Service | STYLEATLAS",
+  description: "Read the terms of service and conditions for using the STYLEATLAS platform and services.",
+  alternates: {
+    canonical: '/terms'
+  },
+  openGraph: {
+    url: '/terms'
+  }
+};
+
 
 
 export default function TermsPage() {

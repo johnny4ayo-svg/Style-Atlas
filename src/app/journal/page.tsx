@@ -3,9 +3,17 @@ import Image from "next/image";
 import EmptyState from "@/components/ui/EmptyState";
 import type { Metadata } from "next";
 
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: "Nigerian Fashion Journal | STYLEATLAS",
-  description: "Explore interviews, trend analyses, and deep dives into the Nigerian fashion ecosystem.",
+  description: "Read the latest stories, interviews, trends and business insights from the Nigerian fashion industry.",
+  alternates: {
+    canonical: '/journal'
+  },
+  openGraph: {
+    url: '/journal'
+  }
 };
 export default function ArticleIndexPage() {
   const articles: Array<{id: string, image_url?: string, title: string, date: string, category: string, excerpt: string}> = []; // Array of articles if they existed in the DB

@@ -1,4 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "How STYLEATLAS Verification Works",
+  description: "Learn about our editorial review process and what it takes to become a verified fashion professional on STYLEATLAS.",
+  alternates: {
+    canonical: '/verification'
+  },
+  openGraph: {
+    url: '/verification'
+  }
+};
+
 
 export default function VerificationPage() {
   return (

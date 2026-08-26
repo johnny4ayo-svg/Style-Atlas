@@ -1,12 +1,20 @@
-export const revalidate = 3600;
+
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import EmptyState from "@/components/ui/EmptyState";
 import type { Metadata } from "next";
 
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: "Nigerian Fashion Jobs | STYLEATLAS",
-  description: "Find the role where your craft becomes part of something bigger.",
+  description: "Find career opportunities in the Nigerian fashion industry. Apply for roles in design, retail, marketing, tailoring and production.",
+  alternates: {
+    canonical: '/jobs'
+  },
+  openGraph: {
+    url: '/jobs'
+  }
 };
 export default async function JobsPage({
   searchParams,
@@ -163,12 +171,12 @@ export default async function JobsPage({
                 )) : (
                   <div style={{ gridColumn: '1 / -1' }}>
                     <EmptyState 
-                      heading="No roles found"
-                      supportingText="No verified fashion jobs are available right now."
-                      primaryButtonLabel="Post a fashion job"
-                      primaryButtonHref="/contact"
-                      secondaryButtonLabel="Get job updates"
-                      secondaryButtonHref="/newsletter"
+                      heading="No jobs available"
+                      supportingText="There are currently no active fashion jobs that match your criteria. Check back later or sign up for job alerts."
+                      primaryButtonLabel="Clear Filters"
+                      primaryButtonHref="/jobs"
+                      secondaryButtonLabel="Get job alerts"
+                      secondaryButtonHref="/#newsletter-email"
                     />
                   </div>
                 )}

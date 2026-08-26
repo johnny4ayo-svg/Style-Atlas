@@ -1,29 +1,26 @@
 /* eslint-disable */
 // @ts-nocheck
-export const revalidate = 3600;
+
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import BusinessCard from "@/components/ui/BusinessCard";
 
 import type { Metadata } from "next";
 
-export async function generateMetadata({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}): Promise<Metadata> {
-  const category = searchParams.category ? String(searchParams.category) : "Fashion Professionals";
-  const location = searchParams.location ? String(searchParams.location) : "Nigeria";
-  const title = `Nigerian Fashion Professionals Directory | STYLEATLAS`;
-  const description = `Browse our verified directory of Nigerian fashion professionals. Compare portfolios, read reviews, and connect directly with top talent.`;
+export const revalidate = 300;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function generateMetadata({ searchParams }: any): Promise<Metadata> {
+  const q = searchParams?.q ? ` - ${searchParams.q}` : "";
   return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
+    title: `Nigerian Fashion Professionals Directory${q} | STYLEATLAS`,
+    description: "Find top Nigerian fashion designers, tailors, photographers, and brands. Browse verified professionals for your next custom outfit or styling project.",
+    alternates: {
+      canonical: '/directory'
     },
+    openGraph: {
+      url: '/directory'
+    }
   };
 }
 

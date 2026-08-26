@@ -1,19 +1,24 @@
-export const revalidate = 3600;
+
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import EmptyState from "@/components/ui/EmptyState";
 import type { Metadata } from "next";
 
-export async function generateMetadata({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined }
-}): Promise<Metadata> {
-  const q = searchParams.q ? ` - ${searchParams.q}` : "";
+export const revalidate = 300;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function generateMetadata({ searchParams }: any): Promise<Metadata> {
+  const q = searchParams?.q ? ` - ${searchParams.q}` : "";
   return {
-    title: `Marketplace${q} | STYLEATLAS`,
-    description: "Shop ready-to-wear, accessories and made-to-order pieces from independent Nigerian labels.",
+    title: `Nigerian Fashion Marketplace${q} | STYLEATLAS`,
+    description: "Shop ready-to-wear, accessories and made-to-order pieces from independent Nigerian labels and verified fashion businesses.",
+    alternates: {
+      canonical: '/marketplace'
+    },
+    openGraph: {
+      url: '/marketplace'
+    }
   };
 }
 
@@ -34,10 +39,11 @@ export default async function MarketplacePage({
     .from('products')
     .select(`
       *,
-      businesses!inner ( business_name ),
+      businesses!inner ( business_name, verification_status ),
       product_variants ( size )
     `, { count: 'exact' })
-    .eq('is_published', true);
+    .eq('is_published', true)
+    .eq('businesses.verification_status', 'approved');
 
   if (q) {
     dbQuery = dbQuery.or(`name.ilike.%${q}%,description.ilike.%${q}%`);
@@ -53,12 +59,24 @@ export default async function MarketplacePage({
 
   dbQuery = dbQuery.range(start, end);
 
-  const { data, count } = await dbQuery;
+  const { data, count, error } = await dbQuery;
   let products = data;
   const totalPages = count ? Math.ceil(count / limit) : 0;
 
-  // VISUAL FIX: The seed data generated artificially low prices and repeated local images.
-  // We apply a display-time fix here to ensure the marketplace looks premium and authentic.
+  if (error) {
+    console.error('Marketplace query error:', error);
+    return (
+      <main>
+        <section className="section compact">
+          <div className="container" style={{ textAlign: 'center', padding: '100px 20px' }}>
+            <h2>Service temporarily unavailable</h2>
+            <p>We are unable to load the marketplace at the moment. Please try again later.</p>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   if (products) {
     const PREMIUM_IMAGES = [
       '/images/nigerian_fashion_1_1786548524024.png',
@@ -71,9 +89,7 @@ export default async function MarketplacePage({
     
     products = products.map((p, idx) => ({
       ...p,
-      // Multiply cheap seed prices by 50 to look realistic (e.g., ₦150,000 instead of ₦3,000)
       base_price: p.base_price < 500000 ? p.base_price * 50 : p.base_price,
-      // Replace repetitive local images with authentic Nigerian imagery
       image_url: p.image_url?.startsWith('/images') ? PREMIUM_IMAGES[(idx + start) % PREMIUM_IMAGES.length] : p.image_url
     }));
   }
@@ -84,6 +100,42 @@ export default async function MarketplacePage({
     </svg>
   );
 
+  // LAUNCH STATE
+  if (!products || products.length === 0) {
+    return (
+      <main>
+        <section className="page-hero">
+          <div className="container page-hero-inner">
+            <div>
+              <div className="breadcrumb">
+                <Link href="/">Home</Link>
+                <span>/</span>
+                <span>Marketplace</span>
+              </div>
+              <span className="eyebrow light">STYLEATLAS Marketplace</span>
+              <h1 className="page-title">Nigerian fashion, selected with care.</h1>
+            </div>
+          </div>
+        </section>
+        <section className="section compact">
+          <div className="container">
+            <div className="market-grid" id="products">
+              <EmptyState 
+                heading="Marketplace launching soon" 
+                supportingText="We’re currently onboarding verified Nigerian designers, brands and independent makers for the first STYLEATLAS marketplace collection."
+                primaryButtonLabel="Apply as a founding seller"
+                primaryButtonHref="/contact?category=seller-enquiry"
+                secondaryButtonLabel="Get marketplace updates"
+                secondaryButtonHref="/#newsletter-email"
+              />
+            </div>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  // CATALOGUE STATE
   return (
     <main>
       <section className="page-hero">
@@ -98,79 +150,65 @@ export default async function MarketplacePage({
             <h1 className="page-title">Pieces with a maker, a story and somewhere to go.</h1>
             <p>Shop ready-to-wear, accessories and made-to-order pieces from independent Nigerian labels and verified fashion businesses.</p>
           </div>
-
         </div>
       </section>
 
       <section className="section compact">
         <div className="container">
-          {(!products || products.length === 0) ? (
-            <div className="market-grid" id="products">
-              <EmptyState 
-                heading="Marketplace launching soon" 
-                supportingText="We are currently onboarding verified Nigerian designers and brands for the first STYLEATLAS marketplace collection."
-                primaryButtonLabel="Back to Home"
-                primaryButtonHref="/"
-              />
+          <div className="section-head">
+            <div>
+              <span className="eyebrow">Shop by edit</span>
+              <h2>Built around how people actually dress and buy.</h2>
             </div>
-          ) : (
-            <>
-              <div className="section-head">
-                <div>
-                  <span className="eyebrow">Shop by edit</span>
-                  <h2>Built around how people actually dress and buy.</h2>
-                </div>
-                <form method="GET" action="/marketplace" className="results-controls">
-                  <input type="hidden" name="q" value={q} />
-                  <select className="result-select" name="sort" defaultValue={sort}>
-                    <option value="newest">Sort: Newest</option>
-                    <option value="price-asc">Price: low to high</option>
-                    <option value="price-desc">Price: high to low</option>
-                  </select>
-                  <button type="submit" className="btn btn-outline-dark btn-sm" style={{ padding: '0 12px' }}>
-                    Filter
-                  </button>
-                </form>
-              </div>
-              
-              <div className="category-shell" style={{ marginBottom: '28px' }}>
-                <div className="category-grid">
-                  <Link className={`category-card ${q === 'arrivals' ? 'active' : ''}`} href="?q=arrivals">
-                    <span className="category-icon"><Icon name="spark" /></span>
-                    <strong>New arrivals</strong>
-                  </Link>
-                  <Link className={`category-card ${q === 'bridal' ? 'active' : ''}`} href="?q=bridal">
-                    <span className="category-icon"><Icon name="heart" /></span>
-                    <strong>Bridal</strong>
-                  </Link>
-                  <Link className={`category-card ${q === 'menswear' ? 'active' : ''}`} href="?q=menswear">
-                    <span className="category-icon"><Icon name="user" /></span>
-                    <strong>Menswear</strong>
-                  </Link>
-                  <Link className={`category-card ${q === 'accessories' ? 'active' : ''}`} href="?q=accessories">
-                    <span className="category-icon"><Icon name="bag" /></span>
-                    <strong>Accessories</strong>
-                  </Link>
-                  <Link className={`category-card ${q === 'made to order' ? 'active' : ''}`} href="?q=made to order">
-                    <span className="category-icon"><Icon name="scissors" /></span>
-                    <strong>Made to order</strong>
-                  </Link>
-                  <Link className={`category-card ${q === 'occasionwear' ? 'active' : ''}`} href="?q=occasionwear">
-                    <span className="category-icon"><Icon name="star" /></span>
-                    <strong>Occasionwear</strong>
-                  </Link>
-                  <Link className={`category-card ${!q ? 'active' : ''}`} href="/marketplace">
-                    <span className="category-icon"><Icon name="arrow" /></span>
-                    <strong>All products</strong>
-                  </Link>
-                </div>
-              </div>
+            <form method="GET" action="/marketplace" className="results-controls">
+              <input type="hidden" name="q" value={q} />
+              <select className="result-select" name="sort" defaultValue={sort}>
+                <option value="newest">Sort: Newest</option>
+                <option value="price-asc">Price: low to high</option>
+                <option value="price-desc">Price: high to low</option>
+              </select>
+              <button type="submit" className="btn btn-outline-dark btn-sm" style={{ padding: '0 12px' }}>
+                Filter
+              </button>
+            </form>
+          </div>
+          
+          <div className="category-shell" style={{ marginBottom: '28px' }}>
+            <div className="category-grid">
+              <Link className={`category-card ${q === 'arrivals' ? 'active' : ''}`} href="?q=arrivals">
+                <span className="category-icon"><Icon name="spark" /></span>
+                <strong>New arrivals</strong>
+              </Link>
+              <Link className={`category-card ${q === 'bridal' ? 'active' : ''}`} href="?q=bridal">
+                <span className="category-icon"><Icon name="heart" /></span>
+                <strong>Bridal</strong>
+              </Link>
+              <Link className={`category-card ${q === 'menswear' ? 'active' : ''}`} href="?q=menswear">
+                <span className="category-icon"><Icon name="user" /></span>
+                <strong>Menswear</strong>
+              </Link>
+              <Link className={`category-card ${q === 'accessories' ? 'active' : ''}`} href="?q=accessories">
+                <span className="category-icon"><Icon name="bag" /></span>
+                <strong>Accessories</strong>
+              </Link>
+              <Link className={`category-card ${q === 'made to order' ? 'active' : ''}`} href="?q=made to order">
+                <span className="category-icon"><Icon name="scissors" /></span>
+                <strong>Made to order</strong>
+              </Link>
+              <Link className={`category-card ${q === 'occasionwear' ? 'active' : ''}`} href="?q=occasionwear">
+                <span className="category-icon"><Icon name="star" /></span>
+                <strong>Occasionwear</strong>
+              </Link>
+              <Link className={`category-card ${!q ? 'active' : ''}`} href="/marketplace">
+                <span className="category-icon"><Icon name="arrow" /></span>
+                <strong>All products</strong>
+              </Link>
+            </div>
+          </div>
 
-              <div className="market-grid" id="products">
-                {/* Note: In a real app, products would map to ProductCards here */}
-              </div>
-            </>
-          )}
+          <div className="market-grid" id="products">
+            {/* Note: In a real app, products would map to ProductCards here */}
+          </div>
           
           {totalPages > 1 && (
             <div className="pagination" style={{ marginTop: '40px' }}>
@@ -181,7 +219,6 @@ export default async function MarketplacePage({
               )}
               
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                // Show sliding window of 5 pages max
                 let pageNum = page - 2 + i;
                 if (page < 3) pageNum = i + 1;
                 if (page > totalPages - 2) pageNum = totalPages - 4 + i;
@@ -219,7 +256,7 @@ export default async function MarketplacePage({
               <p>Connect products to a verified brand profile, manage orders and let shoppers understand who made what they are buying.</p>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <Link className="btn btn-gold" href="/add-business">Apply as a founding seller</Link>
-                <Link className="btn btn-outline-light" href="/newsletter">Get marketplace updates</Link>
+                <Link className="btn btn-outline-light" href="/#newsletter-email">Get marketplace updates</Link>
               </div>
             </div>
           </div>

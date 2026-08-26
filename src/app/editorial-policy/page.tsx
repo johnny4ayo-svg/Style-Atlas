@@ -1,3 +1,16 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Editorial Policy | STYLEATLAS",
+  description: "Understand the editorial standards and guidelines governing content and verification on STYLEATLAS.",
+  alternates: {
+    canonical: '/editorial-policy'
+  },
+  openGraph: {
+    url: '/editorial-policy'
+  }
+};
+
 
 
 export default function EditorialPolicyPage() {

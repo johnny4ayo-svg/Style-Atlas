@@ -1,10 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Metadata } from "next";
 import ContactForm from "./ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact Us | STYLEATLAS",
-  description: "Get in touch with the STYLEATLAS support team.",
+  title: "Contact STYLEATLAS",
+  description: "Get in touch with the STYLEATLAS team for support, partnerships, or general enquiries.",
+  alternates: {
+    canonical: '/contact'
+  },
+  openGraph: {
+    url: '/contact'
+  }
 };
 
 export default function ContactPage() {

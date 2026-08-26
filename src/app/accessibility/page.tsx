@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Accessibility Statement | STYLEATLAS",
-  description: "Our commitment to making STYLEATLAS accessible to everyone.",
+  description: "Read our accessibility statement and our commitment to making STYLEATLAS usable for everyone.",
+  alternates: {
+    canonical: '/accessibility'
+  },
+  openGraph: {
+    url: '/accessibility'
+  }
 };
 
 export default function AccessibilityPage() {

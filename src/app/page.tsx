@@ -5,6 +5,8 @@ import SaveButton from "@/components/ui/SaveButton";
 import CompareButton from "@/components/ui/CompareButton";
 import SearchDock from "@/components/ui/SearchDock";
 
+export const revalidate = 300;
+
 export default async function Home() {
   const supabase = createClient();
   const { data: businesses } = await supabase
@@ -41,9 +43,6 @@ export default async function Home() {
 
   const hasProfessionals = featuredList.length > 0;
   
-  const { count: productCount } = await supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_published', true);
-  const hasProducts = productCount && productCount > 0;
-
   const { count: eventCount } = await supabase.from('events').select('*', { count: 'exact', head: true }).eq('status', 'approved').gte('event_date', new Date().toISOString());
   const hasEvents = eventCount && eventCount > 0;
 
@@ -198,9 +197,9 @@ export default async function Home() {
           <div className="platform-grid">
             <div className="platform-card">
               <div className="platform-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-bag"></use></svg></div>
-              <h3>Marketplace</h3>
-              <p>{hasProducts ? "Shop ready-to-wear, accessories and made-to-order pieces from Nigerian labels." : "Join the launch list for ready-to-wear, accessories and made-to-order pieces from Nigerian labels."}</p>
-              <Link className="text-link" href="/marketplace">{hasProducts ? "Shop the marketplace" : "Get marketplace updates"} <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
+              <h3>Marketplace launching soon</h3>
+              <p>Join the launch list for updates as verified Nigerian designers, brands and independent makers are added.</p>
+              <Link className="text-link" href="/#newsletter-email">Join the marketplace launch list <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
             </div>
             <div className="platform-card">
               <div className="platform-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-user"></use></svg></div>
