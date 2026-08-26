@@ -18,6 +18,7 @@ export default async function Directory() {
       starting_price,
       cover_image_url,
       is_verified,
+      verification_tier,
       business_categories(
         categories(name)
       )

@@ -8,10 +8,11 @@ export default function BusinessCard({ business }: { business: any }) {
     <article className="designer-card">
       <div className="designer-media">
         <img src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name}`} />
-        {business.is_verified && (
+        {business.verification_tier && business.verification_tier !== 'none' && (
           <div className="card-badges">
             <span className="badge">
-              <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified
+              <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>
+              {business.verification_tier === 'guaranteed' ? 'Guaranteed' : business.verification_tier === 'studio' ? 'Studio Verified' : 'Verified'}
             </span>
           </div>
         )}
@@ -20,7 +21,7 @@ export default function BusinessCard({ business }: { business: any }) {
       <div className="designer-body">
         <h3>
           {business.business_name}{" "}
-          {business.is_verified && <svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>}
+          {business.verification_tier && business.verification_tier !== 'none' && <svg className="icon" title={business.verification_tier}><use href="/icons/sprite.svg#icon-verified"></use></svg>}
         </h3>
         <div className="location-line">
           <svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>

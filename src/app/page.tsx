@@ -21,6 +21,7 @@ export default async function Home() {
       state,
       cover_image_url,
       is_verified,
+      verification_tier,
       business_categories(
         categories(name)
       )
@@ -31,7 +32,7 @@ export default async function Home() {
     .from('promoted_campaigns')
     .select(`
       id,
-      businesses!inner(id, business_name, slug, city, state, cover_image_url, is_verified, rating, review_count, business_categories(categories(name)))
+      businesses!inner(id, business_name, slug, city, state, cover_image_url, is_verified, verification_tier, rating, review_count, business_categories(categories(name)))
     `)
     .eq('status', 'active');
   
@@ -112,7 +113,7 @@ export default async function Home() {
                   <div className="designer-media">
                     <Image src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name}`} fill sizes="(max-width: 900px) 100vw, 33vw" style={{ objectFit: 'cover' }} />
                     {business.is_sponsored && <div className="card-badges"><span className="badge" style={{ background: 'var(--gold)', color: '#000', border: 'none' }}>Sponsored</span></div>}
-                    {business.is_verified && !business.is_sponsored && <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>}
+                    {business.verification_tier && business.verification_tier !== 'none' && !business.is_sponsored && <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>{business.verification_tier === 'guaranteed' ? 'Guaranteed' : business.verification_tier === 'studio' ? 'Studio Verified' : 'Verified'}</span></div>}
                     <SaveButton businessId={business.id} businessName={business.business_name} />
                   </div>
                   <div className="designer-body">
