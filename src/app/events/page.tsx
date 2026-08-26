@@ -14,6 +14,8 @@ export default async function EventsPage() {
   const { data: events } = await supabase
     .from('events')
     .select('*')
+    .eq('status', 'approved')
+    .gte('event_date', new Date().toISOString())
     .order('event_date', { ascending: true });
 
   const Icon = ({ name }: { name: string }) => (
@@ -36,10 +38,12 @@ export default async function EventsPage() {
             <h1 className="page-title">Runways, rooms and conversations worth showing up for.</h1>
             <p>Find fashion weeks, workshops, exhibitions, trunk shows, school showcases and business events across Nigeria.</p>
           </div>
-          <div className="hero-aside-card">
-            <strong>{events?.length || 0}</strong>
-            <span>upcoming event listings across the platform</span>
-          </div>
+          {events && events.length > 0 && (
+            <div className="hero-aside-card">
+              <strong>{events.length}</strong>
+              <span>upcoming event listings across the platform</span>
+            </div>
+          )}
         </div>
       </section>
 
@@ -103,7 +107,7 @@ export default async function EventsPage() {
               <div className="results-head">
                 <div>
                   <h2>Upcoming events</h2>
-                  <span className="muted" style={{ fontSize: '10px' }}>{events?.length || 0} events scheduled</span>
+                  {events && events.length > 0 && <span className="muted" style={{ fontSize: '10px' }}>{events.length} events scheduled</span>}
                 </div>
                 <button type="button" className="btn btn-gold">Submit an event</button>
               </div>
@@ -130,12 +134,12 @@ export default async function EventsPage() {
                 }) : (
                   <div style={{ gridColumn: '1 / -1' }}>
                     <EmptyState 
-                      heading="No verified upcoming events are available yet."
-                      supportingText="We are currently reviewing official fashion events across Nigeria. Event organisers can submit an event for editorial verification."
+                      heading="NO VERIFIED EVENTS ARE AVAILABLE YET"
+                      supportingText="We're reviewing fashion events before publishing them on STYLEATLAS. If you're organising a verified runway show, exhibition, workshop or industry gathering, you can submit it for review."
                       primaryButtonLabel="Submit an event"
                       primaryButtonHref="/dashboard/business/events/new"
                       secondaryButtonLabel="Get event updates"
-                      secondaryButtonHref="#newsletter"
+                      secondaryButtonHref="#newsletter-email"
                     />
                   </div>
                 )}

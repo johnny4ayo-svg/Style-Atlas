@@ -194,7 +194,11 @@ export default async function Directory({
                 ) : (
                   sponsoredBusinesses.length === 0 && (
                     <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "3rem" }}>
-                      <p>No professionals found matching your criteria. Please adjust your filters.</p>
+                      <p style={{ marginBottom: '1.5rem' }}>No professionals found matching your criteria. Please adjust your filters.</p>
+                      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <Link href={`/contact?category=professional-request&city=${searchParams.city || searchParams.location || ''}&speciality=${searchParams.category || ''}`} className="btn btn-dark">Request a professional</Link>
+                        <Link href="#newsletter-email" className="btn btn-outline-dark">Get new-profile updates</Link>
+                      </div>
                     </div>
                   )
                 )}

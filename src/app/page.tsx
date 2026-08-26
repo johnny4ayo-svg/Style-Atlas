@@ -39,6 +39,17 @@ export default async function Home() {
   const adBusinesses = rawAds ? rawAds.map((ad: any) => ({ ...ad.businesses, is_sponsored: true })) : [];
   const featuredList = [...adBusinesses, ...(businesses || [])].slice(0, 6); 
 
+  const hasProfessionals = featuredList.length > 0;
+  
+  const { count: productCount } = await supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_published', true);
+  const hasProducts = productCount && productCount > 0;
+
+  const { count: eventCount } = await supabase.from('events').select('*', { count: 'exact', head: true }).eq('status', 'approved').gte('event_date', new Date().toISOString());
+  const hasEvents = eventCount && eventCount > 0;
+
+  const { count: articleCount } = await supabase.from('articles').select('*', { count: 'exact', head: true }).not('published_at', 'is', null);
+  const hasArticles = articleCount && articleCount > 0;
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -60,7 +71,7 @@ export default async function Home() {
           <div className="hero-copy">
             <span className="eyebrow">The Premier Nigerian Fashion Directory</span>
             <h1>Find the talent behind your <em>next unforgettable look.</em></h1>
-            <p>Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria&apos;s creative future.</p>
+            <p>{hasProfessionals ? "Explore verified designers, luxury brands, bridal ateliers, stylists, schools and fashion professionals shaping Nigeria's creative future." : "Discover verified Nigerian fashion professionals as approved profiles are added."}</p>
             <div className="hero-actions">
               <Link className="btn btn-gold" href="/directory">Explore fashion talent <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
               <Link className="btn btn-outline-light" href="/add-business">List your fashion business</Link>
@@ -188,8 +199,8 @@ export default async function Home() {
             <div className="platform-card">
               <div className="platform-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-bag"></use></svg></div>
               <h3>Marketplace</h3>
-              <p>Shop ready-to-wear, accessories and made-to-order pieces from Nigerian labels.</p>
-              <Link className="text-link" href="/marketplace">Shop the marketplace <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
+              <p>{hasProducts ? "Shop ready-to-wear, accessories and made-to-order pieces from Nigerian labels." : "Join the launch list for ready-to-wear, accessories and made-to-order pieces from Nigerian labels."}</p>
+              <Link className="text-link" href="/marketplace">{hasProducts ? "Shop the marketplace" : "Get marketplace updates"} <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
             </div>
             <div className="platform-card">
               <div className="platform-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-user"></use></svg></div>
@@ -200,8 +211,8 @@ export default async function Home() {
             <div className="platform-card">
               <div className="platform-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-calendar"></use></svg></div>
               <h3>Upcoming events</h3>
-              <p>Shows, exhibitions and business gatherings.</p>
-              <Link className="text-link" href="/events">Explore events <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
+              <p>{hasEvents ? "Shows, exhibitions and business gatherings." : "Verified fashion events will appear here as organisers submit them for review."}</p>
+              <Link className="text-link" href="/events">{hasEvents ? "Explore events" : "Submit an event"} <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
             </div>
             <div className="platform-card">
               <div className="platform-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-school"></use></svg></div>
@@ -212,9 +223,9 @@ export default async function Home() {
             <div className="platform-card" style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '24px' }}>
               <div>
                 <h3>STYLEATLAS Journal</h3>
-                <p style={{ marginBottom: 0 }}>Stories that explain the craft, business and culture behind the clothes.</p>
+                <p style={{ marginBottom: 0 }}>{hasArticles ? "Stories that explain the craft, business and culture behind the clothes." : "Get launch updates, new verified profiles, jobs, events and STYLEATLAS stories."}</p>
               </div>
-              <Link className="btn btn-dark" href="/journal">Read Stories</Link>
+              <Link className="btn btn-dark" href="/journal">{hasArticles ? "Read Stories" : "View Journal"}</Link>
             </div>
           </div>
         </div>

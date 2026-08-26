@@ -20,7 +20,7 @@ export default function TermsPage() {
           <p>You are responsible for safeguarding the password that you use to access the service and for any activities or actions under your password. You must provide accurate and complete information when creating an account.</p>
           
           <h2>3. Marketplace and Escrow</h2>
-          <p>STYLEATLAS provides a platform for fashion professionals to showcase and sell their services and products. All payments made through the platform are subject to our Escrow terms. STYLEATLAS is not a party to the contract between the buyer and the seller.</p>
+          <p>STYLEATLAS does not currently process marketplace payments or provide escrow services. If these services are introduced, the applicable payment, refund and escrow terms will be published before they become available. Directory contact or enquiry features do not make STYLEATLAS a party to any agreement or transaction between a visitor and a professional.</p>
           
           <h2>4. Content</h2>
           <p>You retain all your rights to any content you submit, post or display on or through the Service. By submitting, posting or displaying content on or through the Service, you grant us a worldwide, non-exclusive, royalty-free license to use, copy, reproduce, process, adapt, modify, publish, transmit, display and distribute such content.</p>

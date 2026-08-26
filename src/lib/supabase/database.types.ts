@@ -761,11 +761,11 @@ export interface Database {
         ]
       }
       events: {
-        Row: { id: string, business_id: string, title: string, description: string | null, event_date: string, location: string, ticket_price: number, capacity: number | null, image_url: string | null, created_at: string }
-        Insert: { id?: string, business_id: string, title: string, description?: string | null, event_date: string, location: string, ticket_price?: number, capacity?: number | null, image_url?: string | null, created_at?: string }
-        Update: { id?: string, business_id?: string, title?: string, description?: string | null, event_date?: string, location?: string, ticket_price?: number, capacity?: number | null, image_url?: string | null, created_at?: string }
-        Relationships: [{ foreignKeyName: "events_business_id_fkey", columns: ["business_id"], referencedRelation: "businesses", referencedColumns: ["id"] }]
-      }
+          Row: { id: string, business_id: string, title: string, description: string | null, event_date: string, location: string, ticket_price: number, capacity: number | null, image_url: string | null, created_at: string, status: string }
+          Insert: { id?: string, business_id: string, title: string, description?: string | null, event_date: string, location: string, ticket_price?: number, capacity?: number | null, image_url?: string | null, created_at?: string, status?: string }
+          Update: { id?: string, business_id?: string, title?: string, description?: string | null, event_date?: string, location?: string, ticket_price?: number, capacity?: number | null, image_url?: string | null, created_at?: string, status?: string }
+          Relationships: [{ foreignKeyName: "events_business_id_fkey", columns: ["business_id"], referencedRelation: "businesses", referencedColumns: ["id"] }]
+        }
       event_registrations: {
         Row: { id: string, event_id: string, attendee_id: string, status: string, created_at: string }
         Insert: { id?: string, event_id: string, attendee_id: string, status?: string, created_at?: string }

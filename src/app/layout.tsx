@@ -93,6 +93,13 @@ export default function RootLayout({
                 });
               }
             });
+            // Error monitoring
+            window.addEventListener('error', (event) => {
+              window.trackEvent('client_error', { message: event.message, filename: event.filename });
+            });
+            window.addEventListener('unhandledrejection', (event) => {
+              window.trackEvent('client_unhandled_rejection', { reason: String(event.reason) });
+            });
           `
         }} />
       </body>

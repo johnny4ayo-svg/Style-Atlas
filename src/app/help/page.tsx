@@ -44,35 +44,35 @@ export default function HelpPage() {
             <div className="card" style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: '8px' }}>
               <h3 style={{ marginBottom: '16px' }}>For Customers</h3>
               <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>Finding the right designer</Link></li>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>Understanding pricing and quotes</Link></li>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>Leaving a review</Link></li>
+                <li><Link href="/help/finding-the-right-designer" style={{ textDecoration: 'underline' }}>Finding the right designer</Link></li>
+                <li><Link href="/help/pricing-and-quotes" style={{ textDecoration: 'underline' }}>Understanding pricing and quotes</Link></li>
+                <li><Link href="/help/leaving-a-review" style={{ textDecoration: 'underline' }}>Leaving a review</Link></li>
               </ul>
             </div>
             
             <div className="card" style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: '8px' }}>
               <h3 style={{ marginBottom: '16px' }}>For Businesses</h3>
               <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>Listing your business</Link></li>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>The verification process</Link></li>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>Updating your portfolio</Link></li>
+                <li><Link href="/help/listing-your-business" style={{ textDecoration: 'underline' }}>Listing your business</Link></li>
+                <li><Link href="/help/verification-process" style={{ textDecoration: 'underline' }}>The verification process</Link></li>
+                <li><Link href="/help/updating-your-portfolio" style={{ textDecoration: 'underline' }}>Updating your portfolio</Link></li>
               </ul>
             </div>
 
             <div className="card" style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: '8px' }}>
               <h3 style={{ marginBottom: '16px' }}>Accounts & Billing</h3>
               <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>Managing your subscription</Link></li>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>Resetting your password</Link></li>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>Deleting your account</Link></li>
+                <li><Link href="/help/managing-your-subscription" style={{ textDecoration: 'underline' }}>Managing your subscription</Link></li>
+                <li><Link href="/help/resetting-your-password" style={{ textDecoration: 'underline' }}>Resetting your password</Link></li>
+                <li><Link href="/help/deleting-your-account" style={{ textDecoration: 'underline' }}>Deleting your account</Link></li>
               </ul>
             </div>
 
             <div className="card" style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: '8px' }}>
               <h3 style={{ marginBottom: '16px' }}>Trust & Safety</h3>
               <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>Reporting inaccurate information</Link></li>
-                <li><Link href="#" style={{ textDecoration: 'underline' }}>Our community guidelines</Link></li>
+                <li><Link href="/help/reporting-inaccurate-information" style={{ textDecoration: 'underline' }}>Reporting inaccurate information</Link></li>
+                <li><Link href="/help/community-guidelines" style={{ textDecoration: 'underline' }}>Our community guidelines</Link></li>
                 <li><Link href="/editorial-policy" style={{ textDecoration: 'underline' }}>Editorial policy</Link></li>
               </ul>
             </div>

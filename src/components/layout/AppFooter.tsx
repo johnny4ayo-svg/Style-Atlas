@@ -91,7 +91,7 @@ export function Footer() {
 
         <div className="footer-col">
           <h4>Stay in style</h4>
-          <p style={{ fontSize: '12px', opacity: 0.7, marginBottom: '16px' }}>Weekly designer stories, openings, jobs and fashion events.</p>
+          <p style={{ fontSize: '12px', opacity: 0.7, marginBottom: '16px' }}>Get launch updates, new verified profiles, jobs, events and STYLEATLAS stories.</p>
           <form className="newsletter" style={{ marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <label htmlFor="newsletter-email" style={{ fontSize: '12px', fontWeight: 'bold' }}>Email address</label>
             <div style={{ display: 'flex', width: '100%' }}>
