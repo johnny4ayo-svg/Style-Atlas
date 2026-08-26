@@ -8,14 +8,16 @@ import { useCart } from "@/components/CartProvider";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { label: 'Designers', href: '/directory?category=designers' },
+  { label: 'Find Professionals', href: '/directory' },
   { label: 'Brands', href: '/directory?category=brands' },
   { label: 'Schools', href: '/directory?category=schools' },
-  { label: 'Professionals', href: '/directory?category=professionals' },
   { label: 'Marketplace', href: '/marketplace' },
-  { label: 'Jobs', href: '/jobs' },
-  { label: 'Events', href: '/events' },
-  { label: 'Journal', href: '/journal' }
+  { label: 'Journal', href: '/journal' },
+  { label: 'Explore', href: '#', isDropdown: true, subItems: [
+    { label: 'Jobs', href: '/jobs' },
+    { label: 'Events', href: '/events' }
+  ]},
+  { label: 'For Business', href: '/add-business' }
 ];
 
 export function Header() {
@@ -32,6 +34,16 @@ export function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      // Focus would be handled by refs ideally, omitting for simplicity
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMobileMenuOpen]);
 
   const Icon = ({ name, cls = "" }: { name: string; cls?: string }) => (
     <svg className={`icon ${cls}`} aria-hidden="true">
@@ -62,20 +74,39 @@ export function Header() {
               // Note: since some hrefs include search params now, we split by '?' to compare the base path.
               const basePath = item.href.split('?')[0];
               const isActive = pathname === basePath && (basePath !== '/directory' || index === 0);
-              const hasMegaMenu = index < 4;
+              const hasMegaMenu = item.label === 'Find Professionals' || item.label === 'Brands';
+              const isSimpleDropdown = item.isDropdown;
               
               return (
                 <div 
                   className="nav-item" 
                   key={item.label}
-                  onMouseEnter={() => hasMegaMenu ? setActiveMegaMenu(item.label) : setActiveMegaMenu(null)}
-                  onFocus={() => hasMegaMenu ? setActiveMegaMenu(item.label) : setActiveMegaMenu(null)}
+                  onMouseEnter={() => (hasMegaMenu || isSimpleDropdown) ? setActiveMegaMenu(item.label) : setActiveMegaMenu(null)}
+                  onFocus={() => (hasMegaMenu || isSimpleDropdown) ? setActiveMegaMenu(item.label) : setActiveMegaMenu(null)}
                 >
-                  <Link href={item.href} className={`nav-link ${isActive ? 'active' : ''}`}>
+                  <Link href={item.href} className={`nav-link ${isActive ? 'active' : ''}`} onClick={(e) => isSimpleDropdown && e.preventDefault()}>
                     {item.label}
-                    {hasMegaMenu && <Icon name="chevron" />}
+                    {(hasMegaMenu || isSimpleDropdown) && <Icon name="chevron" />}
                   </Link>
                   
+                  {isSimpleDropdown && (
+                    <AnimatePresence>
+                      {activeMegaMenu === item.label && (
+                        <motion.div 
+                          className="dropdown-menu"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          style={{ position: 'absolute', top: '100%', left: 0, background: '#fff', padding: '16px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', gap: '12px', minWidth: '150px' }}
+                        >
+                          {item.subItems?.map(sub => (
+                            <Link key={sub.label} href={sub.href} style={{ color: '#111', fontWeight: 500 }}>{sub.label}</Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  )}
+
                   {hasMegaMenu && (
                     <AnimatePresence>
                       {activeMegaMenu === item.label && (
@@ -117,7 +148,7 @@ export function Header() {
             <Link className="icon-btn" href="/saved" aria-label="Saved profiles"><Icon name="heart" /><span className="count">0</span></Link>
             <Link className="icon-btn" href="/cart" aria-label="Cart"><Icon name="bag" />{cartCount > 0 && <span className="count">{cartCount}</span>}</Link>
             <Link className="icon-btn" href="/login" aria-label="Account"><Icon name="user" /></Link>
-            <Link className="header-cta" href="/add-business">Add your business <Icon name="arrow" /></Link>
+            <Link className="btn btn-gold" href="/add-business" style={{ padding: '0 24px', height: '44px', display: 'flex', alignItems: 'center', borderRadius: '24px', fontWeight: 600, fontSize: '14px' }}>List your business</Link>
             <button className="icon-btn mobile-toggle" onClick={() => setIsMobileMenuOpen(true)} aria-label="Open menu"><Icon name="menu" /></button>
           </div>
         </div>
@@ -152,15 +183,18 @@ export function Header() {
                 <button className="icon-btn" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu"><Icon name="close" /></button>
               </div>
               <nav className="mobile-nav">
-                {navItems.map((item) => (
-                  <Link key={item.label} href={item.href} onClick={() => setIsMobileMenuOpen(false)}>{item.label}<Icon name="arrow" /></Link>
-                ))}
+                <Link href="/directory" onClick={() => setIsMobileMenuOpen(false)}>Find Professionals<Icon name="arrow" /></Link>
+                <Link href="/marketplace" onClick={() => setIsMobileMenuOpen(false)}>Marketplace<Icon name="arrow" /></Link>
+                <Link href="/jobs" onClick={() => setIsMobileMenuOpen(false)}>Jobs<Icon name="arrow" /></Link>
+                <Link href="/directory?category=schools" onClick={() => setIsMobileMenuOpen(false)}>Schools<Icon name="arrow" /></Link>
+                <Link href="/events" onClick={() => setIsMobileMenuOpen(false)}>Events<Icon name="arrow" /></Link>
+                <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)}>Journal<Icon name="arrow" /></Link>
                 <Link href="/saved" onClick={() => setIsMobileMenuOpen(false)}>Saved profiles<Icon name="heart" /></Link>
                 <Link href="/cart" onClick={() => setIsMobileMenuOpen(false)}>Shopping cart {cartCount > 0 && `(${cartCount})`}<Icon name="bag" /></Link>
               </nav>
               <div className="mobile-actions">
-                <Link className="btn btn-gold" href="/add-business" onClick={() => setIsMobileMenuOpen(false)}>Add your business</Link>
-                <Link className="btn btn-outline-light" href="/login" onClick={() => setIsMobileMenuOpen(false)}>Log in or sign up</Link>
+                <Link className="btn btn-gold" href="/add-business" onClick={() => setIsMobileMenuOpen(false)}>List Your Business</Link>
+                <Link className="text-link" href="/login" onClick={() => setIsMobileMenuOpen(false)} style={{ display: 'block', textAlign: 'center', marginTop: '16px', fontWeight: 600 }}>Account</Link>
               </div>
             </motion.aside>
           </>

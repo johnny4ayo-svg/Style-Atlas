@@ -1,0 +1,545 @@
+IMPLEMENTATION HANDOFF
+
+StyleAtlas Homepage
+
+Desktop and Mobile Conversion Redesign<w:jc w:val="center"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders></w:tblPr><w:gridCol w:w="9677"/></w:tblGrid><w:shd w:fill="F7F2EA"/><w:start w:w="180" w:type="dxa"/><w:bottom w:w="150" w:type="dxa"/><w:end w:w="180" w:type="dxa"/></w:tcMar></w:tcPr>
+
+<w:spacing w:after="60"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="C99256"/><w:sz w:val="18"/></w:rPr>IMPLEMENTATION GOAL
+
+Create a shorter, premium homepage that helps visitors do one of two things quickly: find a Nigerian fashion professional or list a fashion business. Preserve the existing brand identity while correcting hierarchy, overlap, excessive text and mobile length.
+
+Prepared for the website implementation agent
+
+Website: thestyleatlas.com  |  Scope: Homepage only  |  Version: Final handoff
+
+Non-negotiable result
+
+Desktop has 7 content sections plus the footer: 8 sections total.
+
+Mobile has 6 content sections plus the footer: 7 sections total.
+
+The mobile homepage does not include the separate Explore Opportunities section.
+
+The hero search controls must not overlap each other, the hero boundary or the following section.
+
+Copy must stay short. Do not add paragraphs to “explain” the design.
+
+All existing working links, search logic, account functions and listing data must remain functional.
+
+1. Scope, safeguards and working method<w:jc w:val="center"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders></w:tblPr><w:gridCol w:w="9677"/></w:tblGrid><w:shd w:fill="FFF2E3"/><w:start w:w="180" w:type="dxa"/><w:bottom w:w="150" w:type="dxa"/><w:end w:w="180" w:type="dxa"/></w:tcMar></w:tcPr>
+
+<w:spacing w:after="60"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="C99256"/><w:sz w:val="18"/></w:rPr>READ BEFORE EDITING
+
+Work on a staging copy or create a full backup first. Do not edit the live homepage until the revised version has passed desktop, tablet and mobile testing.
+
+1.1 Allowed changes
+
+Homepage layout, copy, section order, spacing, responsive behavior and homepage-specific styling.
+
+Hero search presentation, provided the existing search query and filter behavior remain intact.
+
+Homepage navigation presentation at mobile breakpoints.
+
+Homepage card presentation for categories, cities, profiles and verification.
+
+1.2 Do not change
+
+Logo, core black/cream/gold brand palette or established brand identity.
+
+Directory data, user accounts, profile records, membership rules, pricing or verification policy.
+
+URLs, slugs, SEO metadata, schema, tracking or global templates unless required by this handoff.
+
+Header or footer behavior on inner pages without confirming those templates are globally shared.
+
+Do not invent testimonials, listing counts, verification claims, awards or customer numbers.
+
+Do not add extra homepage sections, pop-ups, animation-heavy effects or stock statistics.
+
+1.3 Build sequence
+
+Duplicate the current homepage and label it clearly as a staging version.
+
+Build desktop structure and approved copy.
+
+Apply tablet layout at 768–1024px.
+
+Build the shorter mobile structure at 320–767px.
+
+Connect all cards, buttons and search controls to existing destinations.
+
+Run the acceptance tests in Section 12.
+
+Publish only after the existing homepage has a restorable backup.
+
+2. Final information architecture
+
+Do not count the header as a content section. The footer is counted.<w:jc w:val="center"/></w:tblPr><w:gridCol w:w="2469"/><w:gridCol w:w="2469"/><w:gridCol w:w="2469"/><w:gridCol w:w="2469"/></w:tblGrid></w:trPr><w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Order<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Desktop<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Mobile<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Primary purpose<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>1<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Hero<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Hero<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>State the promise and start a search or listing<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>2<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Categories + Cities<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Categories + Cities<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Give fast browsing choices<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>3<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Featured Professionals<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Featured Professionals<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Show real supply and visual proof<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>4<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>How It Works<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>How It Works<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Explain the customer journey in three steps<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>5<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Trust + Verification<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Trust + Verification<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Explain trust for both audiences<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>6<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Explore Opportunities<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Business CTA<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Desktop discovery only; mobile moves to conversion<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>7<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Business CTA<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Footer<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Convert professionals and businesses<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>8<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Footer<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Not applicable<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Navigation, newsletter and legal links
+
+2.1 Global content rule
+
+One headline per section.
+
+Maximum one short supporting sentence per section header.
+
+Maximum two buttons in any section.
+
+Card descriptions: maximum 14 words on desktop and 10 words on mobile.
+
+No homepage paragraph should exceed 22 words.
+
+Do not repeat the same message in multiple sections.
+
+3. Header and navigation
+
+3.1 Desktop
+
+Keep the logo left aligned and vertically centered.
+
+Use these primary items: Find Professionals, Brands, Schools, Marketplace, Journal, For Business.
+
+Move Jobs and Events into an Explore dropdown if space is tight.
+
+Keep account/search icons together with consistent 40–44px clickable areas.
+
+Use one highlighted gold button: “List your business”.
+
+Header height: 72–80px. Do not allow a second line of navigation.
+
+3.2 Mobile
+
+Show only the logo, search icon and menu button in the closed header.
+
+Header height: 64–72px. Icon touch targets: minimum 44×44px.
+
+Mobile menu order: Find Professionals, List Your Business, Marketplace, Jobs, Schools, Events, Journal, Account.
+
+Make “List Your Business” the only filled button inside the menu.
+
+Lock background scroll while the menu is open and return keyboard focus to the menu button when closed.
+
+3.3 Header acceptance
+
+No clipped text from 320px through 1440px viewport widths.
+
+No horizontal page scrolling.
+
+Sticky header, if retained, must not cover anchored headings.
+
+4. Section 1: Hero<w:jc w:val="center"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders></w:tblPr><w:gridCol w:w="9677"/></w:tblGrid><w:shd w:fill="FBEDEC"/><w:start w:w="180" w:type="dxa"/><w:bottom w:w="150" w:type="dxa"/><w:end w:w="180" w:type="dxa"/></w:tcMar></w:tcPr>
+
+<w:spacing w:after="60"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="9E3D36"/><w:sz w:val="18"/></w:rPr>CRITICAL CORRECTION
+
+Remove the current floating search panel treatment. The form must sit fully inside the hero. Do not use a negative margin, translateY, absolute bottom offset or any other technique that crosses the hero boundary.
+
+4.1 Approved copy<w:jc w:val="center"/></w:tblPr><w:gridCol w:w="4939"/><w:gridCol w:w="4939"/></w:tblGrid></w:trPr><w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Element<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Exact copy<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Eyebrow<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>THE PREMIER NIGERIAN FASHION DIRECTORY<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Headline<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Find Nigeria’s finest fashion professionals.<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Supporting line<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Verified talent. Exceptional work. One trusted directory.<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Primary action<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Find professionals<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Secondary action<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>List your business
+
+4.2 Desktop layout
+
+Use a two-column hero: copy/search on the left, one strong fashion image or real featured profile on the right.
+
+Hero content width: maximum 1200–1280px. Side padding: 48–64px. Minimum hero height: 620px; maximum 720px.
+
+Headline width: 520–600px. Font: 58–72px, line-height 0.98–1.05, no more than three lines.
+
+Supporting line: 17–19px. Keep it on one or two lines.
+
+Place the search interface 28–32px below the supporting line.
+
+Preferred search form: keyword field + location field + search button. Put category and speciality filters on the results page or behind “More filters”.
+
+Form height: 56–60px. Every field and button must remain within one rounded container without collisions.
+
+Keep 56–72px clear space between the search form and the bottom of the hero.
+
+If the portrait is a real professional, label it with name, category and city. If it is decorative, remove the profile counter.
+
+Replace “01/26” with “1 of 5” or small pagination dots. Use no more than five hero profiles.
+
+4.3 Mobile layout
+
+Use a single-column hero. Text comes first, then actions, then image.
+
+Use headline size 40–46px, maximum four lines. Supporting line 16–17px, maximum two lines.
+
+Do not show the multi-field desktop search form.
+
+Use one full-width primary button, “Find professionals”, and one text or outline link, “List your business”.
+
+Hero horizontal padding: 20px. Top padding below header: 48–64px. Bottom padding: 40–48px.
+
+Image height: 300–380px with object-fit: cover; keep the subject’s face and clothing visible.
+
+4.4 Required CSS behavior
+
+Use normal document flow. The names below may be adapted to the project’s existing class system.<w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders></w:tblPr><w:gridCol w:w="9878"/></w:tblGrid><w:shd w:fill="F2F2F2"/><w:start w:w="160" w:type="dxa"/><w:bottom w:w="140" w:type="dxa"/><w:end w:w="160" w:type="dxa"/></w:tcMar></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas"/><w:sz w:val="17"/></w:rPr>.home-hero { position: relative; overflow: hidden; padding: 80px 0 64px; }.home-hero__search { position: relative; inset: auto; transform: none; margin-top: 32px; z-index: 2; }.home-main &gt; section + section { position: relative; margin-top: 0; }@media (max-width: 767px) {  .home-hero { min-height: auto; padding: 52px 20px 44px; }  .home-hero__desktop-search { display: none; }  .home-hero__mobile-actions { display: grid; gap: 12px; }}
+
+5. Section 2: Categories and cities
+
+Approved copy
+
+Explore Nigerian fashion.
+
+Browse by speciality or discover talent in your city.
+
+Desktop
+
+Keep categories and cities in one section, not two separate homepage sections.
+
+Show 6 category shortcuts in one row: Designers, Brands, Stylists, Makeup Artists, Photographers, Talent. Use actual taxonomy labels if they differ.
+
+Show 4 city cards: Lagos, Abuja, Port Harcourt and one city selected from real listing availability.
+
+Add “View all categories” and “View all cities”.
+
+Category cards: minimum 120px height. City cards: 180–220px height. Use one consistent radius and overlay treatment.
+
+Mobile
+
+Show 6 category buttons in a 3×2 grid.
+
+Show 4 city cards in a horizontal swipe row or 2×2 grid. Do not stack six full-width city cards.
+
+Card labels must remain at least 14px and never sit on unreadable imagery.
+
+Data rules
+
+Every item must open a correctly filtered result page.
+
+Do not show empty categories or cities. Replace them with populated choices.
+
+Show listing counts only when the count is live and accurate.
+
+6. Section 3: Featured professionals
+
+Approved copy
+
+Professionals worth discovering.
+
+Explore selected talent from across Nigeria.
+
+Use real StyleAtlas profiles. Never use invented professionals or fake verification badges.
+
+Desktop: four cards in one row. Tablet: two cards per row. Mobile: three cards in a horizontal swipe carousel, one card mostly visible at a time.
+
+Card content: image, name/business, category, city, genuine verification badge and “View profile”.
+
+No biography paragraph. Keep speciality to one short line if used.
+
+Use consistent 4:5 images and object-position values to prevent cropped faces.
+
+Add one section link: “Browse all professionals”.
+
+7. Section 4: How it works
+
+Approved copy
+
+Find the right professional in three steps.
+
+Search. Compare. Connect.<w:jc w:val="center"/></w:tblPr><w:gridCol w:w="3293"/><w:gridCol w:w="3293"/><w:gridCol w:w="3293"/></w:tblGrid></w:trPr><w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Step<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Title<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Supporting copy<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>01<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Search<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Choose a service and location.<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>02<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Compare<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Review profiles and portfolios.<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>03<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Connect<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Contact the professional directly.
+
+Desktop: three equal columns in one row. Mobile: three compact rows, not three oversized cards.
+
+Use simple icons. Avoid large illustrations and long descriptions.
+
+Keep the entire section under approximately 360px on desktop and 430px on mobile.
+
+8. Section 5: Trust and verification
+
+Trust built into every discovery.
+
+Clear profiles for customers. Meaningful verification for professionals.<w:jc w:val="center"/></w:tblPr><w:gridCol w:w="2469"/><w:gridCol w:w="2469"/><w:gridCol w:w="2469"/><w:gridCol w:w="2469"/></w:tblGrid></w:trPr><w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Audience<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Card heading<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Copy<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Button<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Customers<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Find with confidence.<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Explore reviewed profiles and portfolios.<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Find professionals<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Professionals<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Stand out as verified.<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Complete our review and earn the verification badge.<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Learn about verification
+
+Desktop: two equal cards. Mobile: stack the cards with 16px between them.
+
+Keep each card under 300px tall on desktop and approximately 220px on mobile.
+
+Only state checks that StyleAtlas genuinely performs. Link to the complete verification policy.
+
+Never imply that verification guarantees service quality, pricing, safety or customer satisfaction unless that claim is documented.
+
+9. Section 6 desktop only: Explore opportunities<w:jc w:val="center"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders></w:tblPr><w:gridCol w:w="9677"/></w:tblGrid><w:shd w:fill="F7F2EA"/><w:start w:w="180" w:type="dxa"/><w:bottom w:w="150" w:type="dxa"/><w:end w:w="180" w:type="dxa"/></w:tcMar></w:tcPr>
+
+<w:spacing w:after="60"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="C99256"/><w:sz w:val="18"/></w:rPr>MOBILE RULE
+
+Hide this entire homepage section at widths below 768px. Keep Marketplace, Jobs, Events, Schools and Journal accessible through the mobile menu and footer.
+
+More from Nigerian fashion.
+
+Shop, learn and discover new opportunities.
+
+Replace the five current full-width stacked cards with a compact 2×2 grid containing Marketplace, Jobs, Events and Schools.
+
+Move Journal to a small text link below the grid: “Read the StyleAtlas Journal”.
+
+Each card gets one icon or image, one title, one short line and one text link.
+
+Card height: 180–220px. Total section height target: 520–650px.
+
+Do not show destinations that lead to empty pages. Use a “Coming soon” label without a clickable dead end, or temporarily remove the card.
+
+10. Business CTA
+
+Put your fashion business where Nigeria can find it.
+
+Showcase your work and reach new customers.
+
+Primary button: “List your business”.
+
+Secondary button: “View membership plans”.
+
+Desktop: retain the premium black panel with one supporting image. Keep height between 360 and 440px.
+
+Mobile: image first or use it as a subtle background. Keep text readable and total height under 520px.
+
+Do not use “View business plans”. It can sound like documents rather than membership pricing.
+
+If there is a free listing, add one honest micro-line: “Start with a free profile.” Otherwise omit it.
+
+11. Footer and visual system
+
+11.1 Footer
+
+Desktop: maximum four link columns plus a newsletter area.
+
+Mobile: newsletter first, then accordion groups for Directory, Explore, For Business and Company.
+
+Newsletter copy: “Get Nigerian fashion stories, events and opportunities in your inbox.”
+
+Keep legal links visible: Privacy, Terms, Accessibility and relevant listing/verification policy links.
+
+Do not place tiny low-contrast text below 13px on mobile.
+
+11.2 Brand and component tokens<w:jc w:val="center"/></w:tblPr><w:gridCol w:w="3293"/><w:gridCol w:w="3293"/><w:gridCol w:w="3293"/></w:tblGrid></w:trPr><w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Property<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Desktop<w:shd w:fill="111111"/><w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr>Mobile<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Content width<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>1200–1280px maximum<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>100% less 20px each side<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Section spacing<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>88–112px top and bottom<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>56–72px top and bottom<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Hero headline<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>58–72px<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>40–46px<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Section heading<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>36–48px<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>28–34px<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Body copy<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>16–18px<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>16–17px<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Button height<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>52–56px<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>52–56px<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Card radius<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>12–18px<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="FFFFFF"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>12–16px<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>Touch target<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>44×44px minimum<w:start w:w="130" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:end w:w="130" w:type="dxa"/></w:tcMar><w:shd w:fill="F8F6F2"/></w:tcPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:color w:val="111111"/><w:sz w:val="18"/></w:rPr>44×44px minimum
+
+11.3 Premium-look rules
+
+Use whitespace and strong imagery instead of extra explanatory text.
+
+Limit gold to labels, emphasis and primary actions. Do not turn whole sections gold.
+
+Use one radius system, one shadow system and one button system throughout the homepage.
+
+Avoid heavy gradients, floating glass panels, excessive animation and multiple competing accent colors.
+
+Animations must be subtle, respect prefers-reduced-motion and never delay interaction.
+
+Use WebP/AVIF images with explicit width and height to prevent layout shifts.
+
+12. Responsive, accessibility and performance requirements
+
+12.1 Required test widths
+
+Mobile: 320px, 360px, 390px and 430px.
+
+Tablet: 768px and 1024px.
+
+Desktop: 1280px, 1440px and 1920px.
+
+12.2 Accessibility
+
+Visible keyboard focus on every link, button, menu, carousel control and form field.
+
+Text contrast must meet WCAG AA: 4.5:1 for normal text and 3:1 for large text.
+
+Search fields require persistent labels or accessible names. Placeholder text alone is not a label.
+
+Images need meaningful alt text when informative and empty alt attributes when decorative.
+
+Carousel controls must be keyboard accessible, labelled and paused during interaction.
+
+The heading order must be one H1, then logical H2 and H3 levels.
+
+12.3 Performance
+
+Preload only the true above-the-fold hero image. Lazy-load all lower images.
+
+Serve responsive images with srcset and sizes. Do not send desktop hero files to small phones.
+
+Avoid adding a new slider library if the current system can provide accessible scrolling.
+
+Target Core Web Vitals: LCP under 2.5s, CLS under 0.1, INP under 200ms on typical mobile connections.
+
+Remove unused homepage CSS and JavaScript introduced by deleted sections.
+
+13. Final acceptance checklist<w:jc w:val="center"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders></w:tblPr><w:gridCol w:w="9677"/></w:tblGrid><w:shd w:fill="FFF2E3"/><w:start w:w="180" w:type="dxa"/><w:bottom w:w="150" w:type="dxa"/><w:end w:w="180" w:type="dxa"/></w:tcMar></w:tcPr>
+
+<w:spacing w:after="60"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="C99256"/><w:sz w:val="18"/></w:rPr>DO NOT PUBLISH UNTIL COMPLETE
+
+The agent must verify every applicable item below and report any item it cannot complete. Do not silently skip broken links, empty destinations, mobile tests or search validation.
+
+☐ Desktop contains exactly 7 content sections plus the footer.
+
+☐ Mobile contains exactly 6 content sections plus the footer.
+
+☐ The mobile Explore Opportunities section is absent, not merely compressed.
+
+☐ No hero element overlaps another element at any required test width.
+
+☐ The hero search sits fully inside the hero on desktop.
+
+☐ The mobile hero does not show the multi-field search form.
+
+☐ There is no horizontal scroll from 320px to 1920px.
+
+☐ The approved short copy is used without added paragraphs.
+
+☐ Every CTA leads to the correct working page or action.
+
+☐ Category and city links apply correct filters and avoid empty results.
+
+☐ Featured professionals use real records and correct verification status.
+
+☐ Verification claims match the actual verification policy.
+
+☐ Marketplace, Jobs, Events and Schools do not lead users into unexplained empty pages.
+
+☐ Mobile navigation opens, closes, traps focus correctly and restores focus.
+
+☐ All touch targets are at least 44×44px.
+
+☐ All images preserve aspect ratio and avoid cropped faces.
+
+☐ Images below the fold lazy-load.
+
+☐ The page has one H1 and logical heading order.
+
+☐ Focus states and contrast pass accessibility checks.
+
+☐ Search works with keyword only, location only and both fields together.
+
+☐ Form errors and empty-search results provide useful guidance.
+
+☐ Desktop, tablet and mobile screenshots have been reviewed before publication.
+
+☐ Existing analytics and SEO metadata still work after the layout change.
+
+☐ A restorable backup exists before the staging version replaces the live page.
+
+14. Required completion report from the AI agent
+
+When implementation is complete, the agent must return a short report containing:
+
+Staging URL or preview link.
+
+List of changed templates, files or Elementor sections.
+
+Desktop screenshot at 1440px.
+
+Mobile screenshot at 390px.
+
+Confirmation of the final desktop and mobile section counts.
+
+Confirmation that the hero overlap is fixed at all required widths.
+
+List of every CTA and its destination.
+
+List of any missing real data, empty destination or policy detail that prevented full completion.
+
+Performance and accessibility test results.
+
+Clear statement that the live page was not changed, unless publication was explicitly authorized.<w:jc w:val="center"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders></w:tblPr><w:gridCol w:w="9677"/></w:tblGrid><w:shd w:fill="F7F2EA"/><w:start w:w="180" w:type="dxa"/><w:bottom w:w="150" w:type="dxa"/><w:end w:w="180" w:type="dxa"/></w:tcMar></w:tcPr>
+
+<w:spacing w:after="60"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="C99256"/><w:sz w:val="18"/></w:rPr>FINAL INSTRUCTION
+
+Do not improvise new homepage content. If real profiles, accurate counts, verification details or destination pages are unavailable, keep the layout ready and report the missing content. Never replace missing data with invented examples.
