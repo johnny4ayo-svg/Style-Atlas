@@ -24,7 +24,7 @@ export default async function Home() {
         categories(name)
       )
     `)
-    .eq('status', 'approved')
+    .eq('verification_status', 'approved')
     .limit(6); 
 
   const { data: rawAds } = await supabase

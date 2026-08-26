@@ -15,7 +15,7 @@ export const getPlatformStats = unstable_cache(
     const { count: businessCount } = await supabase
       .from('businesses')
       .select('*', { count: 'exact', head: true })
-      .eq('status', 'approved');
+      .eq('verification_status', 'approved');
 
     return {
       professionals: professionalCount || 0,

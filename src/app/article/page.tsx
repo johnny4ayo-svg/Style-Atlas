@@ -3,7 +3,7 @@ import Image from "next/image";
 import EmptyState from "@/components/ui/EmptyState";
 
 export default function ArticleIndexPage() {
-  const articles: any[] = []; // Array of articles if they existed in the DB
+  const articles: Array<{id: string, image_url?: string, title: string, date: string, category: string, excerpt: string}> = []; // Array of articles if they existed in the DB
 
   return (
     <main>
@@ -37,9 +37,10 @@ export default function ArticleIndexPage() {
             )) : (
               <div style={{ gridColumn: '1 / -1' }}>
                 <EmptyState 
-                  icon="spark"
-                  title="No articles published yet"
-                  message="We are currently working on our first set of editorial pieces. Check back soon for stories about Nigerian fashion."
+                  heading="No articles published yet"
+                  supportingText="We are currently working on our first set of editorial pieces. Check back soon for stories about Nigerian fashion."
+                  primaryButtonLabel="Back to Home"
+                  primaryButtonHref="/"
                 />
               </div>
             )}

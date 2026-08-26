@@ -125,9 +125,10 @@ export default async function EventsPage() {
                 }) : (
                   <div style={{ gridColumn: '1 / -1' }}>
                     <EmptyState 
-                      icon="calendar"
-                      title="No upcoming events"
-                      message="There are currently no events matching your criteria. Check back later or submit your own fashion event."
+                      heading="No upcoming events"
+                      supportingText="There are currently no events matching your criteria. Check back later or submit your own fashion event."
+                      primaryButtonLabel="Back to Home"
+                      primaryButtonHref="/"
                     />
                   </div>
                 )}

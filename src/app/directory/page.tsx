@@ -52,7 +52,7 @@ export default async function Directory({
         categories(name)
       )
     `)
-    .eq('status', 'approved');
+    .eq('verification_status', 'approved');
 
   // Apply URL filters
   if (searchParams.location) {

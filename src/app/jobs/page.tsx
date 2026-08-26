@@ -157,9 +157,10 @@ export default async function JobsPage({
                 )) : (
                   <div style={{ gridColumn: '1 / -1' }}>
                     <EmptyState 
-                      icon="briefcase"
-                      title="No roles found"
-                      message="We couldn't find any fashion jobs matching your search criteria. Try adjusting your filters or check back later."
+                      heading="No roles found"
+                      supportingText="We couldn't find any fashion jobs matching your search criteria. Try adjusting your filters or check back later."
+                      primaryButtonLabel="Back to Home"
+                      primaryButtonHref="/"
                     />
                   </div>
                 )}

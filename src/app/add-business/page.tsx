@@ -28,7 +28,7 @@ export default function AddBusinessPage() {
         if (parsed.formData) setFormData(parsed.formData);
         if (parsed.specialities) setSpecialities(parsed.specialities);
         if (parsed.currentStep) setCurrentStep(parsed.currentStep);
-      } catch (e) {
+      } catch {
         // ignore parsing errors
       }
     }

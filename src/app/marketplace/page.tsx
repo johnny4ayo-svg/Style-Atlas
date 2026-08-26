@@ -160,9 +160,10 @@ export default async function MarketplacePage({
 
           <div className="market-grid" id="products">
             <EmptyState 
-              icon="spark" 
-              title="Marketplace launching soon" 
-              message="We are currently onboarding verified designers to the new Escrow marketplace. Check back soon for exclusive pieces from Nigeria's best talent."
+              heading="Marketplace launching soon" 
+              supportingText="We are currently onboarding verified designers to the new Escrow marketplace. Check back soon for exclusive pieces from Nigeria's best talent."
+              primaryButtonLabel="Back to Home"
+              primaryButtonHref="/"
             />
           </div>
           
