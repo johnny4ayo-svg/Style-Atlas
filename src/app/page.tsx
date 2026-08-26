@@ -111,14 +111,15 @@ export default async function Home() {
       </section>
 
       {/* 3. FEATURED BUSINESSES */}
-      <section className="section section-dark">
+      {featuredList && featuredList.length > 0 && (
+        <section className="section section-dark">
         <div className="container">
           <div className="section-head">
             <div><span className="eyebrow light">Featured Businesses</span><h2>Designers worth knowing before everyone else does.</h2></div>
             <Link className="text-link" href="/directory">View all designers <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
           </div>
           <div className="designer-grid">
-            {featuredList && featuredList.length > 0 ? (
+            {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               featuredList.map((business: any) => (
                 <article className="designer-card" key={business.id}>
@@ -139,12 +140,11 @@ export default async function Home() {
                   </div>
                 </article>
               ))
-            ) : (
-              <p>No featured designers available.</p>
-            )}
+            }
           </div>
         </div>
       </section>
+      )}
 
       {/* 4. TRUST AND VERIFICATION */}
       <section className="section">
@@ -163,14 +163,15 @@ export default async function Home() {
               <Link className="btn btn-dark" href="/directory">Start exploring</Link>
             </article>
             <article className="journey-card dark">
-              <span className="kicker gold">Verified Client Reviews</span>
-              <h3>Authentic stories from real clients.</h3>
-              <p>We only display reviews from clients who have demonstrably worked with the professional.</p>
-              <div className="review-card featured" style={{ marginTop: '24px', backgroundColor: 'rgba(255,255,255,0.05)', border: 'none', color: '#fff' }}>
-                <div className="review-person"><Image className="review-avatar" src="/images/designer-blue.jpg" alt="Amaka client portrait" width={48} height={48} style={{ borderRadius: '50%' }} /><div><strong>Amaka O.</strong><span style={{ color: '#aaa' }}>Lagos · Verified bridal client</span></div></div>
-                <div className="review-stars" style={{ color: 'var(--gold)' }}>★★★★★</div>
-                <blockquote>“I felt heard from the first sketch. My dress looked like me, not like a copy of someone else&apos;s wedding.”</blockquote>
+              <span className="kicker gold">Verification</span>
+              <h3>Trust through verification.</h3>
+              <p>We review every professional before they can list on the platform.</p>
+              <div className="step-list" style={{ marginTop: '24px' }}>
+                <div className="step" style={{ border: '1px solid rgba(255,255,255,0.1)' }}><strong style={{ color: 'var(--gold)' }}>1</strong><span style={{ color: '#fff' }}>Identity checked</span></div>
+                <div className="step" style={{ border: '1px solid rgba(255,255,255,0.1)' }}><strong style={{ color: 'var(--gold)' }}>2</strong><span style={{ color: '#fff' }}>Portfolio reviewed</span></div>
+                <div className="step" style={{ border: '1px solid rgba(255,255,255,0.1)' }}><strong style={{ color: 'var(--gold)' }}>3</strong><span style={{ color: '#fff' }}>Profile approved</span></div>
               </div>
+              <Link className="btn btn-gold" style={{ marginTop: '24px', display: 'inline-block' }} href="/verification">Learn about verification</Link>
             </article>
           </div>
         </div>

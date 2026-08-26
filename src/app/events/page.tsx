@@ -3,7 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import EmptyState from "@/components/ui/EmptyState";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Nigerian Fashion Events | STYLEATLAS",
+  description: "Find fashion weeks, workshops, exhibitions, trunk shows, school showcases and business events across Nigeria.",
+};
 export default async function EventsPage() {
   const supabase = createClient();
   const { data: events } = await supabase
@@ -125,10 +130,12 @@ export default async function EventsPage() {
                 }) : (
                   <div style={{ gridColumn: '1 / -1' }}>
                     <EmptyState 
-                      heading="No upcoming events"
-                      supportingText="There are currently no events matching your criteria. Check back later or submit your own fashion event."
-                      primaryButtonLabel="Back to Home"
-                      primaryButtonHref="/"
+                      heading="No verified upcoming events are available yet."
+                      supportingText="We are currently reviewing official fashion events across Nigeria. Event organisers can submit an event for editorial verification."
+                      primaryButtonLabel="Submit an event"
+                      primaryButtonHref="/dashboard/business/events/new"
+                      secondaryButtonLabel="Get event updates"
+                      secondaryButtonHref="#newsletter"
                     />
                   </div>
                 )}

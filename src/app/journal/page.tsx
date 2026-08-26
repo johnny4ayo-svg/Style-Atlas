@@ -1,7 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import EmptyState from "@/components/ui/EmptyState";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Nigerian Fashion Journal | STYLEATLAS",
+  description: "Explore interviews, trend analyses, and deep dives into the Nigerian fashion ecosystem.",
+};
 export default function ArticleIndexPage() {
   const articles: Array<{id: string, image_url?: string, title: string, date: string, category: string, excerpt: string}> = []; // Array of articles if they existed in the DB
 

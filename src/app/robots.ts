@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/dashboard/', '/api/', '/checkout/'],
+      disallow: ['/dashboard', '/account', '/checkout', '/api'],
     },
-    sitemap: 'https://styleatlas.com/sitemap.xml',
+    sitemap: 'https://www.thestyleatlas.com/sitemap.xml',
   };
 }

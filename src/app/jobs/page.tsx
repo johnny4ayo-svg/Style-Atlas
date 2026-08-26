@@ -2,6 +2,12 @@ export const revalidate = 3600;
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import EmptyState from "@/components/ui/EmptyState";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Nigerian Fashion Jobs | STYLEATLAS",
+  description: "Find the role where your craft becomes part of something bigger.",
+};
 export default async function JobsPage({
   searchParams,
 }: {
@@ -158,9 +164,11 @@ export default async function JobsPage({
                   <div style={{ gridColumn: '1 / -1' }}>
                     <EmptyState 
                       heading="No roles found"
-                      supportingText="We couldn't find any fashion jobs matching your search criteria. Try adjusting your filters or check back later."
-                      primaryButtonLabel="Back to Home"
-                      primaryButtonHref="/"
+                      supportingText="No verified fashion jobs are available right now."
+                      primaryButtonLabel="Post a fashion job"
+                      primaryButtonHref="/contact"
+                      secondaryButtonLabel="Get job updates"
+                      secondaryButtonHref="/newsletter"
                     />
                   </div>
                 )}

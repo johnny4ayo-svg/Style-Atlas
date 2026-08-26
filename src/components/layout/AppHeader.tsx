@@ -8,14 +8,14 @@ import { useCart } from "@/components/CartProvider";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { label: 'Designers', href: '/directory' },
-  { label: 'Brands', href: '/directory' },
-  { label: 'Schools', href: '/directory' },
-  { label: 'Professionals', href: '/directory' },
+  { label: 'Designers', href: '/directory?category=designers' },
+  { label: 'Brands', href: '/directory?category=brands' },
+  { label: 'Schools', href: '/directory?category=schools' },
+  { label: 'Professionals', href: '/directory?category=professionals' },
   { label: 'Marketplace', href: '/marketplace' },
   { label: 'Jobs', href: '/jobs' },
   { label: 'Events', href: '/events' },
-  { label: 'Inspiration', href: '/article' }
+  { label: 'Journal', href: '/journal' }
 ];
 
 export function Header() {
@@ -58,9 +58,10 @@ export function Header() {
           </Link>
           <nav className="main-nav" aria-label="Primary navigation">
             {navItems.map((item, index) => {
-              // Only consider the first '/directory' item active by default when on the directory page, 
-              // to prevent all 4 dropdowns from being highlighted simultaneously.
-              const isActive = pathname === item.href && (item.href !== '/directory' || index === 0);
+              // Only consider the item active by default if the pathname matches
+              // Note: since some hrefs include search params now, we split by '?' to compare the base path.
+              const basePath = item.href.split('?')[0];
+              const isActive = pathname === basePath && (basePath !== '/directory' || index === 0);
               const hasMegaMenu = index < 4;
               
               return (

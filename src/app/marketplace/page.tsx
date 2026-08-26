@@ -98,74 +98,79 @@ export default async function MarketplacePage({
             <h1 className="page-title">Pieces with a maker, a story and somewhere to go.</h1>
             <p>Shop ready-to-wear, accessories and made-to-order pieces from independent Nigerian labels and verified fashion businesses.</p>
           </div>
-          <div className="hero-aside-card">
-            <strong>{products?.length || 0}</strong>
-            <span>verified products available across ready-to-wear, accessories and made-to-order categories</span>
-          </div>
+
         </div>
       </section>
 
       <section className="section compact">
         <div className="container">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">Shop by edit</span>
-              <h2>Built around how people actually dress and buy.</h2>
+          {(!products || products.length === 0) ? (
+            <div className="market-grid" id="products">
+              <EmptyState 
+                heading="Marketplace launching soon" 
+                supportingText="We are currently onboarding verified Nigerian designers and brands for the first STYLEATLAS marketplace collection."
+                primaryButtonLabel="Back to Home"
+                primaryButtonHref="/"
+              />
             </div>
-            <form method="GET" action="/marketplace" className="results-controls">
-              <input type="hidden" name="q" value={q} />
-              <select className="result-select" name="sort" defaultValue={sort}>
-                <option value="newest">Sort: Newest</option>
-                <option value="price-asc">Price: low to high</option>
-                <option value="price-desc">Price: high to low</option>
-              </select>
-              <button type="submit" className="btn btn-outline-dark btn-sm" style={{ padding: '0 12px' }}>
-                Filter
-              </button>
-            </form>
-          </div>
-          
-          <div className="category-shell" style={{ marginBottom: '28px' }}>
-            <div className="category-grid">
-              <Link className={`category-card ${q === 'arrivals' ? 'active' : ''}`} href="?q=arrivals">
-                <span className="category-icon"><Icon name="spark" /></span>
-                <strong>New arrivals</strong>
-              </Link>
-              <Link className={`category-card ${q === 'bridal' ? 'active' : ''}`} href="?q=bridal">
-                <span className="category-icon"><Icon name="heart" /></span>
-                <strong>Bridal</strong>
-              </Link>
-              <Link className={`category-card ${q === 'menswear' ? 'active' : ''}`} href="?q=menswear">
-                <span className="category-icon"><Icon name="user" /></span>
-                <strong>Menswear</strong>
-              </Link>
-              <Link className={`category-card ${q === 'accessories' ? 'active' : ''}`} href="?q=accessories">
-                <span className="category-icon"><Icon name="bag" /></span>
-                <strong>Accessories</strong>
-              </Link>
-              <Link className={`category-card ${q === 'made to order' ? 'active' : ''}`} href="?q=made to order">
-                <span className="category-icon"><Icon name="scissors" /></span>
-                <strong>Made to order</strong>
-              </Link>
-              <Link className={`category-card ${q === 'occasionwear' ? 'active' : ''}`} href="?q=occasionwear">
-                <span className="category-icon"><Icon name="star" /></span>
-                <strong>Occasionwear</strong>
-              </Link>
-              <Link className={`category-card ${!q ? 'active' : ''}`} href="/marketplace">
-                <span className="category-icon"><Icon name="arrow" /></span>
-                <strong>All products</strong>
-              </Link>
-            </div>
-          </div>
+          ) : (
+            <>
+              <div className="section-head">
+                <div>
+                  <span className="eyebrow">Shop by edit</span>
+                  <h2>Built around how people actually dress and buy.</h2>
+                </div>
+                <form method="GET" action="/marketplace" className="results-controls">
+                  <input type="hidden" name="q" value={q} />
+                  <select className="result-select" name="sort" defaultValue={sort}>
+                    <option value="newest">Sort: Newest</option>
+                    <option value="price-asc">Price: low to high</option>
+                    <option value="price-desc">Price: high to low</option>
+                  </select>
+                  <button type="submit" className="btn btn-outline-dark btn-sm" style={{ padding: '0 12px' }}>
+                    Filter
+                  </button>
+                </form>
+              </div>
+              
+              <div className="category-shell" style={{ marginBottom: '28px' }}>
+                <div className="category-grid">
+                  <Link className={`category-card ${q === 'arrivals' ? 'active' : ''}`} href="?q=arrivals">
+                    <span className="category-icon"><Icon name="spark" /></span>
+                    <strong>New arrivals</strong>
+                  </Link>
+                  <Link className={`category-card ${q === 'bridal' ? 'active' : ''}`} href="?q=bridal">
+                    <span className="category-icon"><Icon name="heart" /></span>
+                    <strong>Bridal</strong>
+                  </Link>
+                  <Link className={`category-card ${q === 'menswear' ? 'active' : ''}`} href="?q=menswear">
+                    <span className="category-icon"><Icon name="user" /></span>
+                    <strong>Menswear</strong>
+                  </Link>
+                  <Link className={`category-card ${q === 'accessories' ? 'active' : ''}`} href="?q=accessories">
+                    <span className="category-icon"><Icon name="bag" /></span>
+                    <strong>Accessories</strong>
+                  </Link>
+                  <Link className={`category-card ${q === 'made to order' ? 'active' : ''}`} href="?q=made to order">
+                    <span className="category-icon"><Icon name="scissors" /></span>
+                    <strong>Made to order</strong>
+                  </Link>
+                  <Link className={`category-card ${q === 'occasionwear' ? 'active' : ''}`} href="?q=occasionwear">
+                    <span className="category-icon"><Icon name="star" /></span>
+                    <strong>Occasionwear</strong>
+                  </Link>
+                  <Link className={`category-card ${!q ? 'active' : ''}`} href="/marketplace">
+                    <span className="category-icon"><Icon name="arrow" /></span>
+                    <strong>All products</strong>
+                  </Link>
+                </div>
+              </div>
 
-          <div className="market-grid" id="products">
-            <EmptyState 
-              heading="Marketplace launching soon" 
-              supportingText="We are currently onboarding verified designers to the new Escrow marketplace. Check back soon for exclusive pieces from Nigeria's best talent."
-              primaryButtonLabel="Back to Home"
-              primaryButtonHref="/"
-            />
-          </div>
+              <div className="market-grid" id="products">
+                {/* Note: In a real app, products would map to ProductCards here */}
+              </div>
+            </>
+          )}
           
           {totalPages > 1 && (
             <div className="pagination" style={{ marginTop: '40px' }}>
@@ -213,8 +218,8 @@ export default async function MarketplacePage({
               <h2>Your products belong beside your story and your reputation.</h2>
               <p>Connect products to a verified brand profile, manage orders and let shoppers understand who made what they are buying.</p>
               <div style={{ display: 'flex', gap: '10px' }}>
-                <Link className="btn btn-gold" href="/add-business">Apply as a seller</Link>
-                <Link className="btn btn-outline-light" href="/pricing">View seller plans</Link>
+                <Link className="btn btn-gold" href="/add-business">Apply as a founding seller</Link>
+                <Link className="btn btn-outline-light" href="/newsletter">Get marketplace updates</Link>
               </div>
             </div>
           </div>

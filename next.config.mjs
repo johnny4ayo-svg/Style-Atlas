@@ -8,6 +8,20 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/article',
+        destination: '/journal',
+        permanent: true,
+      },
+      {
+        source: '/article/:slug',
+        destination: '/journal/:slug',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

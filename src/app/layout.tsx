@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Outfit } from "next/font/google";
 import "./globals.css";
 
@@ -12,13 +12,20 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
-  title: "STYLEATLAS | The Premier Nigerian Fashion Directory",
+  metadataBase: new URL('https://www.thestyleatlas.com'),
+  title: "STYLEATLAS | Find Nigerian Fashion Designers and Brands",
   description: "Find the best fashion designers, boutiques, tailors, and bridal experts in Nigeria. Browse verified reviews, portfolios, and contact local fashion businesses directly.",
   openGraph: {
-    title: "STYLEATLAS | The Premier Nigerian Fashion Directory",
+    title: "STYLEATLAS | Find Nigerian Fashion Designers and Brands",
     description: "Find the best fashion designers, boutiques, tailors, and bridal experts in Nigeria. Browse verified reviews, portfolios, and contact local fashion businesses directly.",
-    url: 'https://styleatlas.com',
+    url: 'https://www.thestyleatlas.com',
     siteName: 'STYLEATLAS',
     images: [
       {

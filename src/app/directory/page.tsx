@@ -14,8 +14,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const category = searchParams.category ? String(searchParams.category) : "Fashion Professionals";
   const location = searchParams.location ? String(searchParams.location) : "Nigeria";
-  const title = `Find ${category} in ${location} | STYLEATLAS Directory`;
-  const description = `Browse our verified directory of ${category.toLowerCase()} in ${location}. Compare portfolios, read reviews, and connect directly with top Nigerian fashion talent.`;
+  const title = `Nigerian Fashion Professionals Directory | STYLEATLAS`;
+  const description = `Browse our verified directory of Nigerian fashion professionals. Compare portfolios, read reviews, and connect directly with top talent.`;
 
   return {
     title,
@@ -113,10 +113,16 @@ export default async function Directory({
 
       <section className="section compact">
         <div className="container">
-          <div className="result-notice">
-            <svg className="icon"><use href="/icons/sprite.svg#icon-spark"></use></svg>
-            Showing strong matches for your search. Adjust the filters to refine your shortlist.
-          </div>
+          {filteredBusinesses.length > 0 ? (
+            <div className="result-notice">
+              <svg className="icon"><use href="/icons/sprite.svg#icon-spark"></use></svg>
+              Showing the strongest matches for your search. Adjust the filters to refine your shortlist.
+            </div>
+          ) : (
+            <div className="result-notice" style={{ background: '#f8f8f8', color: '#555' }}>
+              We could not find a matching professional yet. Try changing your filters or check back as new businesses are approved.
+            </div>
+          )}
           <div className="directory-layout">
             <aside className="filter-panel">
               <div className="filter-head">
@@ -148,12 +154,7 @@ export default async function Directory({
                 <label className="filter-option"><span><input type="checkbox" /> Modest fashion</span></label>
                 <label className="filter-option"><span><input type="checkbox" /> Children&apos;s occasionwear</span></label>
               </div>
-              <div className="filter-group">
-                <h4>Trust signals</h4>
-                <label className="filter-option"><span><input type="checkbox" defaultChecked /> Verified only</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Rating 4.5+</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Responds within 24 hrs</span></label>
-              </div>
+
               <button className="btn btn-dark" style={{ width: '100%' }}>Apply filters</button>
             </aside>
 
@@ -161,7 +162,7 @@ export default async function Directory({
               <div className="results-head">
                 <div>
                   <h2>Results</h2>
-                  <span className="muted" style={{ fontSize: '10px' }}>{filteredBusinesses.length} curated matches</span>
+                  <span className="muted" style={{ fontSize: '10px' }}>{filteredBusinesses.length} {filteredBusinesses.length === 1 ? 'result' : 'results'}</span>
                 </div>
                 <div className="results-controls">
                   <button className="btn btn-outline-dark btn-sm mobile-filter-btn">

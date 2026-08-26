@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { siteConfig } from "@/config/site";
 
 export function Footer() {
   const [isMobile, setIsMobile] = useState(false);
@@ -29,10 +30,18 @@ export function Footer() {
           <Image src="/brand/styleatlas-logo-dark.svg" alt="STYLEATLAS" width={180} height={30} />
           <p>Nigeria&apos;s premium fashion discovery platform for trusted designers, brands, schools and creative professionals.</p>
           <div className="socials">
-            <Link className="social" href="/feature" aria-label="Instagram">IG</Link>
-            <Link className="social" href="/feature" aria-label="TikTok">TT</Link>
-            <Link className="social" href="/feature" aria-label="YouTube">YT</Link>
-            <Link className="social" href="/feature" aria-label="LinkedIn">IN</Link>
+            {siteConfig.socials.instagram && (
+              <Link className="social" href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">IG</Link>
+            )}
+            {siteConfig.socials.tiktok && (
+              <Link className="social" href={siteConfig.socials.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok">TT</Link>
+            )}
+            {siteConfig.socials.youtube && (
+              <Link className="social" href={siteConfig.socials.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube">YT</Link>
+            )}
+            {siteConfig.socials.linkedin && (
+              <Link className="social" href={siteConfig.socials.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">IN</Link>
+            )}
           </div>
         </div>
         
@@ -83,9 +92,12 @@ export function Footer() {
         <div className="footer-col">
           <h4>Stay in style</h4>
           <p style={{ fontSize: '12px', opacity: 0.7, marginBottom: '16px' }}>Weekly designer stories, openings, jobs and fashion events.</p>
-          <form className="newsletter" style={{ marginBottom: '24px' }}>
-            <input type="email" required placeholder="Email address" aria-label="Email address" />
-            <button type="submit">Subscribe</button>
+          <form className="newsletter" style={{ marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label htmlFor="newsletter-email" style={{ fontSize: '12px', fontWeight: 'bold' }}>Email address</label>
+            <div style={{ display: 'flex', width: '100%' }}>
+              <input type="email" id="newsletter-email" name="email" autoComplete="email" required placeholder="Enter your email" aria-label="Email address" style={{ flexGrow: 1, padding: '10px' }} />
+              <button type="submit" style={{ padding: '10px 16px' }}>Subscribe</button>
+            </div>
           </form>
           <div className="footer-col-links">
             <Link href="/about">About STYLEATLAS</Link>
