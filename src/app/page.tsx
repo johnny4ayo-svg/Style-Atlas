@@ -133,7 +133,7 @@ export default async function StagingHome() {
       </section>
 
       {/* 3. FEATURED PROFESSIONALS */}
-      {featuredList && featuredList.length > 0 && (
+      {featuredList && featuredList.length >= 4 && (
         <section className="section section-dark featured-prof-section" style={{ background: '#0a0a0a', padding: '88px 0' }}>
           <div className="container">
             <div className="section-head">
