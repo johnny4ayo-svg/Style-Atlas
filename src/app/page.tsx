@@ -65,16 +65,11 @@ export default async function StagingHome() {
             <h1 style={{ marginTop: '16px', marginBottom: '16px' }}>Find Nigeria’s finest fashion professionals.</h1>
             <p style={{ fontSize: '18px', color: '#e0d8cc' }}>Verified talent. Exceptional work. One trusted directory.</p>
             
-            <div className="home-hero__desktop-search home-hero__search">
+            <div className="home-hero__search">
               <style dangerouslySetInnerHTML={{ __html: `
                 .home-hero__search .search-dock { position: relative !important; inset: auto !important; transform: none !important; width: 100% !important; margin: 0 !important; }
               ` }} />
               <SearchDock />
-            </div>
-
-            <div className="home-hero__mobile-actions" style={{ display: 'none', marginTop: '24px' }}>
-              <Link className="btn btn-gold" href="/directory" style={{ width: '100%', textAlign: 'center' }}>Find professionals</Link>
-              <Link className="btn btn-outline-light" href="/add-business" style={{ width: '100%', textAlign: 'center' }}>List your business</Link>
             </div>
           </div>
           
