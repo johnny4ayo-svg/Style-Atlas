@@ -130,36 +130,43 @@ export default async function StagingHome() {
           <div className="section-head">
             <div><span className="eyebrow light">Professionals worth discovering</span><h2>Explore selected talent from across Nigeria.</h2></div>
           </div>
-          <div className="designer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
-            <style dangerouslySetInnerHTML={{ __html: `
-              @media (max-width: 1279px) and (min-width: 768px) {
-                .designer-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          {featuredList && featuredList.length > 0 ? (
+            <div className="designer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+              <style dangerouslySetInnerHTML={{ __html: `
+                @media (max-width: 1279px) and (min-width: 768px) {
+                  .designer-grid { grid-template-columns: repeat(2, 1fr) !important; }
+                }
+                @media (max-width: 767px) { 
+                  .featured-prof-section { padding: 60px 0 !important; }
+                  .designer-grid { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 16px; margin: 0 -20px; padding: 0 20px 16px; gap: 16px; }
+                  .designer-grid .designer-card { flex: 0 0 85%; scroll-snap-align: center; }
+                  .designer-grid .designer-card:nth-child(4) { display: none !important; }
+                }
+              ` }} />
+              {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                featuredList.slice(0, 4).map((business: any) => (
+                  <article className="designer-card" key={business.id} style={{ border: 'none', background: 'transparent' }}>
+                    <div className="designer-media" style={{ height: 'auto', aspectRatio: '4/5', borderRadius: '12px' }}>
+                      <Image src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name}`} fill sizes="(max-width: 900px) 100vw, 25vw" style={{ objectFit: 'cover' }} />
+                      {business.is_sponsored && <div className="card-badges"><span className="badge" style={{ background: 'var(--gold)', color: '#000', border: 'none' }}>Sponsored</span></div>}
+                      {business.verification_tier && business.verification_tier !== 'none' && !business.is_sponsored && <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>}
+                    </div>
+                    <div className="designer-body" style={{ marginTop: '16px', padding: 0 }}>
+                      <h3 style={{ fontSize: '18px', color: '#fff' }}>{business.business_name}</h3>
+                      <div className="location-line" style={{ margin: '4px 0 12px' }}>{business.business_categories?.[0]?.categories?.name || 'Professional'} · {business.city}</div>
+                      <Link className="text-link" href={`/profile/${business.slug}`}>View profile <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
+                    </div>
+                  </article>
+                ))
               }
-              @media (max-width: 767px) { 
-                .featured-prof-section { padding: 60px 0 !important; }
-                .designer-grid { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 16px; margin: 0 -20px; padding: 0 20px 16px; gap: 16px; }
-                .designer-grid .designer-card { flex: 0 0 85%; scroll-snap-align: center; }
-                .designer-grid .designer-card:nth-child(4) { display: none !important; }
-              }
-            ` }} />
-            {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              featuredList.slice(0, 4).map((business: any) => (
-                <article className="designer-card" key={business.id} style={{ border: 'none', background: 'transparent' }}>
-                  <div className="designer-media" style={{ height: 'auto', aspectRatio: '4/5', borderRadius: '12px' }}>
-                    <Image src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name}`} fill sizes="(max-width: 900px) 100vw, 25vw" style={{ objectFit: 'cover' }} />
-                    {business.is_sponsored && <div className="card-badges"><span className="badge" style={{ background: 'var(--gold)', color: '#000', border: 'none' }}>Sponsored</span></div>}
-                    {business.verification_tier && business.verification_tier !== 'none' && !business.is_sponsored && <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>}
-                  </div>
-                  <div className="designer-body" style={{ marginTop: '16px', padding: 0 }}>
-                    <h3 style={{ fontSize: '18px', color: '#fff' }}>{business.business_name}</h3>
-                    <div className="location-line" style={{ margin: '4px 0 12px' }}>{business.business_categories?.[0]?.categories?.name || 'Professional'} · {business.city}</div>
-                    <Link className="text-link" href={`/profile/${business.slug}`}>View profile <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-                  </div>
-                </article>
-              ))
-            }
-          </div>
+            </div>
+          ) : (
+            <div style={{ padding: '40px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', border: '1px dashed rgba(255,255,255,0.2)' }}>
+              <p style={{ color: '#ff5a5f', fontWeight: 'bold', marginBottom: '12px' }}>Featured Professionals could not be completed because approved real profile records were not available or were not provided by the website owner.</p>
+              <p style={{ color: '#fff', fontSize: '14px', margin: 0 }}>Required from owner: exactly four approved profile IDs, names, images, categories, cities and verification status.</p>
+            </div>
+          )}
           <div style={{ marginTop: '40px', textAlign: 'center' }}>
             <Link className="text-link" href="/directory">Browse all professionals <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
           </div>
@@ -225,7 +232,7 @@ export default async function StagingHome() {
       </section>
 
       {/* 6. EXPLORE OPPORTUNITIES (Desktop Only) */}
-      <section className="explore-opportunities-section" style={{ padding: '68px 0' }}>
+      <section className="section explore-opportunities-section" style={{ padding: '68px 0' }}>
         <style dangerouslySetInnerHTML={{ __html: `
           @media (max-width: 767px) { .explore-opportunities-section { display: none !important; } }
           .explore-opportunities-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 36px; }
