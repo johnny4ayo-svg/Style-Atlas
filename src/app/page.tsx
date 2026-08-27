@@ -87,9 +87,17 @@ export default async function StagingHome() {
       </section>
 
       {/* 2. CATEGORIES AND CITIES */}
-      <section className="section compact">
+      <section className="section home-explore-section">
+        <style dangerouslySetInnerHTML={{ __html: `
+          .home-explore-section { padding: 56px 0; }
+          .home-explore-section .section-head { margin-bottom: 28px !important; }
+          .home-explore-section .category-grid { gap: 10px !important; margin-bottom: 28px !important; }
+          .home-explore-section .category-card { min-height: 96px; }
+          .home-explore-section .city-grid { gap: 12px; }
+          .home-explore-section .city-card { min-height: 124px; }
+        ` }} />
         <div className="container">
-          <div className="section-head" style={{ marginBottom: '40px' }}>
+          <div className="section-head">
             <div>
               <span className="eyebrow">Explore Nigerian fashion</span>
               <h2>Browse by speciality or discover talent in your city.</h2>
@@ -97,11 +105,11 @@ export default async function StagingHome() {
           </div>
           
           <div className="category-shell" style={{ border: 'none', boxShadow: 'none', padding: 0, background: 'transparent' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <h3 style={{ fontSize: '1.25rem' }}>Categories</h3>
               <Link className="text-link" href="/directory">View all categories <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
             </div>
-            <div className="category-grid" style={{ gridTemplateColumns: 'repeat(6, 1fr)', gap: '12px', marginBottom: '40px' }}>
+            <div className="category-grid" style={{ gridTemplateColumns: 'repeat(6, 1fr)' }}>
               <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=designers"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-user"></use></svg></span><strong>Designers</strong></Link>
               <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=brands"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-bag"></use></svg></span><strong>Brands</strong></Link>
               <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=schools"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-school"></use></svg></span><strong>Schools</strong></Link>
@@ -110,7 +118,7 @@ export default async function StagingHome() {
               <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=photographers"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-camera"></use></svg></span><strong>Photographers</strong></Link>
             </div>
             
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <h3 style={{ fontSize: '1.25rem' }}>Cities</h3>
               <Link className="text-link" href="/directory">View all cities <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
             </div>
@@ -125,12 +133,12 @@ export default async function StagingHome() {
       </section>
 
       {/* 3. FEATURED PROFESSIONALS */}
-      <section className="section section-dark featured-prof-section" style={{ background: '#0a0a0a', padding: '88px 0' }}>
-        <div className="container">
-          <div className="section-head">
-            <div><span className="eyebrow light">Professionals worth discovering</span><h2>Explore selected talent from across Nigeria.</h2></div>
-          </div>
-          {featuredList && featuredList.length > 0 ? (
+      {featuredList && featuredList.length > 0 && (
+        <section className="section section-dark featured-prof-section" style={{ background: '#0a0a0a', padding: '88px 0' }}>
+          <div className="container">
+            <div className="section-head">
+              <div><span className="eyebrow light">Professionals worth discovering</span><h2>Explore selected talent from across Nigeria.</h2></div>
+            </div>
             <div className="designer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
               <style dangerouslySetInnerHTML={{ __html: `
                 @media (max-width: 1279px) and (min-width: 768px) {
@@ -161,17 +169,12 @@ export default async function StagingHome() {
                 ))
               }
             </div>
-          ) : (
-            <div style={{ padding: '40px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', border: '1px dashed rgba(255,255,255,0.2)' }}>
-              <p style={{ color: '#ff5a5f', fontWeight: 'bold', marginBottom: '12px' }}>Featured Professionals could not be completed because approved real profile records were not available or were not provided by the website owner.</p>
-              <p style={{ color: '#fff', fontSize: '14px', margin: 0 }}>Required from owner: exactly four approved profile IDs, names, images, categories, cities and verification status.</p>
+            <div style={{ marginTop: '40px', textAlign: 'center' }}>
+              <Link className="text-link" href="/directory">Browse all professionals <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
             </div>
-          )}
-          <div style={{ marginTop: '40px', textAlign: 'center' }}>
-            <Link className="text-link" href="/directory">Browse all professionals <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 4. HOW IT WORKS */}
       <section className="section">
@@ -232,12 +235,14 @@ export default async function StagingHome() {
       </section>
 
       {/* 6. EXPLORE OPPORTUNITIES (Desktop Only) */}
-      <section className="section explore-opportunities-section" style={{ padding: '68px 0' }}>
+      <section className="section explore-opportunities-section">
         <style dangerouslySetInnerHTML={{ __html: `
-          @media (max-width: 767px) { .explore-opportunities-section { display: none !important; } }
-          .explore-opportunities-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 36px; }
-          .explore-opportunities-card { min-height: 160px; max-height: 190px; background: #fff; border: 1px solid #dfd5c8; border-radius: 16px; padding: 32px; display: flex; flex-direction: column; justify-content: center; transition: 0.2s; text-decoration: none; color: inherit; }
+          .explore-opportunities-section { padding: 52px 0; }
+          .explore-opportunities-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 28px; }
+          .explore-opportunities-card { min-height: 148px; max-height: 168px; padding: 26px; background: #fff; border: 1px solid #dfd5c8; border-radius: 16px; display: flex; flex-direction: column; justify-content: center; transition: 0.2s; text-decoration: none; color: inherit; }
           .explore-opportunities-card:hover { transform: translateY(-4px); box-shadow: 0 12px 42px rgba(8,8,7,.06); }
+          .explore-opportunities-section .journal-link-wrap { margin-top: 22px; text-align: center; }
+          @media (max-width: 767px) { .explore-opportunities-section { display: none !important; } }
         ` }} />
         <div className="container">
           <div className="section-head" style={{ marginBottom: 0 }}>
@@ -261,7 +266,7 @@ export default async function StagingHome() {
               <p style={{ color: 'var(--muted)', margin: 0 }}>Start or advance your fashion education.</p>
             </Link>
           </div>
-          <div style={{ textAlign: 'center', marginTop: '28px' }}>
+          <div className="journal-link-wrap">
             <Link className="text-link" href="/journal">Read the StyleAtlas Journal <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
           </div>
         </div>
