@@ -195,7 +195,7 @@ export default async function StagingHome() {
             <div>
               <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'grid', placeItems: 'center', fontSize: '20px', fontWeight: 'bold', margin: '0 auto 16px' }}>2</div>
               <h3 style={{ fontSize: '20px', marginBottom: '8px' }}>Compare</h3>
-              <p style={{ color: 'var(--muted)', fontSize: '14px', maxWidth: '300px', margin: '0 auto' }}>Review verified profiles, portfolios, and customer feedback.</p>
+              <p style={{ color: 'var(--muted)', fontSize: '14px', maxWidth: '300px', margin: '0 auto' }}>Review approved profiles, portfolios and service information as verified businesses are added.</p>
             </div>
             <div>
               <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'grid', placeItems: 'center', fontSize: '20px', fontWeight: 'bold', margin: '0 auto 16px' }}>3</div>

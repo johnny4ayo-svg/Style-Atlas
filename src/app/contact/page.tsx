@@ -34,12 +34,8 @@ export default function ContactPage() {
         <div className="container" style={{ maxWidth: '800px', margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '48px', alignItems: 'start' }} className="contact-grid">
             <div className="contact-info">
-              <h3>Support Details</h3>
+              <h3>Support</h3>
               <p style={{ marginTop: '16px', marginBottom: '8px' }}><strong>Email:</strong><br /><a href="mailto:support@thestyleatlas.com">support@thestyleatlas.com</a></p>
-              <p style={{ marginBottom: '8px' }}><strong>Operating Hours:</strong><br />Monday - Friday<br />9:00 AM - 5:00 PM WAT</p>
-              
-              <h3 style={{ marginTop: '32px' }}>Office</h3>
-              <p style={{ marginTop: '16px' }}>Lagos, Nigeria</p>
             </div>
             
             <div className="contact-form-wrapper">

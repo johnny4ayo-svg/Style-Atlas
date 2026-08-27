@@ -91,37 +91,22 @@ export default async function StagingMarketplace({
     }));
   }
 
+  const approvedProducts = products || [];
+
+  // EXACT ZERO-PRODUCT LAUNCH STATE
+  if (approvedProducts.length === 0) {
+    return <MarketplaceComingSoon />;
+  }
+
   const Icon = ({ name }: { name: string }) => (
     <svg className="icon" aria-hidden="true">
       <use href={`/icons/sprite.svg#icon-${name}`}></use>
     </svg>
   );
 
-  // EXACT ZERO-PRODUCT LAUNCH STATE
-  if (!products || products.length === 0) {
-    return (
-      <main>
-        <section className="page-hero">
-          <div className="container page-hero-inner">
-            <div>
-              <span className="eyebrow light">STYLEATLAS Marketplace</span>
-              <h1 className="page-title">Nigerian fashion, selected with care.</h1>
-              <p>We’re currently onboarding verified Nigerian designers, brands and independent makers for the first STYLEATLAS marketplace collection.</p>
-              
-              <div style={{ display: 'flex', gap: '16px', marginTop: '32px' }}>
-                <Link className="btn btn-gold" href="/contact?category=marketplace-seller">Apply as a founding seller</Link>
-                <Link className="btn btn-outline-light" href="/#newsletter-email">Get marketplace updates</Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-    );
-  }
-
   // CATALOGUE STATE
   return (
-    <main>
+    <main id="main-content">
       <section className="page-hero">
         <div className="container page-hero-inner">
           <div>
@@ -137,7 +122,7 @@ export default async function StagingMarketplace({
         </div>
       </section>
 
-      <section className="section compact">
+      <section className="section compact" data-testid="marketplace-catalogue">
         <div className="container">
           <div className="section-head">
             <div>
@@ -195,7 +180,7 @@ export default async function StagingMarketplace({
           </div>
           
           {totalPages > 1 && (
-            <div className="pagination" style={{ marginTop: '40px' }}>
+            <nav className="pagination" aria-label="pagination" style={{ marginTop: '40px' }}>
               {page > 1 && (
                 <Link href={`?q=${q}&sort=${sort}&page=${page - 1}`} className="page-btn" style={{ display: 'grid', placeItems: 'center', textDecoration: 'none' }}>
                   &lt;
@@ -225,7 +210,7 @@ export default async function StagingMarketplace({
                   &gt;
                 </Link>
               )}
-            </div>
+            </nav>
           )}
         </div>
       </section>
@@ -244,6 +229,22 @@ export default async function StagingMarketplace({
               </div>
             </div>
           </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function MarketplaceComingSoon() {
+  return (
+    <main id="main-content">
+      <section className="marketplace-coming-soon" aria-labelledby="marketplace-title" style={{ padding: '120px 20px', textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
+        <p className="eyebrow">STYLEATLAS Marketplace</p>
+        <h1 id="marketplace-title" style={{ fontSize: '48px', marginBottom: '16px' }}>Nigerian fashion, selected with care.</h1>
+        <p style={{ fontSize: '18px', color: 'var(--muted)', marginBottom: '32px' }}>We’re currently onboarding verified Nigerian designers, brands and independent makers for the first STYLEATLAS marketplace collection.</p>
+        <div className="marketplace-actions" style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+          <Link className="btn btn-gold" href="/contact?category=marketplace-seller-application">Apply as a founding seller</Link>
+          <Link className="btn btn-outline-dark" href="/#newsletter-email">Get marketplace updates</Link>
         </div>
       </section>
     </main>

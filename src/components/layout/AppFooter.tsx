@@ -70,11 +70,11 @@ export function Footer() {
 
         .footer-group-trigger {
           width: 100%;
-          min-height: 56px;
+          min-height: 48px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0;
+          padding: 12px 0;
           background: transparent;
           color: inherit;
           border: none;
@@ -84,13 +84,24 @@ export function Footer() {
           cursor: pointer;
         }
         .footer-group-trigger:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
-        .footer-group-content { padding: 0 0 20px; display: flex; flex-direction: column; gap: 12px; }
+        
+        .footer-group-content[hidden] {
+          display: none !important;
+        }
+        
+        .footer-group-content:not([hidden]) {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding: 4px 0 16px;
+        }
         
         @media (min-width: 768px) {
           .footer-group-trigger {
             cursor: default;
             pointer-events: none;
             margin-bottom: 20px;
+            padding: 0;
             min-height: auto;
           }
           .footer-group-trigger span[aria-hidden="true"] {
@@ -102,19 +113,18 @@ export function Footer() {
         }
         
         @media (max-width: 767px) {
-          .site-footer { padding: 48px 20px 24px !important; }
+          .site-footer { padding: 40px 20px 24px !important; }
           .footer-brand { margin-bottom: 32px; }
           .footer-groups {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
+            display: block;
           }
           .footer-group {
             width: 100%;
-            border-bottom: 1px solid rgba(255,255,255,.12);
+            margin: 0;
+            border-top: 1px solid rgba(255,255,255,.18);
           }
           .footer-newsletter { width: 100%; margin-top: 32px; }
-          .footer-bottom { margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.12); }
+          .footer-bottom { margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.18); }
         }
 
         @media (max-width: 359px) {
@@ -176,7 +186,7 @@ export function Footer() {
               <span>Directory</span>
               <span aria-hidden="true">{openSection === "directory" ? "-" : "+"}</span>
             </button>
-            <nav id="footer-directory-links" className="footer-group-content" hidden={openSection !== "directory"}>
+            <nav id="footer-directory-links" className="footer-group-content" hidden={isMobile ? openSection !== "directory" : false}>
               <Link href="/directory?category=designers" style={{ opacity: 0.7, textDecoration: 'none' }}>Designers</Link>
               <Link href="/directory?category=brands" style={{ opacity: 0.7, textDecoration: 'none' }}>Brands</Link>
               <Link href="/directory?category=stylists" style={{ opacity: 0.7, textDecoration: 'none' }}>Stylists</Link>
@@ -197,7 +207,7 @@ export function Footer() {
               <span>Explore</span>
               <span aria-hidden="true">{openSection === "explore" ? "-" : "+"}</span>
             </button>
-            <nav id="footer-explore-links" className="footer-group-content" hidden={openSection !== "explore"}>
+            <nav id="footer-explore-links" className="footer-group-content" hidden={isMobile ? openSection !== "explore" : false}>
               <Link href="/marketplace" style={{ opacity: 0.7, textDecoration: 'none' }}>Marketplace</Link>
               <Link href="/jobs" style={{ opacity: 0.7, textDecoration: 'none' }}>Fashion jobs</Link>
               <Link href="/events" style={{ opacity: 0.7, textDecoration: 'none' }}>Events</Link>
@@ -216,7 +226,7 @@ export function Footer() {
               <span>For business</span>
               <span aria-hidden="true">{openSection === "business" ? "-" : "+"}</span>
             </button>
-            <nav id="footer-business-links" className="footer-group-content" hidden={openSection !== "business"}>
+            <nav id="footer-business-links" className="footer-group-content" hidden={isMobile ? openSection !== "business" : false}>
               <Link href="/add-business" style={{ opacity: 0.7, textDecoration: 'none' }}>Add a listing</Link>
               <Link href="/pricing" style={{ opacity: 0.7, textDecoration: 'none' }}>Membership plans</Link>
               <Link href="/dashboard" style={{ opacity: 0.7, textDecoration: 'none' }}>Business dashboard</Link>
@@ -235,7 +245,7 @@ export function Footer() {
               <span>Company</span>
               <span aria-hidden="true">{openSection === "company" ? "-" : "+"}</span>
             </button>
-            <nav id="footer-company-links" className="footer-group-content" hidden={openSection !== "company"}>
+            <nav id="footer-company-links" className="footer-group-content" hidden={isMobile ? openSection !== "company" : false}>
               <Link href="/about" style={{ opacity: 0.7, textDecoration: 'none' }}>About STYLEATLAS</Link>
               <Link href="/contact" style={{ opacity: 0.7, textDecoration: 'none' }}>Contact</Link>
               <Link href="/help" style={{ opacity: 0.7, textDecoration: 'none' }}>Help centre</Link>
