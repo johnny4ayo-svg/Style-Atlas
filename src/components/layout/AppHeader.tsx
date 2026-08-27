@@ -163,7 +163,7 @@ export function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 999 }}
+              style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 99 }}
             />
             <motion.aside 
               className="mobile-panel open"
@@ -178,7 +178,7 @@ export function Header() {
               style={{ display: 'block', visibility: 'visible' }}
             >
               <div className="mobile-panel-top">
-                <Image src="/brand/styleatlas-logo-dark.svg" alt="STYLEATLAS" width={180} height={30} />
+                <Image src="/brand/styleatlas-logo-light.svg" alt="STYLEATLAS" width={180} height={30} />
                 <button className="icon-btn" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu"><Icon name="close" /></button>
               </div>
               <nav className="mobile-nav">
