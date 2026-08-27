@@ -21,11 +21,14 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.thestyleatlas.com'),
   title: "STYLEATLAS | Find Nigerian Fashion Designers and Brands",
-  description: "Find the best fashion designers, boutiques, tailors, and bridal experts in Nigeria. Browse verified reviews, portfolios, and contact local fashion businesses directly.",
+  description: "Discover Nigerian fashion professionals as verified profiles are added. Explore designers, brands, schools, jobs, events and STYLEATLAS editorial updates.",
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: "STYLEATLAS | Find Nigerian Fashion Designers and Brands",
-    description: "Find the best fashion designers, boutiques, tailors, and bridal experts in Nigeria. Browse verified reviews, portfolios, and contact local fashion businesses directly.",
-    url: 'https://www.thestyleatlas.com',
+    description: "Discover Nigerian fashion professionals as verified profiles are added. Explore designers, brands, schools, jobs, events and STYLEATLAS editorial updates.",
+    url: 'https://www.thestyleatlas.com/',
     siteName: 'STYLEATLAS',
     images: [
       {

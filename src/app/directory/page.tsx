@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import BusinessCard from "@/components/ui/BusinessCard";
-
+import DirectoryFilterDrawer from "@/components/ui/DirectoryFilterDrawer";
 import type { Metadata } from "next";
 
 export const revalidate = 300;
@@ -121,56 +121,13 @@ export default async function Directory({
             </div>
           )}
           <div className="directory-layout">
-            <aside className="filter-panel">
-              <div className="filter-head">
-                <h3>Refine</h3>
-                <Link href="/directory" className="filter-reset">Clear all</Link>
-              </div>
-              <div className="filter-group">
-                <h4>Category</h4>
-                <label className="filter-option"><span><input type="checkbox" defaultChecked /> Fashion designers</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Bridal ateliers</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Fashion brands</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Bespoke tailors</span></label>
-              </div>
-              <div className="filter-group">
-                <h4>Location</h4>
-                <select className="filter-select">
-                  <option>All Nigerian cities</option>
-                  <option>Lagos</option>
-                  <option>Abuja</option>
-                  <option>Benin City</option>
-                  <option>Kano</option>
-                </select>
-              </div>
-              <div className="filter-group">
-                <h4>Speciality</h4>
-                <label className="filter-option"><span><input type="checkbox" /> Bridal couture</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Menswear</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Luxury ready-to-wear</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Modest fashion</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Children&apos;s occasionwear</span></label>
-              </div>
-
-              <button className="btn btn-dark" style={{ width: '100%' }}>Apply filters</button>
-            </aside>
+            <DirectoryFilterDrawer />
 
             <div>
               <div className="results-head">
                 <div>
                   <h2>Results</h2>
                   <span className="muted" style={{ fontSize: '10px' }}>{filteredBusinesses.length} {filteredBusinesses.length === 1 ? 'result' : 'results'}</span>
-                </div>
-                <div className="results-controls">
-                  <button className="btn btn-outline-dark btn-sm mobile-filter-btn">
-                    <svg className="icon"><use href="/icons/sprite.svg#icon-filter"></use></svg>Filters
-                  </button>
-                  <select className="result-select">
-                    <option>Sort: Recommended</option>
-                    <option>Highest rated</option>
-                    <option>Recently added</option>
-                    <option>Price: low to high</option>
-                  </select>
                 </div>
               </div>
 

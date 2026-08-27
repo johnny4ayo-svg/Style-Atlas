@@ -62,15 +62,15 @@ export default async function EventsPage() {
               <div className="search-field">
                 <Icon name="search" />
                 <div>
-                  <label>Search events</label>
-                  <input name="q" placeholder="Fashion week, exhibition..." />
+                  <label htmlFor="event-search-input">Search events</label>
+                  <input type="search" id="event-search-input" name="q" placeholder="Fashion week, exhibition..." />
                 </div>
               </div>
               <div className="search-field">
                 <Icon name="pin" />
                 <div>
-                  <label>Location</label>
-                  <select name="location">
+                  <label htmlFor="event-location-select">Location</label>
+                  <select id="event-location-select" name="location">
                     <option value="All cities">All cities</option>
                     <option value="Lagos">Lagos</option>
                     <option value="Abuja">Abuja</option>
@@ -81,15 +81,15 @@ export default async function EventsPage() {
               <div className="search-field">
                 <Icon name="calendar" />
                 <div>
-                  <label>When</label>
-                  <select name="date">
+                  <label htmlFor="event-date-select">When</label>
+                  <select id="event-date-select" name="date">
                     <option value="Any date">Any date</option>
                     <option value="This week">This week</option>
                     <option value="This month">This month</option>
                   </select>
                 </div>
               </div>
-              <button type="submit" className="search-submit">
+              <button type="submit" className="search-submit" aria-label="Search events">
                 <Icon name="search" />
               </button>
             </div>
@@ -101,14 +101,14 @@ export default async function EventsPage() {
                 <h3>Filter events</h3>
                 <button type="button" className="filter-reset">Clear</button>
               </div>
-              <div className="filter-group">
-                <h4>Event type</h4>
-                <label className="filter-option"><span><input type="checkbox" /> Runway show</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Exhibition</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Pop-up shop</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Trade show</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Workshop</span></label>
-              </div>
+              <fieldset className="filter-group" style={{ border: 'none', padding: 0, margin: 0 }}>
+                <legend><h4 style={{ margin: 0, paddingBottom: '16px' }}>Event type</h4></legend>
+                <label className="filter-option" htmlFor="type-runway"><span><input type="checkbox" id="type-runway" name="event_type" value="runway" /> Runway show</span></label>
+                <label className="filter-option" htmlFor="type-exhibition"><span><input type="checkbox" id="type-exhibition" name="event_type" value="exhibition" /> Exhibition</span></label>
+                <label className="filter-option" htmlFor="type-popup"><span><input type="checkbox" id="type-popup" name="event_type" value="popup" /> Pop-up shop</span></label>
+                <label className="filter-option" htmlFor="type-tradeshow"><span><input type="checkbox" id="type-tradeshow" name="event_type" value="tradeshow" /> Trade show</span></label>
+                <label className="filter-option" htmlFor="type-workshop"><span><input type="checkbox" id="type-workshop" name="event_type" value="workshop" /> Workshop</span></label>
+              </fieldset>
             </aside>
 
             <div>

@@ -1,28 +1,24 @@
-
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
-import EmptyState from "@/components/ui/EmptyState";
 import type { Metadata } from "next";
 
 export const revalidate = 300;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function generateMetadata({ searchParams }: any): Promise<Metadata> {
-  const q = searchParams?.q ? ` - ${searchParams.q}` : "";
+export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `Nigerian Fashion Marketplace${q} | STYLEATLAS`,
-    description: "Shop ready-to-wear, accessories and made-to-order pieces from independent Nigerian labels and verified fashion businesses.",
+    title: "Nigerian Fashion Marketplace | STYLEATLAS",
+    description: "Join the STYLEATLAS marketplace launch list and receive updates as verified Nigerian designers, brands and independent makers are added.",
     alternates: {
-      canonical: '/marketplace'
+      canonical: 'https://www.thestyleatlas.com/marketplace'
     },
     openGraph: {
-      url: '/marketplace'
+      url: 'https://www.thestyleatlas.com/marketplace'
     }
   };
 }
 
-export default async function MarketplacePage({
+export default async function StagingMarketplace({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined }
@@ -39,11 +35,11 @@ export default async function MarketplacePage({
     .from('products')
     .select(`
       *,
-      businesses!inner ( business_name, verification_status ),
+      businesses!inner ( business_name, is_verified ),
       product_variants ( size )
     `, { count: 'exact' })
     .eq('is_published', true)
-    .eq('businesses.verification_status', 'approved');
+    .eq('businesses.is_verified', true);
 
   if (q) {
     dbQuery = dbQuery.or(`name.ilike.%${q}%,description.ilike.%${q}%`);
@@ -60,11 +56,9 @@ export default async function MarketplacePage({
   dbQuery = dbQuery.range(start, end);
 
   const { data, count, error } = await dbQuery;
-  let products = data;
-  const totalPages = count ? Math.ceil(count / limit) : 0;
 
   if (error) {
-    console.error('Marketplace query error:', error);
+    console.error('Marketplace query error logged securely.');
     return (
       <main>
         <section className="section compact">
@@ -76,6 +70,9 @@ export default async function MarketplacePage({
       </main>
     );
   }
+
+  let products = data;
+  const totalPages = count ? Math.ceil(count / limit) : 0;
 
   if (products) {
     const PREMIUM_IMAGES = [
@@ -100,34 +97,21 @@ export default async function MarketplacePage({
     </svg>
   );
 
-  // LAUNCH STATE
+  // EXACT ZERO-PRODUCT LAUNCH STATE
   if (!products || products.length === 0) {
     return (
       <main>
         <section className="page-hero">
           <div className="container page-hero-inner">
             <div>
-              <div className="breadcrumb">
-                <Link href="/">Home</Link>
-                <span>/</span>
-                <span>Marketplace</span>
-              </div>
               <span className="eyebrow light">STYLEATLAS Marketplace</span>
               <h1 className="page-title">Nigerian fashion, selected with care.</h1>
-            </div>
-          </div>
-        </section>
-        <section className="section compact">
-          <div className="container">
-            <div className="market-grid" id="products">
-              <EmptyState 
-                heading="Marketplace launching soon" 
-                supportingText="We’re currently onboarding verified Nigerian designers, brands and independent makers for the first STYLEATLAS marketplace collection."
-                primaryButtonLabel="Apply as a founding seller"
-                primaryButtonHref="/contact?category=seller-enquiry"
-                secondaryButtonLabel="Get marketplace updates"
-                secondaryButtonHref="/#newsletter-email"
-              />
+              <p>We’re currently onboarding verified Nigerian designers, brands and independent makers for the first STYLEATLAS marketplace collection.</p>
+              
+              <div style={{ display: 'flex', gap: '16px', marginTop: '32px' }}>
+                <Link className="btn btn-gold" href="/contact?category=marketplace-seller">Apply as a founding seller</Link>
+                <Link className="btn btn-outline-light" href="/#newsletter-email">Get marketplace updates</Link>
+              </div>
             </div>
           </div>
         </section>
@@ -148,7 +132,7 @@ export default async function MarketplacePage({
             </div>
             <span className="eyebrow light">Curated Nigerian fashion</span>
             <h1 className="page-title">Pieces with a maker, a story and somewhere to go.</h1>
-            <p>Shop ready-to-wear, accessories and made-to-order pieces from independent Nigerian labels and verified fashion businesses.</p>
+            <p>Discover ready-to-wear, accessories and made-to-order pieces from independent Nigerian labels and verified fashion businesses.</p>
           </div>
         </div>
       </section>
@@ -157,12 +141,12 @@ export default async function MarketplacePage({
         <div className="container">
           <div className="section-head">
             <div>
-              <span className="eyebrow">Shop by edit</span>
-              <h2>Built around how people actually dress and buy.</h2>
+              <span className="eyebrow">Explore by edit</span>
+              <h2>Built around how people actually dress and discover.</h2>
             </div>
             <form method="GET" action="/marketplace" className="results-controls">
               <input type="hidden" name="q" value={q} />
-              <select className="result-select" name="sort" defaultValue={sort}>
+              <select className="result-select" name="sort" defaultValue={sort} aria-label="Sort products">
                 <option value="newest">Sort: Newest</option>
                 <option value="price-asc">Price: low to high</option>
                 <option value="price-desc">Price: high to low</option>

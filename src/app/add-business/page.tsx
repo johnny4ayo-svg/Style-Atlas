@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
-// Moved metadata to layout.tsx
-
+import { createClient } from "@/lib/supabase/client";
 
 export default function AddBusinessPage() {
   const router = useRouter();
+  const supabase = createClient();
   const [currentStep, setCurrentStep] = useState(1);
   const [specialities, setSpecialities] = useState<string[]>([]);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [formData, setFormData] = useState({
     businessName: '',
     category: 'Fashion designer / atelier',
@@ -21,6 +22,15 @@ export default function AddBusinessPage() {
     startingPrice: '',
     leadTime: '3 to 6 weeks'
   });
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+      setIsLoadingAuth(false);
+    };
+    checkAuth();
+  }, [supabase.auth]);
 
   // Draft saving
   useEffect(() => {
@@ -70,9 +80,45 @@ export default function AddBusinessPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     localStorage.removeItem('businessOnboardingDraft');
-    alert('Business draft submitted for review!');
+    alert('Business profile submitted! It will be reviewed by our team before going live.');
     router.push('/dashboard');
   };
+
+  if (isLoadingAuth) {
+    return (
+      <main>
+        <section className="section compact">
+          <div className="container" style={{ textAlign: 'center', padding: '100px 20px' }}>
+            <p>Loading...</p>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <main>
+        <section className="page-hero">
+          <div className="container page-hero-inner">
+            <div>
+              <span className="eyebrow light">Business onboarding</span>
+              <h1 className="page-title">
+                Create an account to add your business.
+              </h1>
+              <p>
+                You need to be logged in to create and manage a business profile on STYLEATLAS.
+              </p>
+              <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
+                <Link className="btn btn-gold" href="/login?redirect=/add-business">Create an account</Link>
+                <Link className="btn btn-outline-light" href="/login?redirect=/add-business">Log in</Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main>
@@ -142,12 +188,12 @@ export default function AddBusinessPage() {
                 <h2>Account Information</h2>
                 <p>We will link this business profile to your current logged-in account.</p>
                 <div className="form-group">
-                  <label>Contact Email</label>
-                  <input className="form-control" type="email" placeholder="your@email.com" required />
+                  <label htmlFor="contact-email">Contact Email</label>
+                  <input id="contact-email" name="contactEmail" className="form-control" type="email" placeholder="your@email.com" autoComplete="email" required />
                 </div>
                 <div className="form-group">
-                  <label>Phone Number (for WhatsApp enquiries)</label>
-                  <input className="form-control" type="tel" placeholder="+234..." required />
+                  <label htmlFor="contact-phone">Phone Number (for WhatsApp enquiries)</label>
+                  <input id="contact-phone" name="contactPhone" className="form-control" type="tel" placeholder="+234..." autoComplete="tel" required />
                 </div>
               </div>
             )}
@@ -159,12 +205,12 @@ export default function AddBusinessPage() {
                 
                 <div className="form-row">
                   <div className="form-group">
-                    <label>Business name</label>
-                    <input className="form-control" name="businessName" value={formData.businessName} onChange={handleChange} required />
+                    <label htmlFor="businessName">Business name</label>
+                    <input id="businessName" className="form-control" name="businessName" value={formData.businessName} onChange={handleChange} required />
                   </div>
                   <div className="form-group">
-                    <label>Primary category</label>
-                    <select className="form-control" name="category" value={formData.category} onChange={handleChange}>
+                    <label htmlFor="category">Primary category</label>
+                    <select id="category" className="form-control" name="category" value={formData.category} onChange={handleChange}>
                       <option>Fashion designer / atelier</option>
                       <option>Fashion brand</option>
                       <option>Fashion school</option>
@@ -176,23 +222,23 @@ export default function AddBusinessPage() {
                 
                 <div className="form-row">
                   <div className="form-group">
-                    <label>City</label>
-                    <input className="form-control" name="city" value={formData.city} onChange={handleChange} required placeholder="e.g. Kano, Enugu..." />
+                    <label htmlFor="city">City</label>
+                    <input id="city" className="form-control" name="city" value={formData.city} onChange={handleChange} required placeholder="e.g. Kano, Enugu..." />
                   </div>
                   <div className="form-group">
-                    <label>State</label>
-                    <input className="form-control" name="state" value={formData.state} onChange={handleChange} required placeholder="e.g. Kano State..." />
+                    <label htmlFor="state">State</label>
+                    <input id="state" className="form-control" name="state" value={formData.state} onChange={handleChange} required placeholder="e.g. Kano State..." />
                   </div>
                 </div>
                 
                 <div className="form-group">
-                  <label>Short positioning statement</label>
-                  <input className="form-control" name="positioning" value={formData.positioning} onChange={handleChange} />
+                  <label htmlFor="positioning">Short positioning statement</label>
+                  <input id="positioning" className="form-control" name="positioning" value={formData.positioning} onChange={handleChange} />
                 </div>
                 
                 <div className="form-group">
-                  <label>About the business</label>
-                  <textarea className="form-control" name="description" value={formData.description} onChange={handleChange}></textarea>
+                  <label htmlFor="description">About the business</label>
+                  <textarea id="description" className="form-control" name="description" value={formData.description} onChange={handleChange}></textarea>
                 </div>
                 
                 <div className="form-group">
@@ -218,12 +264,12 @@ export default function AddBusinessPage() {
                 
                 <div className="form-row">
                   <div className="form-group">
-                    <label>Starting price</label>
-                    <input className="form-control" name="startingPrice" value={formData.startingPrice} onChange={handleChange} placeholder="₦..." />
+                    <label htmlFor="startingPrice">Starting price</label>
+                    <input id="startingPrice" className="form-control" name="startingPrice" value={formData.startingPrice} onChange={handleChange} placeholder="₦..." />
                   </div>
                   <div className="form-group">
-                    <label>Average lead time</label>
-                    <select className="form-control" name="leadTime" value={formData.leadTime} onChange={handleChange}>
+                    <label htmlFor="leadTime">Average lead time</label>
+                    <select id="leadTime" className="form-control" name="leadTime" value={formData.leadTime} onChange={handleChange}>
                       <option>1 to 2 weeks</option>
                       <option>3 to 6 weeks</option>
                       <option>6 to 12 weeks</option>
@@ -239,8 +285,8 @@ export default function AddBusinessPage() {
                 <p>Upload a profile logo and images for your portfolio.</p>
                 
                 <div className="upload-zone" style={{ marginBottom: '24px' }}>
-                  <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', width: '100%', padding: '32px' }}>
-                    <input type="file" accept="image/*" style={{ display: 'none' }} />
+                  <label htmlFor="logo-upload" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', width: '100%', padding: '32px' }}>
+                    <input id="logo-upload" type="file" accept="image/*" style={{ display: 'none' }} />
                     <svg className="icon" aria-hidden="true" style={{ width: '32px', height: '32px', marginBottom: '12px' }}>
                       <use href="/icons/sprite.svg#icon-camera"></use>
                     </svg>
@@ -250,8 +296,8 @@ export default function AddBusinessPage() {
                 </div>
 
                 <div className="upload-zone">
-                  <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', width: '100%', padding: '32px' }}>
-                    <input type="file" accept="image/*" multiple style={{ display: 'none' }} />
+                  <label htmlFor="portfolio-upload" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', width: '100%', padding: '32px' }}>
+                    <input id="portfolio-upload" type="file" accept="image/*" multiple style={{ display: 'none' }} />
                     <svg className="icon" aria-hidden="true" style={{ width: '32px', height: '32px', marginBottom: '12px' }}>
                       <use href="/icons/sprite.svg#icon-grid"></use>
                     </svg>
@@ -264,8 +310,8 @@ export default function AddBusinessPage() {
 
             {currentStep === 4 && (
               <div className="step-content">
-                <h2>Review and publish.</h2>
-                <p>Ensure your details are correct. You can edit these later from your dashboard.</p>
+                <h2>Review and submit.</h2>
+                <p>Ensure your details are correct. You can edit these later from your dashboard after approval.</p>
                 <div style={{ background: 'var(--ivory-2)', padding: '24px', borderRadius: '12px', marginBottom: '24px' }}>
                   <h3>{formData.businessName || 'Business Name'}</h3>
                   <p><strong>Category:</strong> {formData.category}</p>
@@ -288,7 +334,7 @@ export default function AddBusinessPage() {
                   </button>
                 ) : (
                   <button type="submit" className="btn btn-gold">
-                    Submit Profile
+                    Review and submit
                   </button>
                 )}
               </div>

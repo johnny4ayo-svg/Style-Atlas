@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormState, useFormStatus } from "react-dom";
+import { useSearchParams } from "next/navigation";
 import { submitContactForm } from "./actions";
 
 function SubmitButton() {
@@ -14,6 +15,8 @@ function SubmitButton() {
 
 export default function ContactForm() {
   const [state, formAction] = useFormState(submitContactForm, null);
+  const searchParams = useSearchParams();
+  const defaultCategory = searchParams.get('category') || "";
 
   if (state?.success) {
     return (
@@ -44,8 +47,10 @@ export default function ContactForm() {
       
       <div className="form-group">
         <label htmlFor="category" style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: 'bold' }}>Enquiry category</label>
-        <select id="category" name="category" required style={{ width: '100%', padding: '12px', border: '1px solid var(--border)', borderRadius: '4px', background: 'white' }}>
+        <select id="category" name="category" defaultValue={defaultCategory} required style={{ width: '100%', padding: '12px', border: '1px solid var(--border)', borderRadius: '4px', background: 'white' }}>
           <option value="">Select a category</option>
+          <option value="marketplace-seller">Marketplace Seller Application</option>
+          <option value="professional-request">Request a professional</option>
           <option value="listing_support">Listing support</option>
           <option value="partnerships">Partnerships</option>
           <option value="inaccurate_information">Inaccurate information</option>

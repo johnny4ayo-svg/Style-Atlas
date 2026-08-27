@@ -87,15 +87,15 @@ export default async function JobsPage({
               <div className="search-field">
                 <Icon name="search" />
                 <div>
-                  <label>Role or skill</label>
-                  <input name="q" defaultValue={query} placeholder="Pattern cutter, stylist, retail manager..." />
+                  <label htmlFor="job-search-input">Role or skill</label>
+                  <input type="search" id="job-search-input" name="q" defaultValue={query} placeholder="Pattern cutter, stylist, retail manager..." />
                 </div>
               </div>
               <div className="search-field">
                 <Icon name="pin" />
                 <div>
-                  <label>Location</label>
-                  <select name="location" defaultValue={locationFilter}>
+                  <label htmlFor="job-location-select">Location</label>
+                  <select id="job-location-select" name="location" defaultValue={locationFilter}>
                     <option value="All cities">All cities</option>
                     <option value="Lagos">Lagos</option>
                     <option value="Abuja">Abuja</option>
@@ -106,8 +106,8 @@ export default async function JobsPage({
               <div className="search-field">
                 <Icon name="briefcase" />
                 <div>
-                  <label>Work type</label>
-                  <select name="type" defaultValue={typeFilter}>
+                  <label htmlFor="job-type-select">Work type</label>
+                  <select id="job-type-select" name="type" defaultValue={typeFilter}>
                     <option value="All types">All types</option>
                     <option value="Full time">Full time</option>
                     <option value="Part time">Part time</option>
@@ -116,7 +116,7 @@ export default async function JobsPage({
                   </select>
                 </div>
               </div>
-              <button type="submit" className="search-submit">
+              <button type="submit" className="search-submit" aria-label="Search jobs">
                 <Icon name="search" />
               </button>
             </div>
@@ -130,16 +130,16 @@ export default async function JobsPage({
               </div>
               <div className="filter-group">
                 <h4>Department</h4>
-                <label className="filter-option"><span><input type="checkbox" /> Design</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Production</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Retail</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Marketing</span></label>
+                <label className="filter-option" htmlFor="dept-design"><span><input type="checkbox" id="dept-design" name="department" value="design" /> Design</span></label>
+                <label className="filter-option" htmlFor="dept-production"><span><input type="checkbox" id="dept-production" name="department" value="production" /> Production</span></label>
+                <label className="filter-option" htmlFor="dept-retail"><span><input type="checkbox" id="dept-retail" name="department" value="retail" /> Retail</span></label>
+                <label className="filter-option" htmlFor="dept-marketing"><span><input type="checkbox" id="dept-marketing" name="department" value="marketing" /> Marketing</span></label>
               </div>
               <div className="filter-group">
                 <h4>Experience</h4>
-                <label className="filter-option"><span><input type="checkbox" /> Entry level</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Mid level</span></label>
-                <label className="filter-option"><span><input type="checkbox" /> Senior</span></label>
+                <label className="filter-option" htmlFor="exp-entry"><span><input type="checkbox" id="exp-entry" name="experience" value="entry" /> Entry level</span></label>
+                <label className="filter-option" htmlFor="exp-mid"><span><input type="checkbox" id="exp-mid" name="experience" value="mid" /> Mid level</span></label>
+                <label className="filter-option" htmlFor="exp-senior"><span><input type="checkbox" id="exp-senior" name="experience" value="senior" /> Senior</span></label>
               </div>
             </aside>
 

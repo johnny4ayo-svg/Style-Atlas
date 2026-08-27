@@ -7,7 +7,7 @@ export const revalidate = 300;
 
 export default async function StagingHome() {
   const supabase = createClient();
-  const { data: businesses } = await supabase
+  const businessesPromise = supabase
     .from('businesses')
     .select(`
       id,
@@ -24,16 +24,18 @@ export default async function StagingHome() {
         categories(name)
       )
     `)
-    .eq('verification_status', 'approved')
+    .eq('is_verified', true)
     .limit(6); 
 
-  const { data: rawAds } = await supabase
+  const adsPromise = supabase
     .from('promoted_campaigns')
     .select(`
       id,
       businesses!inner(id, business_name, slug, city, state, cover_image_url, is_verified, verification_tier, rating, review_count, business_categories(categories(name)))
     `)
     .eq('status', 'active');
+  
+  const [{ data: businesses }, { data: rawAds }] = await Promise.all([businessesPromise, adsPromise]);
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const adBusinesses = rawAds ? rawAds.map((ad: any) => ({ ...ad.businesses, is_sponsored: true })) : [];
@@ -224,7 +226,7 @@ export default async function StagingHome() {
         ` }} />
         <div className="container">
           <div className="section-head">
-            <div><span className="eyebrow">More from Nigerian fashion</span><h2>Shop, learn and discover new opportunities.</h2></div>
+            <div><span className="eyebrow">More from Nigerian fashion</span><h2>Search, learn, find opportunities and follow Nigerian fashion as STYLEATLAS grows.</h2></div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
             <Link href="/marketplace" style={{ background: '#fff', border: '1px solid #dfd5c8', borderRadius: '16px', padding: '32px', display: 'block', transition: '0.2s', textDecoration: 'none', color: 'inherit' }}>
