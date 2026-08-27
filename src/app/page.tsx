@@ -59,7 +59,7 @@ export default async function StagingHome() {
       
       {/* 1. HERO SECTION */}
       <section className="hero home-hero">
-        <div className="container hero-grid" style={{ minHeight: '680px', gridTemplateColumns: '1fr 1fr' }}>
+        <div className="container hero-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
           <div className="hero-copy" style={{ padding: '40px 0' }}>
             <span className="eyebrow">THE PREMIER NIGERIAN FASHION DIRECTORY</span>
             <h1 style={{ marginTop: '16px', marginBottom: '16px' }}>Find Nigeria’s finest fashion professionals.</h1>
@@ -68,10 +68,6 @@ export default async function StagingHome() {
             <div className="home-hero__desktop-search home-hero__search">
               <style dangerouslySetInnerHTML={{ __html: `
                 .home-hero__search .search-dock { position: relative !important; inset: auto !important; transform: none !important; width: 100% !important; margin: 0 !important; }
-                @media (max-width: 767px) {
-                  .home-hero__desktop-search { display: none !important; }
-                  .home-hero__mobile-actions { display: flex !important; flex-direction: column; gap: 12px; }
-                }
               ` }} />
               <SearchDock />
             </div>
@@ -82,7 +78,7 @@ export default async function StagingHome() {
             </div>
           </div>
           
-          <div className="hero-image-wrap" style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="hero-image-wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ position: 'relative', width: '80%', aspectRatio: '4/5', borderRadius: '16px', overflow: 'hidden' }}>
               <Image className="hero-image" src="/images/hero-editorial.jpg" alt="Nigerian fashion model" fill priority style={{ objectFit: 'cover' }} />
             </div>
@@ -129,44 +125,46 @@ export default async function StagingHome() {
       </section>
 
       {/* 3. FEATURED PROFESSIONALS */}
-      {featuredList && featuredList.length > 0 && (
-        <section className="section section-dark" style={{ background: '#0a0a0a' }}>
-          <div className="container">
-            <div className="section-head">
-              <div><span className="eyebrow light">Professionals worth discovering</span><h2>Explore selected talent from across Nigeria.</h2></div>
-              <Link className="text-link" href="/directory">View all professionals <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-            </div>
-            <div className="designer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
-              <style dangerouslySetInnerHTML={{ __html: `
-                @media (max-width: 1024px) and (min-width: 768px) {
-                  .designer-grid { grid-template-columns: repeat(2, 1fr) !important; }
-                }
-                @media (max-width: 767px) { 
-                  .designer-grid { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 16px; margin: 0 -20px; padding: 0 20px 16px; gap: 16px; }
-                  .designer-grid .designer-card { flex: 0 0 85%; scroll-snap-align: center; }
-                }
-              ` }} />
-              {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                featuredList.slice(0, 4).map((business: any) => (
-                  <article className="designer-card" key={business.id} style={{ border: 'none', background: 'transparent' }}>
-                    <div className="designer-media" style={{ height: 'auto', aspectRatio: '4/5', borderRadius: '12px' }}>
-                      <Image src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name}`} fill sizes="(max-width: 900px) 100vw, 25vw" style={{ objectFit: 'cover' }} />
-                      {business.is_sponsored && <div className="card-badges"><span className="badge" style={{ background: 'var(--gold)', color: '#000', border: 'none' }}>Sponsored</span></div>}
-                      {business.verification_tier && business.verification_tier !== 'none' && !business.is_sponsored && <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>}
-                    </div>
-                    <div className="designer-body" style={{ marginTop: '16px', padding: 0 }}>
-                      <h3 style={{ fontSize: '18px', color: '#fff' }}>{business.business_name}</h3>
-                      <div className="location-line" style={{ margin: '4px 0 12px' }}>{business.business_categories?.[0]?.categories?.name || 'Professional'} · {business.city}</div>
-                      <Link className="text-link" href={`/profile/${business.slug}`}>View profile <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-                    </div>
-                  </article>
-                ))
-              }
-            </div>
+      <section className="section section-dark featured-prof-section" style={{ background: '#0a0a0a', padding: '88px 0' }}>
+        <div className="container">
+          <div className="section-head">
+            <div><span className="eyebrow light">Professionals worth discovering</span><h2>Explore selected talent from across Nigeria.</h2></div>
           </div>
-        </section>
-      )}
+          <div className="designer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+            <style dangerouslySetInnerHTML={{ __html: `
+              @media (max-width: 1279px) and (min-width: 768px) {
+                .designer-grid { grid-template-columns: repeat(2, 1fr) !important; }
+              }
+              @media (max-width: 767px) { 
+                .featured-prof-section { padding: 60px 0 !important; }
+                .designer-grid { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 16px; margin: 0 -20px; padding: 0 20px 16px; gap: 16px; }
+                .designer-grid .designer-card { flex: 0 0 85%; scroll-snap-align: center; }
+                .designer-grid .designer-card:nth-child(4) { display: none !important; }
+              }
+            ` }} />
+            {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              featuredList.slice(0, 4).map((business: any) => (
+                <article className="designer-card" key={business.id} style={{ border: 'none', background: 'transparent' }}>
+                  <div className="designer-media" style={{ height: 'auto', aspectRatio: '4/5', borderRadius: '12px' }}>
+                    <Image src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name}`} fill sizes="(max-width: 900px) 100vw, 25vw" style={{ objectFit: 'cover' }} />
+                    {business.is_sponsored && <div className="card-badges"><span className="badge" style={{ background: 'var(--gold)', color: '#000', border: 'none' }}>Sponsored</span></div>}
+                    {business.verification_tier && business.verification_tier !== 'none' && !business.is_sponsored && <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>}
+                  </div>
+                  <div className="designer-body" style={{ marginTop: '16px', padding: 0 }}>
+                    <h3 style={{ fontSize: '18px', color: '#fff' }}>{business.business_name}</h3>
+                    <div className="location-line" style={{ margin: '4px 0 12px' }}>{business.business_categories?.[0]?.categories?.name || 'Professional'} · {business.city}</div>
+                    <Link className="text-link" href={`/profile/${business.slug}`}>View profile <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
+                  </div>
+                </article>
+              ))
+            }
+          </div>
+          <div style={{ marginTop: '40px', textAlign: 'center' }}>
+            <Link className="text-link" href="/directory">Browse all professionals <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
+          </div>
+        </div>
+      </section>
 
       {/* 4. HOW IT WORKS */}
       <section className="section">
@@ -227,33 +225,36 @@ export default async function StagingHome() {
       </section>
 
       {/* 6. EXPLORE OPPORTUNITIES (Desktop Only) */}
-      <section className="section explore-opportunities-section" style={{ display: 'block' }}>
+      <section className="explore-opportunities-section" style={{ padding: '68px 0' }}>
         <style dangerouslySetInnerHTML={{ __html: `
           @media (max-width: 767px) { .explore-opportunities-section { display: none !important; } }
+          .explore-opportunities-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 36px; }
+          .explore-opportunities-card { min-height: 160px; max-height: 190px; background: #fff; border: 1px solid #dfd5c8; border-radius: 16px; padding: 32px; display: flex; flex-direction: column; justify-content: center; transition: 0.2s; text-decoration: none; color: inherit; }
+          .explore-opportunities-card:hover { transform: translateY(-4px); box-shadow: 0 12px 42px rgba(8,8,7,.06); }
         ` }} />
         <div className="container">
-          <div className="section-head">
+          <div className="section-head" style={{ marginBottom: 0 }}>
             <div><span className="eyebrow">More from Nigerian fashion</span><h2>Shop, learn and discover new opportunities.</h2></div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
-            <Link href="/#newsletter-email" style={{ background: '#fff', border: '1px solid #dfd5c8', borderRadius: '16px', padding: '32px', display: 'block', transition: '0.2s', textDecoration: 'none', color: 'inherit' }}>
+          <div className="explore-opportunities-grid">
+            <Link href="/#newsletter-email" className="explore-opportunities-card">
               <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Marketplace launching soon</h3>
-              <p style={{ color: 'var(--muted)' }}>Join the launch list as verified Nigerian designers, brands and independent makers are added.</p>
+              <p style={{ color: 'var(--muted)', margin: 0 }}>Join the launch list as verified Nigerian designers, brands and independent makers are added.</p>
             </Link>
-            <Link href="/jobs" style={{ background: '#fff', border: '1px solid #dfd5c8', borderRadius: '16px', padding: '32px', display: 'block', transition: '0.2s', textDecoration: 'none', color: 'inherit' }}>
+            <Link href="/jobs" className="explore-opportunities-card">
               <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Jobs</h3>
-              <p style={{ color: 'var(--muted)' }}>Find roles across the fashion industry.</p>
+              <p style={{ color: 'var(--muted)', margin: 0 }}>Find roles across the fashion industry.</p>
             </Link>
-            <Link href="/events" style={{ background: '#fff', border: '1px solid #dfd5c8', borderRadius: '16px', padding: '32px', display: 'block', transition: '0.2s', textDecoration: 'none', color: 'inherit' }}>
+            <Link href="/events" className="explore-opportunities-card">
               <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Events</h3>
-              <p style={{ color: 'var(--muted)' }}>Shows, exhibitions, and gatherings.</p>
+              <p style={{ color: 'var(--muted)', margin: 0 }}>Shows, exhibitions, and gatherings.</p>
             </Link>
-            <Link href="/directory?category=schools" style={{ background: '#fff', border: '1px solid #dfd5c8', borderRadius: '16px', padding: '32px', display: 'block', transition: '0.2s', textDecoration: 'none', color: 'inherit' }}>
+            <Link href="/directory?category=schools" className="explore-opportunities-card">
               <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Schools</h3>
-              <p style={{ color: 'var(--muted)' }}>Start or advance your fashion education.</p>
+              <p style={{ color: 'var(--muted)', margin: 0 }}>Start or advance your fashion education.</p>
             </Link>
           </div>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: 'center', marginTop: '28px' }}>
             <Link className="text-link" href="/journal">Read the StyleAtlas Journal <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
           </div>
         </div>
