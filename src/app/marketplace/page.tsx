@@ -24,6 +24,21 @@ export default async function StagingMarketplace({
   searchParams: { [key: string]: string | undefined }
 }) {
   const supabase = createClient();
+
+  // IMPORTANT: The zero-product decision must happen BEFORE search parameters are read or pagination is rendered.
+  // Check the global count of approved products for the pre-launch state.
+  const { count: totalApprovedCount } = await supabase
+    .from('products')
+    .select(`id, businesses!inner(is_verified)`, { count: 'exact', head: true })
+    .eq('is_published', true)
+    .eq('businesses.is_verified', true);
+
+  // EXACT ZERO-PRODUCT LAUNCH STATE
+  if (!totalApprovedCount || totalApprovedCount === 0) {
+    return <MarketplaceComingSoon />;
+  }
+
+  // If products exist, process search parameters and load catalogue
   const q = searchParams.q || '';
   const sort = searchParams.sort || 'newest';
   const page = parseInt(searchParams.page || '1', 10);
@@ -93,10 +108,6 @@ export default async function StagingMarketplace({
 
   const approvedProducts = products || [];
 
-  // EXACT ZERO-PRODUCT LAUNCH STATE
-  if (approvedProducts.length === 0) {
-    return <MarketplaceComingSoon />;
-  }
 
   const Icon = ({ name }: { name: string }) => (
     <svg className="icon" aria-hidden="true">
@@ -243,7 +254,7 @@ function MarketplaceComingSoon() {
         <h1 id="marketplace-title" style={{ fontSize: '48px', marginBottom: '16px' }}>Nigerian fashion, selected with care.</h1>
         <p style={{ fontSize: '18px', color: 'var(--muted)', marginBottom: '32px' }}>We’re currently onboarding verified Nigerian designers, brands and independent makers for the first STYLEATLAS marketplace collection.</p>
         <div className="marketplace-actions" style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
-          <Link className="btn btn-gold" href="/contact?category=marketplace-seller-application">Apply as a founding seller</Link>
+          <Link className="btn btn-gold" href="/contact?category=marketplace-seller">Apply as a founding seller</Link>
           <Link className="btn btn-outline-dark" href="/#newsletter-email">Get marketplace updates</Link>
         </div>
       </section>

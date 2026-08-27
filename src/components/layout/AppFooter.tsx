@@ -179,7 +179,7 @@ export function Footer() {
             <button
               type="button"
               className="footer-group-trigger"
-              aria-expanded={openSection === "directory"}
+              aria-expanded={!isMobile || openSection === "directory"}
               aria-controls="footer-directory-links"
               onClick={() => toggleSection("directory")}
             >
@@ -200,7 +200,7 @@ export function Footer() {
             <button
               type="button"
               className="footer-group-trigger"
-              aria-expanded={openSection === "explore"}
+              aria-expanded={!isMobile || openSection === "explore"}
               aria-controls="footer-explore-links"
               onClick={() => toggleSection("explore")}
             >
@@ -219,7 +219,7 @@ export function Footer() {
             <button
               type="button"
               className="footer-group-trigger"
-              aria-expanded={openSection === "business"}
+              aria-expanded={!isMobile || openSection === "business"}
               aria-controls="footer-business-links"
               onClick={() => toggleSection("business")}
             >
@@ -238,7 +238,7 @@ export function Footer() {
             <button
               type="button"
               className="footer-group-trigger"
-              aria-expanded={openSection === "company"}
+              aria-expanded={!isMobile || openSection === "company"}
               aria-controls="footer-company-links"
               onClick={() => toggleSection("company")}
             >
