@@ -59,7 +59,7 @@ export default async function StagingHome() {
       
       {/* 1. HERO SECTION */}
       <section className="hero home-hero">
-        <div className="container hero-grid" style={{ minHeight: 'auto', gridTemplateColumns: '1fr 1fr' }}>
+        <div className="container hero-grid" style={{ minHeight: '680px', gridTemplateColumns: '1fr 1fr' }}>
           <div className="hero-copy" style={{ padding: '40px 0' }}>
             <span className="eyebrow">THE PREMIER NIGERIAN FASHION DIRECTORY</span>
             <h1 style={{ marginTop: '16px', marginBottom: '16px' }}>Find Nigeria’s finest fashion professionals.</h1>
@@ -68,13 +68,17 @@ export default async function StagingHome() {
             <div className="home-hero__desktop-search home-hero__search">
               <style dangerouslySetInnerHTML={{ __html: `
                 .home-hero__search .search-dock { position: relative !important; inset: auto !important; transform: none !important; width: 100% !important; margin: 0 !important; }
+                @media (max-width: 767px) {
+                  .home-hero__desktop-search { display: none !important; }
+                  .home-hero__mobile-actions { display: flex !important; flex-direction: column; gap: 12px; }
+                }
               ` }} />
               <SearchDock />
             </div>
 
             <div className="home-hero__mobile-actions" style={{ display: 'none', marginTop: '24px' }}>
-              <Link className="btn btn-gold" href="/directory" style={{ width: '100%' }}>Find professionals</Link>
-              <Link className="btn btn-outline-light" href="/add-business" style={{ width: '100%' }}>List your business</Link>
+              <Link className="btn btn-gold" href="/directory" style={{ width: '100%', textAlign: 'center' }}>Find professionals</Link>
+              <Link className="btn btn-outline-light" href="/add-business" style={{ width: '100%', textAlign: 'center' }}>List your business</Link>
             </div>
           </div>
           
@@ -134,8 +138,11 @@ export default async function StagingHome() {
             </div>
             <div className="designer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
               <style dangerouslySetInnerHTML={{ __html: `
+                @media (max-width: 1024px) and (min-width: 768px) {
+                  .designer-grid { grid-template-columns: repeat(2, 1fr) !important; }
+                }
                 @media (max-width: 767px) { 
-                  .designer-grid { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 16px; margin: 0 -20px; padding: 0 20px 16px; }
+                  .designer-grid { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 16px; margin: 0 -20px; padding: 0 20px 16px; gap: 16px; }
                   .designer-grid .designer-card { flex: 0 0 85%; scroll-snap-align: center; }
                 }
               ` }} />
@@ -201,16 +208,16 @@ export default async function StagingHome() {
           <div className="journey-grid" style={{ marginTop: '40px' }}>
             <article className="journey-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <span className="kicker">For customers</span>
-              <h3 style={{ fontSize: '32px' }}>Hire with confidence.</h3>
-              <p style={{ fontSize: '16px', lineHeight: '1.6' }}>Every professional is vetted. We check identities and review portfolios before profiles go live.</p>
+              <h3 style={{ fontSize: '32px' }}>Find with confidence.</h3>
+              <p style={{ fontSize: '16px', lineHeight: '1.6' }}>Explore reviewed profiles and portfolios.</p>
               <div style={{ marginTop: '24px' }}>
-                <Link className="text-link" href="/directory">Start searching <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
+                <Link className="text-link" href="/directory">Find professionals <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
               </div>
             </article>
             <article className="journey-card dark" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <span className="kicker gold">For professionals</span>
-              <h3 style={{ fontSize: '32px' }}>Build your reputation.</h3>
-              <p style={{ fontSize: '16px', lineHeight: '1.6' }}>Verified status signals quality to customers. Stand out with reviews and a professional portfolio.</p>
+              <h3 style={{ fontSize: '32px' }}>Stand out as verified.</h3>
+              <p style={{ fontSize: '16px', lineHeight: '1.6' }}>Complete our review and earn the verification badge.</p>
               <div style={{ marginTop: '24px' }}>
                 <Link className="text-link" style={{ color: 'var(--gold)' }} href="/verification">Learn about verification <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
               </div>
@@ -226,7 +233,7 @@ export default async function StagingHome() {
         ` }} />
         <div className="container">
           <div className="section-head">
-            <div><span className="eyebrow">More from Nigerian fashion</span><h2>Search, learn, find opportunities and follow Nigerian fashion as STYLEATLAS grows.</h2></div>
+            <div><span className="eyebrow">More from Nigerian fashion</span><h2>Shop, learn and discover new opportunities.</h2></div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
             <Link href="/marketplace" style={{ background: '#fff', border: '1px solid #dfd5c8', borderRadius: '16px', padding: '32px', display: 'block', transition: '0.2s', textDecoration: 'none', color: 'inherit' }}>

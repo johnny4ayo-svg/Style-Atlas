@@ -27,8 +27,39 @@ export function Footer() {
       <style dangerouslySetInnerHTML={{ __html: `
         .footer-groups {
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 2rem;
+          grid-template-columns: 1.45fr 1fr 1fr 1fr 1fr;
+          gap: 48px;
+          align-items: start;
+        }
+        .footer-column nav, .footer-column ul {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 14px;
+          margin: 0;
+          padding: 0;
+        }
+        .footer-column a, .footer-column li {
+          display: block;
+          width: fit-content;
+          white-space: normal;
+        }
+        .footer-newsletter, .footer-newsletter form {
+          width: 100%;
+          max-width: 420px;
+        }
+        .footer-newsletter label {
+          display: block;
+          margin-bottom: 8px;
+          color: #ffffff;
+          font-size: 13px;
+          font-weight: 600;
+        }
+        .footer-newsletter button {
+          min-width: 100px;
+          font-size: 13px;
+          font-weight: 700;
+          color: #111111;
         }
         .footer-newsletter-form {
           display: flex;
@@ -82,27 +113,43 @@ export function Footer() {
         }
       ` }} />
       <div className="container">
-        <div className="footer-brand" style={{ marginBottom: isMobile ? '32px' : '48px' }}>
-          <Image src="/brand/styleatlas-logo-dark.svg" alt="STYLEATLAS" width={180} height={30} style={{ marginBottom: '20px' }} />
-          <p style={{ marginBottom: '20px', maxWidth: '400px' }}>Nigeria&apos;s premium fashion discovery platform for trusted designers, brands, schools and creative professionals.</p>
-          <div className="socials" style={{ display: 'flex', gap: '16px' }}>
-            {siteConfig.socials?.instagram && (
-              <a href={siteConfig.socials.instagram} aria-label="STYLEATLAS on Instagram" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>IG</a>
-            )}
-            {siteConfig.socials?.tiktok && (
-              <a href={siteConfig.socials.tiktok} aria-label="STYLEATLAS on TikTok" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>TT</a>
-            )}
-            {siteConfig.socials?.youtube && (
-              <a href={siteConfig.socials.youtube} aria-label="STYLEATLAS on YouTube" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>YT</a>
-            )}
-            {siteConfig.socials?.linkedin && (
-              <a href={siteConfig.socials.linkedin} aria-label="STYLEATLAS on LinkedIn" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>IN</a>
-            )}
-          </div>
-        </div>
-
         <div className="footer-groups">
-          <div className="footer-group">
+          <div className="footer-column" style={{ marginBottom: isMobile ? '32px' : '0' }}>
+            <div className="footer-brand" style={{ marginBottom: '32px' }}>
+              <Image src="/brand/styleatlas-logo-dark.svg" alt="STYLEATLAS" width={180} height={30} style={{ marginBottom: '20px' }} />
+              <p style={{ marginBottom: '20px', maxWidth: '400px' }}>Nigeria&apos;s premium fashion discovery platform for trusted designers, brands, schools and creative professionals.</p>
+              <div className="socials" style={{ display: 'flex', gap: '16px' }}>
+                {siteConfig.socials?.instagram && (
+                  <a href={siteConfig.socials.instagram} aria-label="STYLEATLAS on Instagram" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>IG</a>
+                )}
+                {siteConfig.socials?.tiktok && (
+                  <a href={siteConfig.socials.tiktok} aria-label="STYLEATLAS on TikTok" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>TT</a>
+                )}
+                {siteConfig.socials?.youtube && (
+                  <a href={siteConfig.socials.youtube} aria-label="STYLEATLAS on YouTube" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>YT</a>
+                )}
+                {siteConfig.socials?.linkedin && (
+                  <a href={siteConfig.socials.linkedin} aria-label="STYLEATLAS on LinkedIn" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.7 }}>IN</a>
+                )}
+              </div>
+            </div>
+
+            <div className="footer-newsletter">
+              <section id="newsletter-email" aria-labelledby="newsletter-heading">
+                <h4 id="newsletter-heading" style={{ marginBottom: '8px' }}>Stay in style</h4>
+                <p style={{ fontSize: '14px', opacity: 0.7, marginBottom: '24px' }}>Get Nigerian fashion stories, events and opportunities in your inbox.</p>
+                <form className="footer-newsletter-form">
+                  <div style={{ flexGrow: 1 }}>
+                    <label htmlFor="email-input-footer">Email address</label>
+                    <input type="email" id="email-input-footer" name="email" autoComplete="email" required placeholder="Enter your email" aria-label="Email address" style={{ width: '100%' }} />
+                  </div>
+                  <button type="submit" className="btn btn-gold" style={{ alignSelf: 'flex-end' }}>Subscribe</button>
+                </form>
+              </section>
+            </div>
+          </div>
+
+          <div className="footer-group footer-column">
             {isMobile ? (
               <button
                 type="button"
@@ -117,17 +164,17 @@ export function Footer() {
             ) : (
               <h4 style={{ marginBottom: '20px' }}>Directory</h4>
             )}
-            <div id="footer-directory-links" className="footer-group-content" hidden={isMobile && openSection !== 'directory'}>
+            <nav id="footer-directory-links" className="footer-group-content" hidden={isMobile && openSection !== 'directory'}>
               <Link href="/directory?category=designers" style={{ opacity: 0.7, textDecoration: 'none' }}>Designers</Link>
               <Link href="/directory?category=brands" style={{ opacity: 0.7, textDecoration: 'none' }}>Brands</Link>
               <Link href="/directory?category=stylists" style={{ opacity: 0.7, textDecoration: 'none' }}>Stylists</Link>
               <Link href="/directory?category=schools" style={{ opacity: 0.7, textDecoration: 'none' }}>Schools</Link>
               <Link href="/directory?category=photographers" style={{ opacity: 0.7, textDecoration: 'none' }}>Photographers</Link>
               <Link href="/directory?category=tailors" style={{ opacity: 0.7, textDecoration: 'none' }}>Tailors</Link>
-            </div>
+            </nav>
           </div>
 
-          <div className="footer-group">
+          <div className="footer-group footer-column">
             {isMobile ? (
               <button
                 type="button"
@@ -142,15 +189,15 @@ export function Footer() {
             ) : (
               <h4 style={{ marginBottom: '20px' }}>Explore</h4>
             )}
-            <div id="footer-explore-links" className="footer-group-content" hidden={isMobile && openSection !== 'explore'}>
+            <nav id="footer-explore-links" className="footer-group-content" hidden={isMobile && openSection !== 'explore'}>
               <Link href="/marketplace" style={{ opacity: 0.7, textDecoration: 'none' }}>Marketplace</Link>
               <Link href="/jobs" style={{ opacity: 0.7, textDecoration: 'none' }}>Fashion jobs</Link>
               <Link href="/events" style={{ opacity: 0.7, textDecoration: 'none' }}>Events</Link>
               <Link href="/journal" style={{ opacity: 0.7, textDecoration: 'none' }}>Journal</Link>
-            </div>
+            </nav>
           </div>
 
-          <div className="footer-group">
+          <div className="footer-group footer-column">
             {isMobile ? (
               <button
                 type="button"
@@ -165,15 +212,15 @@ export function Footer() {
             ) : (
               <h4 style={{ marginBottom: '20px' }}>For business</h4>
             )}
-            <div id="footer-business-links" className="footer-group-content" hidden={isMobile && openSection !== 'business'}>
+            <nav id="footer-business-links" className="footer-group-content" hidden={isMobile && openSection !== 'business'}>
               <Link href="/add-business" style={{ opacity: 0.7, textDecoration: 'none' }}>Add a listing</Link>
               <Link href="/pricing" style={{ opacity: 0.7, textDecoration: 'none' }}>Membership plans</Link>
               <Link href="/dashboard" style={{ opacity: 0.7, textDecoration: 'none' }}>Business dashboard</Link>
               <Link href="/verification" style={{ opacity: 0.7, textDecoration: 'none' }}>Get verified</Link>
-            </div>
+            </nav>
           </div>
 
-          <div className="footer-group">
+          <div className="footer-group footer-column">
             {isMobile ? (
               <button
                 type="button"
@@ -188,23 +235,12 @@ export function Footer() {
             ) : (
               <h4 style={{ marginBottom: '20px' }}>Company</h4>
             )}
-            <div id="footer-company-links" className="footer-group-content" hidden={isMobile && openSection !== 'company'}>
+            <nav id="footer-company-links" className="footer-group-content" hidden={isMobile && openSection !== 'company'}>
               <Link href="/about" style={{ opacity: 0.7, textDecoration: 'none' }}>About STYLEATLAS</Link>
               <Link href="/contact" style={{ opacity: 0.7, textDecoration: 'none' }}>Contact</Link>
               <Link href="/help" style={{ opacity: 0.7, textDecoration: 'none' }}>Help centre</Link>
-            </div>
+            </nav>
           </div>
-        </div>
-
-        <div className="footer-newsletter">
-          <section id="newsletter-email" aria-labelledby="newsletter-heading">
-            <h4 id="newsletter-heading" style={{ marginBottom: '8px' }}>Stay in style</h4>
-            <p style={{ fontSize: '14px', opacity: 0.7, marginBottom: '24px' }}>Get Nigerian fashion stories, events and opportunities in your inbox.</p>
-            <form className="footer-newsletter-form">
-              <input type="email" id="email-input-footer" name="email" autoComplete="email" required placeholder="Email address" aria-label="Email address" />
-              <button type="submit" className="btn btn-gold">Subscribe</button>
-            </form>
-          </section>
         </div>
 
         <div className="footer-bottom">

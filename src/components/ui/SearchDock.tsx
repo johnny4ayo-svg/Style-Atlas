@@ -7,9 +7,7 @@ export default function SearchDock() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('designers');
   const [query, setQuery] = useState('');
-  const [category, setCategory] = useState('');
   const [city, setCity] = useState('');
-  const [speciality, setSpeciality] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,9 +16,9 @@ export default function SearchDock() {
     const trimmedQuery = query.trim();
     if (trimmedQuery) params.append('q', trimmedQuery);
     
-    // If no category is selected in the dropdown, default to the active tab's category if appropriate
-    let finalCategory = category;
-    if (!finalCategory && activeTab) {
+    // Use the active tab as the category
+    let finalCategory = '';
+    if (activeTab) {
       if (activeTab === 'designers') finalCategory = 'designers';
       if (activeTab === 'brands') finalCategory = 'brands';
       if (activeTab === 'schools') finalCategory = 'schools';
@@ -29,7 +27,6 @@ export default function SearchDock() {
 
     if (finalCategory) params.append('category', finalCategory);
     if (city) params.append('city', city);
-    if (speciality) params.append('speciality', speciality);
     
     // Convert values to URL-safe slugs in params is handled by the values we set in the state
     
@@ -88,21 +85,6 @@ export default function SearchDock() {
           </div>
         </div>
         <div className="search-field">
-          <svg className="icon" aria-hidden="true"><use href="/icons/sprite.svg#icon-scissors"></use></svg>
-          <div>
-            <label htmlFor="search-category">Category</label>
-            <select id="search-category" name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
-              <option value="">All categories</option>
-              <option value="designers">Designers</option>
-              <option value="brands">Brands</option>
-              <option value="schools">Fashion schools</option>
-              <option value="stylists">Stylists</option>
-              <option value="photographers">Photographers</option>
-              <option value="tailors">Tailors</option>
-            </select>
-          </div>
-        </div>
-        <div className="search-field">
           <svg className="icon" aria-hidden="true"><use href="/icons/sprite.svg#icon-pin"></use></svg>
           <div>
             <label htmlFor="search-city">Location</label>
@@ -114,18 +96,6 @@ export default function SearchDock() {
               <option value="port-harcourt">Port Harcourt</option>
               <option value="kano">Kano</option>
               <option value="enugu">Enugu</option>
-            </select>
-          </div>
-        </div>
-        <div className="search-field">
-          <svg className="icon" aria-hidden="true"><use href="/icons/sprite.svg#icon-star"></use></svg>
-          <div>
-            <label htmlFor="search-speciality">Speciality</label>
-            <select id="search-speciality" name="speciality" value={speciality} onChange={(e) => setSpeciality(e.target.value)}>
-              <option value="">All styles</option>
-              <option value="luxury-bridal">Luxury bridal</option>
-              <option value="menswear">Menswear</option>
-              <option value="ready-to-wear">Ready-to-wear</option>
             </select>
           </div>
         </div>
