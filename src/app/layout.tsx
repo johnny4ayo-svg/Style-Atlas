@@ -41,6 +41,13 @@ export const metadata: Metadata = {
     locale: 'en_NG',
     type: 'website',
   },
+  icons: {
+    icon: [
+      { url: '/brand/favicon.png' },
+      { url: '/brand/favicon.svg', type: 'image/svg+xml' }
+    ],
+    apple: '/brand/favicon.png',
+  },
   twitter: {
     card: 'summary_large_image',
     title: "STYLEATLAS",
