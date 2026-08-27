@@ -48,9 +48,8 @@ export default function DirectoryFilterDrawer() {
         </button>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label htmlFor="sort-results" className="sr-only" style={{ display: 'none' }}>Sort results</label>
-          <select id="sort-results" className="result-select">
+          <select id="sort-results" name="sort" className="result-select">
             <option>Sort: Recommended</option>
-            <option>Highest rated</option>
             <option>Recently added</option>
             <option>Price: low to high</option>
           </select>
@@ -112,7 +111,7 @@ export default function DirectoryFilterDrawer() {
 
           <div className="filter-group" style={{ marginBottom: '24px' }}>
             <label htmlFor="filter-location"><h4 style={{ margin: 0, paddingBottom: '16px' }}>Location</h4></label>
-            <select id="filter-location" className="filter-select" style={{ width: '100%', padding: '10px' }}>
+            <select id="filter-location" name="location" className="filter-select" style={{ width: '100%', padding: '10px' }}>
               <option>All Nigerian cities</option>
               <option>Lagos</option>
               <option>Abuja</option>

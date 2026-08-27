@@ -1,0 +1,410 @@
+STYLEATLAS
+Final Mandatory Website Corrections
+One-pass implementation instructions, mobile-footer repair and production acceptance tests
+Website: https://www.thestyleatlas.com
+Prepared from the live production review and attached mobile screenshot
+26 August 2026
+Purpose
+Complete every remaining correction in one controlled pass. The AI agent must deploy the work, test the live production website and provide evidence. A successful code build or preview is not completion.
+Non-negotiable completion rule
+If Marketplace still shows “Service temporarily unavailable”, the mobile footer retains the large blank space, a required form field lacks accessible label structure, the homepage canonical is missing, or production evidence is absent, the project must be reported as incomplete.
+1. Master instruction for the AI agent
+Use this document as the single source of truth for the remaining STYLEATLAS work. Inspect the real repository, database schema, production configuration and existing components before editing. Adapt code examples to the project’s architecture. Do not create duplicate metadata systems, duplicate Marketplace components or parallel form implementations.
+Required work sequence
+Record the current production commit and deployment ID so rollback remains possible.
+Run baseline tests and save the failing Marketplace state, homepage metadata, mobile footer and form-accessibility results.
+Repair the Marketplace data query before redesigning its empty state.
+Implement the homepage SEO and copy corrections.
+Repair the mobile footer structure shown in the attached screenshot.
+Correct Jobs, Events, Directory and Add Business form accessibility.
+Correct Add Business authentication handling and submission language.
+Verify Contact information instead of assuming it is genuine.
+Diagnose homepage performance with measured timing data.
+Deploy to preview, test it, deploy to production, then repeat the full test suite on the live domain.
+Hard rules
+Preserve fixes already live: truthful Events state, working Help Centre pages, corrected escrow wording, pre-launch Pricing and working newsletter anchors.
+Do not add fictional professionals, products, events, jobs, reviews, ratings, authors, testimonials, counters or social accounts.
+Do not hide a database error by pretending the Marketplace contains zero products.
+Do not delete genuine records without a verified backup and exact owner approval.
+Do not weaken authentication, row-level security, validation, rate limiting or approval workflows.
+Do not claim performance or accessibility targets without production test evidence.
+2. Repair the broken Marketplace
+Current production failure
+The Marketplace displays “Service temporarily unavailable”. The production query is failing, so the correct zero-product launch state never renders.
+2.1 Investigate the actual failure
+Marketplace server query and server logs
+Production database connection and environment variables
+Product, seller and status table names
+Database migrations applied in production
+Row-level security and anonymous public-read policies
+Product-to-seller relationships and joins
+Expected status, published and seller-status fields
+Differences between local, preview and production schemas
+Log the underlying error securely on the server. Never expose database table names, credentials, query text or stack traces to visitors.
+2.2 Authoritative public-product rule
+Only publish products that satisfy the equivalent of all three conditions in the real schema:
+product.status = 'approved'
+product.published = true
+seller.status = 'active'
+Count products from the same filtered query. Do not use hard-coded counts, mock arrays or production seed fixtures.
+2.3 Render three distinct states
+if (queryError) {
+  return &lt;MarketplaceErrorState /&gt;;
+}
+if (approvedProducts.length === 0) {
+  return &lt;MarketplaceComingSoon /&gt;;
+}
+return &lt;MarketplaceCatalogue products={approvedProducts} /&gt;;
+A query failure and a successful empty query are different states. Preserve that distinction in logs, monitoring and user-facing behaviour.
+2.4 Exact zero-product launch state
+Label
+STYLEATLAS Marketplace
+H1
+Nigerian fashion, selected with care.
+Description
+We’re currently onboarding verified Nigerian designers, brands and independent makers for the first STYLEATLAS marketplace collection.
+Primary CTA: “Apply as a founding seller”. Link to the genuine seller application. If it does not exist, use /contact?category=marketplace-seller and make the Contact form recognise and preselect that category.
+Secondary CTA: “Get marketplace updates”. Link to /#newsletter-email.
+2.5 Hide in pre-launch mode
+[ ] Sorting and filter controls
+[ ] Category chips
+[ ] Product count
+[ ] Product grid or placeholders
+[ ] Pagination and next-page controls
+[ ] Shopping-cart promotion
+[ ] Product availability claims
+[ ] Escrow claims
+[ ] Product, Offer, Rating or Review structured data
+2.6 Marketplace metadata
+Title: Nigerian Fashion Marketplace | STYLEATLAS
+Description: Join the STYLEATLAS marketplace launch list and receive updates as verified Nigerian designers, brands and independent makers are added.
+Canonical: https://www.thestyleatlas.com/marketplace
+Marketplace acceptance tests
+[ ] /marketplace returns HTTP 200.
+[ ] The production query completes without error.
+[ ] The page contains exactly one H1.
+[ ] The launch state appears when the approved count is zero.
+[ ] Both CTAs work.
+[ ] No catalogue controls appear in rendered HTML when empty.
+[ ] Draft, rejected and unpublished products remain private.
+[ ] Inactive-seller products remain private.
+[ ] No Product or Offer schema appears while empty.
+[ ] No database details appear in visitor-facing errors.
+3. Fix homepage SEO and premature claims
+3.1 Add the missing homepage canonical
+&lt;link rel="canonical" href="https://www.thestyleatlas.com/"&gt;
+[ ] Output exactly one homepage canonical.
+[ ] Use HTTPS and the www domain.
+[ ] Keep the trailing slash.
+[ ] Make Open Graph URL match the canonical.
+[ ] Remove non-www URLs from metadata.
+3.2 Remove remaining shopping language
+Replace “Search, shop, learn, work and show up where fashion happens.” with:
+Required replacement
+Search, learn, find opportunities and follow Nigerian fashion as STYLEATLAS grows.
+Replace the homepage meta description with:
+Homepage meta description
+Discover Nigerian fashion professionals as verified profiles are added. Explore designers, brands, schools, jobs, events and STYLEATLAS editorial updates.
+Search the repository and production content for these unsupported claims:
+Search, shop
+Shop the marketplace
+Shop ready-to-wear
+Shop products
+Verified reviews
+Browse verified reviews
+Products available
+Marketplace products
+Rewrite each occurrence to match the pre-launch state. Confirm that Homepage, Marketplace, Pricing, Privacy and Terms describe the same service availability.
+4. Repair the mobile footer shown in the screenshot
+The attached mobile screenshot is the visual reference for this defect.
+Figure 1. Current mobile footer with excessive vertical blank space caused by an uneven two-column layout.
+4.1 Cause of the empty space
+The footer uses a two-column mobile grid. The left side contains collapsed groups such as Directory and For Business. The right side contains Explore and the expanded Stay in Style newsletter. The newsletter makes that grid row tall, while the short For Business cell remains at the top-left. This creates the large unused black area and pushes company and legal links far down the page.
+4.2 Required mobile order
+Logo
+Short platform description
+Genuine social links, when supplied
+Directory accordion
+Explore accordion
+For Business accordion
+Company accordion
+Stay in Style newsletter
+Copyright
+Privacy, Terms, Accessibility and Editorial Policy
+Below the mobile breakpoint, use a single-column flow. Do not use a two-column grid for footer groups.
+4.3 Recommended responsive CSS
+.footer-groups {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2rem;
+}
+@media (max-width: 767px) {
+  .footer-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .footer-group {
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,.12);
+  }
+  .footer-group-trigger {
+    width: 100%;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+  }
+  .footer-group-content { padding: 0 0 20px; }
+  .footer-newsletter { width: 100%; margin-top: 32px; }
+  .footer-bottom { margin-top: 32px; padding-top: 24px; }
+}
+Tailwind equivalent for the group wrapper:
+&lt;div className="flex flex-col md:grid md:grid-cols-4 md:gap-8"&gt;
+Do not use grid-cols-2 on mobile.
+4.4 Accessible accordion requirements
+Use a real button with type=button.
+Provide aria-expanded and aria-controls.
+Use plus when closed and minus when open.
+Keep every trigger at least 44 pixels high.
+Support Enter and Space.
+Keep focus visible.
+&lt;button
+  type="button"
+  aria-expanded={openSection === "directory"}
+  aria-controls="footer-directory-links"
+  onClick={() =&gt; toggleSection("directory")}
+&gt;
+  &lt;span&gt;Directory&lt;/span&gt;
+  &lt;span aria-hidden="true"&gt;
+    {openSection === "directory" ? "-" : "+"}
+  &lt;/span&gt;
+&lt;/button&gt;
+&lt;div
+  id="footer-directory-links"
+  hidden={openSection !== "directory"}
+&gt;
+  ...
+&lt;/div&gt;
+4.5 Newsletter behaviour
+On screens below 360 pixels, stack the field and button:
+@media (max-width: 359px) {
+  .footer-newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-newsletter-form input,
+  .footer-newsletter-form button {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+[ ] The email input must not collapse.
+[ ] Subscribe text must remain visible.
+[ ] The button must be at least 44 pixels high.
+[ ] The form must not create horizontal scrolling.
+[ ] The newsletter wrapper must retain id=newsletter-email.
+4.6 Social links
+The screenshot shows IG, TT, YT and IN. Display each icon only when the owner has supplied a genuine URL. Hide missing accounts instead of rendering placeholder circles.
+&lt;a
+  href={instagramUrl}
+  aria-label="STYLEATLAS on Instagram"
+  target="_blank"
+  rel="noopener noreferrer"
+&gt;...&lt;/a&gt;
+4.7 Spacing limits
+Footer top padding: 48 to 64 pixels
+Logo to description: 20 to 24 pixels
+Description to social links: 20 to 24 pixels
+Social links to accordion groups: 32 pixels
+Accordion trigger height: 52 to 60 pixels
+Newsletter top spacing: 32 pixels
+Newsletter to legal section: 32 to 40 pixels
+Footer bottom padding: 24 to 32 pixels
+Remove fixed heights, large min-heights, grid-auto-rows: 1fr, mobile justify-content: space-between and inherited absolute positioning. Footer height must come from its content.
+Mobile footer acceptance tests
+Test 320x568, 360x800, 375x667, 390x844, 412x915 and 430x932.
+[ ] Footer groups form one vertical column.
+[ ] The large unexplained black gap is gone.
+[ ] Company links sit inside the Company accordion.
+[ ] Newsletter form is full width.
+[ ] Subscribe text is not clipped.
+[ ] No horizontal scrolling occurs.
+[ ] Legal links wrap cleanly.
+[ ] Accordions work with touch and keyboard.
+[ ] Focus remains visible.
+[ ] Social links are genuine.
+[ ] Browser controls do not cover footer content.
+[ ] Footer height is content-driven.
+[ ] Before-and-after screenshots prove the attached defect is fixed.
+5. Fix form accessibility
+Every visible input, select and textarea must have a unique id, meaningful name, associated label, correct type, appropriate autocomplete and accessible error message. Placeholders cannot replace labels.
+5.1 Jobs filters
+Correct Role or skill, Location, Work type, Department and Experience controls.
+&lt;label htmlFor="job-query"&gt;Role or skill&lt;/label&gt;
+&lt;input id="job-query" name="q" type="search" autoComplete="off" /&gt;
+&lt;label htmlFor="job-location"&gt;Location&lt;/label&gt;
+&lt;select id="job-location" name="location"&gt;...&lt;/select&gt;
+&lt;input id="department-design" name="department" type="checkbox" value="design" /&gt;
+&lt;label htmlFor="department-design"&gt;Design&lt;/label&gt;
+[ ] Every control has a unique ID and meaningful name.
+[ ] Every label uses for/id association.
+[ ] The form works without a mouse.
+[ ] Screen readers announce checkbox label and state.
+[ ] Filter status does not rely on colour.
+[ ] Filtering does not unexpectedly move focus.
+5.2 Events filters
+Correct Search Events, Location, Date and every event-type checkbox. Group event types in a fieldset with a legend.
+&lt;fieldset&gt;
+  &lt;legend&gt;Event type&lt;/legend&gt;
+  ...
+&lt;/fieldset&gt;
+[ ] Search field uses type=search.
+[ ] Selects have labels, IDs and names.
+[ ] Event types use a fieldset and legend.
+[ ] Every checkbox has a unique ID and value.
+[ ] Filters work by keyboard.
+[ ] The truthful empty Events state remains intact.
+5.3 Directory filters
+Correct Category, City, Speciality, Sorting, mobile Filters and Apply Filters. Use fieldsets and legends for checkbox groups.
+&lt;fieldset&gt;
+  &lt;legend&gt;Category&lt;/legend&gt;
+  ...
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+  &lt;legend&gt;Speciality&lt;/legend&gt;
+  ...
+&lt;/fieldset&gt;
+Treat the mobile filter drawer as a modal. Move focus inside when opened, trap focus, close with Escape, provide a visible Close button, restore focus to the Filters button and prevent background scrolling.
+[ ] All filters have names and IDs.
+[ ] Labels are announced correctly.
+[ ] The drawer manages focus.
+[ ] Escape closes it.
+[ ] Apply Filters works.
+[ ] URL parameters match selections.
+[ ] Refreshing the result URL preserves filters.
+6. Fix Add Business authentication and submission
+Current problem
+Logged-out visitors are told that the profile will be linked to their current logged-in account. That is false when no session exists.
+if (!user) {
+  return &lt;AuthenticationRequired /&gt;;
+}
+return &lt;BusinessOnboarding user={user} /&gt;;
+Logged-out message:
+Required copy
+Create an account or log in to start your business profile. You’ll return here after signing in.
+Use /login?redirect=/add-business and /register?redirect=/add-business. Do not display editable onboarding fields until authentication is confirmed.
+6.1 Correct Step 1 fields
+&lt;label htmlFor="business-contact-email"&gt;Contact email&lt;/label&gt;
+&lt;input
+  id="business-contact-email"
+  name="contactEmail"
+  type="email"
+  autoComplete="email"
+  required
+/&gt;
+&lt;label htmlFor="business-phone"&gt;Phone number for WhatsApp enquiries&lt;/label&gt;
+&lt;input
+  id="business-phone"
+  name="whatsappNumber"
+  type="tel"
+  autoComplete="tel"
+  required
+/&gt;
+Do not assume the account email should be publicly displayed.
+6.2 Correct Step 4
+Replace “Publish or verify” with “Review and submit”. Submission must create a controlled status such as submitted, under_review, changes_requested, approved or rejected.
+[ ] Do not publish immediately.
+[ ] Do not mark the profile verified.
+[ ] Do not award a badge automatically.
+[ ] Do not allow one user to edit another user’s business.
+[ ] Save Draft must persist after refresh.
+[ ] Previous and Next must preserve data.
+Add Business acceptance tests
+[ ] Logged-out visitors see Create Account and Log In.
+[ ] Authentication returns the visitor to Add Business.
+[ ] Step 1 fields have labels, IDs and names.
+[ ] Draft data persists.
+[ ] Back and Next preserve data.
+[ ] Submission creates an under-review state.
+[ ] No public profile appears before approval.
+[ ] No verification badge is awarded automatically.
+7. Verify Contact information
+The Contact page currently displays Lagos, Nigeria; Monday to Friday; 9:00 AM to 5:00 PM WAT; and support@thestyleatlas.com. Confirm each detail with the owner. If location or operating hours were generated without owner confirmation, remove them.
+[ ] Verify that support@thestyleatlas.com receives messages.
+[ ] Keep server-side validation.
+[ ] Require consent.
+[ ] Apply spam protection and rate limiting.
+[ ] Show accessible success and error states.
+[ ] Keep personal information out of URLs and analytics.
+Use a controlled test environment for submission tests unless the owner explicitly approves a production test message.
+8. Diagnose homepage performance instability
+The live review recorded inconsistent homepage loading, including an approximately eight-second run. Instrument the request before changing architecture.
+8.1 Measure
+Middleware execution
+Authentication or session checks
+Database connection time
+Every database query
+Hero and editorial content queries
+Server rendering
+Image response
+Fonts and third-party scripts
+8.2 Investigate
+Global cache: no-store or force-dynamic
+Authentication in the root layout
+Database work in header or footer
+Sequential queries
+Cold connections
+Hosting and database region mismatch
+Oversized images
+Unnecessary client components
+Duplicate queries
+Middleware matching public assets
+8.3 Correct
+Use static rendering or controlled revalidation for public pages where suitable:
+export const revalidate = 300;
+Fetch independent data concurrently:
+const [categories, cities, editorial] = await Promise.all([
+  getCategories(),
+  getCities(),
+  getEditorialContent(),
+]);
+Do not fetch Marketplace, dashboard or user data to render the public homepage. Isolate a small login-status control instead of making the complete homepage dynamic.
+Performance acceptance tests
+Run five cold and five warm tests for Homepage, Directory, Marketplace and Pricing. Report every value, median, timestamp, test location and device profile.
+[ ] Cached public response below 800 ms
+[ ] Mobile LCP below 2.5 seconds
+[ ] INP below 200 ms
+[ ] CLS below 0.1
+[ ] Mobile Lighthouse Performance 85 or higher
+[ ] Accessibility 95 or higher
+[ ] Best Practices 95 or higher
+[ ] SEO 95 or higher
+9. Mandatory final production report
+Return one evidence report. Use Passed, Failed or Blocked for every requirement. Do not use Done without a production test result.
+Production commit hash and deployment ID.
+Every file changed and why.
+Marketplace error cause.
+Marketplace query before and after.
+Marketplace production screenshot.
+Mobile footer screenshots at every required width.
+Homepage canonical evidence.
+Homepage title and meta-description evidence.
+Jobs accessibility results.
+Events accessibility results.
+Directory accessibility results.
+Add Business logged-out and logged-in results.
+Contact-information verification status.
+Broken-link results.
+Axe or equivalent accessibility results.
+Cold and warm performance results.
+Lighthouse reports.
+Remaining failures or blockers.
+Information still required from the website owner.
+Final enforcement instruction
+Don’t report this task as complete because the code builds or the preview looks correct. Completion requires deployment to https://www.thestyleatlas.com, production verification of every acceptance test and evidence for each result. If Marketplace still shows “Service temporarily unavailable”, the mobile footer still contains the large empty space shown in the attached screenshot, any required form field lacks accessible label structure, or the homepage canonical is missing, report the project as incomplete. Don’t replace a failed test with an assumption.
+10. Copy-and-paste instruction to send with this file
+Master prompt
+Follow the attached STYLEATLAS correction document from beginning to end. Fix every listed issue in one implementation pass. Preserve the verified fixes already live. Inspect the real production schema before changing Marketplace logic. Repair the mobile footer using the attached screenshot as the before-state reference. Deploy to preview, run every acceptance test, deploy to production, then repeat the tests on https://www.thestyleatlas.com. Do not claim completion from local code, a successful build or visual inspection alone. Return the complete evidence report in Section 9. If any production acceptance test fails, report the project as incomplete and state the exact blocker.

@@ -209,7 +209,7 @@ export default async function StagingHome() {
             <article className="journey-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <span className="kicker">For customers</span>
               <h3 style={{ fontSize: '32px' }}>Find with confidence.</h3>
-              <p style={{ fontSize: '16px', lineHeight: '1.6' }}>Explore reviewed profiles and portfolios.</p>
+              <p style={{ fontSize: '16px', lineHeight: '1.6' }}>Review approved profiles, portfolios and service information.</p>
               <div style={{ marginTop: '24px' }}>
                 <Link className="text-link" href="/directory">Find professionals <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
               </div>
@@ -236,9 +236,9 @@ export default async function StagingHome() {
             <div><span className="eyebrow">More from Nigerian fashion</span><h2>Shop, learn and discover new opportunities.</h2></div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
-            <Link href="/marketplace" style={{ background: '#fff', border: '1px solid #dfd5c8', borderRadius: '16px', padding: '32px', display: 'block', transition: '0.2s', textDecoration: 'none', color: 'inherit' }}>
-              <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Marketplace</h3>
-              <p style={{ color: 'var(--muted)' }}>Discover pieces from verified brands.</p>
+            <Link href="/#newsletter-email" style={{ background: '#fff', border: '1px solid #dfd5c8', borderRadius: '16px', padding: '32px', display: 'block', transition: '0.2s', textDecoration: 'none', color: 'inherit' }}>
+              <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Marketplace launching soon</h3>
+              <p style={{ color: 'var(--muted)' }}>Join the launch list as verified Nigerian designers, brands and independent makers are added.</p>
             </Link>
             <Link href="/jobs" style={{ background: '#fff', border: '1px solid #dfd5c8', borderRadius: '16px', padding: '32px', display: 'block', transition: '0.2s', textDecoration: 'none', color: 'inherit' }}>
               <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Jobs</h3>

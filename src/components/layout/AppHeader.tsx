@@ -13,10 +13,7 @@ const navItems = [
   { label: 'Schools', href: '/directory?category=schools' },
   { label: 'Marketplace', href: '/marketplace' },
   { label: 'Journal', href: '/journal' },
-  { label: 'Explore', href: '#', isDropdown: true, subItems: [
-    { label: 'Jobs', href: '/jobs' },
-    { label: 'Events', href: '/events' }
-  ]},
+  { label: 'Explore', href: '/directory' },
   { label: 'For Business', href: '/add-business' }
 ];
 
@@ -75,7 +72,8 @@ export function Header() {
               const basePath = item.href.split('?')[0];
               const isActive = pathname === basePath && (basePath !== '/directory' || index === 0);
               const hasMegaMenu = item.label === 'Find Professionals' || item.label === 'Brands';
-              const isSimpleDropdown = item.isDropdown;
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const isSimpleDropdown = (item as any).isDropdown;
               
               return (
                 <div 
@@ -99,7 +97,8 @@ export function Header() {
                           exit={{ opacity: 0, y: 10 }}
                           style={{ position: 'absolute', top: '100%', left: 0, background: '#fff', padding: '16px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', gap: '12px', minWidth: '150px' }}
                         >
-                          {item.subItems?.map(sub => (
+                          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                          {((item as any).subItems || []).map((sub: any) => (
                             <Link key={sub.label} href={sub.href} style={{ color: '#111', fontWeight: 500 }}>{sub.label}</Link>
                           ))}
                         </motion.div>

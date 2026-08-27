@@ -103,7 +103,7 @@ export default async function Directory({
             </div>
             <span className="eyebrow light">Verified fashion talent</span>
             <h1 className="page-title">Professionals for the moment you have in mind.</h1>
-            <p>Compare portfolios, specialities, pricing signals, response times and verified client reviews across Nigeria.</p>
+            <p>Compare portfolios, specialities, pricing signals and service information as approved profiles are added.</p>
           </div>
         </div>
       </section>
