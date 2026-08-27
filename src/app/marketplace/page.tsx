@@ -106,7 +106,6 @@ export default async function StagingMarketplace({
     }));
   }
 
-  const approvedProducts = products || [];
 
 
   const Icon = ({ name }: { name: string }) => (
