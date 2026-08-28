@@ -586,7 +586,7 @@ textarea.form-control{height:120px;padding-top:12px;resize:vertical}
 
 @media (max-width:900px){
   :root{--container:min(100% - 28px,760px)}.section{padding:70px 0}
-  .utility-bar,.main-nav,.header-actions .icon-btn:first-child,.header-actions .header-cta{display:none}
+  .utility-bar,.main-nav,.header-actions .icon-btn:not(.mobile-toggle):not([href="/cart"]),.header-actions .btn{display:none}
   .header-main{height:72px;grid-template-columns:1fr auto}.header-logo img{width:205px}.mobile-toggle{display:grid}
   .mobile-panel{display:block;position:fixed;inset:0;background:var(--ink);z-index:100;transform:translateX(100%);transition:.3s ease;padding:22px;color:white;overflow:auto}
   .mobile-panel.open{transform:translateX(0)}.mobile-panel-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:35px}.mobile-panel-top img{width:205px}
