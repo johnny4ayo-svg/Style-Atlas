@@ -96,20 +96,3 @@ export async function deleteProduct(productId: string) {
   revalidatePath('/dashboard/admin/products');
 }
 
-export async function promoteToAdmin() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) throw new Error("Not authenticated");
-
-  const { error } = await supabase
-    .from('profiles')
-    .update({ role: 'admin' })
-    .eq('id', user.id);
-
-  if (error) {
-    throw new Error("Failed to update user role");
-  }
-
-  revalidatePath('/dashboard/customer');
-}
