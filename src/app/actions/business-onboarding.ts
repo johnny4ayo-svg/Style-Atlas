@@ -33,7 +33,7 @@ export async function submitBusinessProfile(input: {
   if (!name || name.length < 3 || name.length > 120 || !city || city.length > 90 || !state || state.length > 90 || !type || (description && description.length > 3000)) {
     return { ok: false, message: 'Please check your business name, category, location and description.' };
   }
-  const priceText = (input.startingPrice || '').trim().replace(/[₦,\\s]/g, '');
+  const priceText = (input.startingPrice || '').trim().replace(/[₦,\s]/g, '');
   const price = priceText ? Number(priceText) : null;
   if (price !== null && (!Number.isSafeInteger(price) || price < 0 || price > 1000000000)) {
     return { ok: false, message: 'Enter a valid starting price in naira.' };
@@ -43,7 +43,7 @@ export async function submitBusinessProfile(input: {
   if (lookupError) return { ok: false, message: 'Could not check your existing business. Please try again.' };
   if (existing?.length) return { ok: false, message: 'You already have a business profile. Manage it from your dashboard.' };
 
-  const base = name.toLowerCase().normalize('NFKD').replace(/[\\u0300-\\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 55) || 'fashion-business';
+  const base = name.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 55) || 'fashion-business';
   const slug = `${base}-${crypto.randomUUID().slice(0, 8)}`;
   const { error } = await supabase.from('businesses').insert({
     owner_id: user.id,
