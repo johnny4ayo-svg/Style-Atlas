@@ -1,12 +1,11 @@
+import "../inner-premium.css";
 'use client'
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function AddBusinessPage() {
-  const router = useRouter();
   const supabase = createClient();
   const [currentStep, setCurrentStep] = useState(1);
   const [specialities, setSpecialities] = useState<string[]>([]);
@@ -79,14 +78,13 @@ export default function AddBusinessPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.removeItem('businessOnboardingDraft');
-    alert('Business profile submitted! It will be reviewed by our team before going live.');
-    router.push('/dashboard');
+    saveDraft(currentStep);
+    alert('Your draft is saved on this device. This form is not yet connected to business submission. Please use your dashboard to manage your business profile.');
   };
 
   if (isLoadingAuth) {
     return (
-      <main>
+      <main className="atlas-inner">
         <section className="section compact">
           <div className="container" style={{ textAlign: 'center', padding: '100px 20px' }}>
             <p>Loading...</p>
@@ -98,7 +96,7 @@ export default function AddBusinessPage() {
 
   if (!isAuthenticated) {
     return (
-      <main>
+      <main className="atlas-inner">
         <section className="page-hero">
           <div className="container page-hero-inner">
             <div>
@@ -121,7 +119,7 @@ export default function AddBusinessPage() {
   }
 
   return (
-    <main>
+    <main className="atlas-inner">
       <section className="page-hero">
         <div className="container page-hero-inner">
           <div>
@@ -141,8 +139,8 @@ export default function AddBusinessPage() {
             </p>
           </div>
           <div className="hero-aside-card">
-            <strong>15 min</strong>
-            <span>typical time to create the first complete profile draft</span>
+            <strong>Save as you go</strong>
+            <span>Your progress is stored on this device until you submit through a supported workflow</span>
           </div>
         </div>
       </section>
@@ -310,7 +308,7 @@ export default function AddBusinessPage() {
 
             {currentStep === 4 && (
               <div className="step-content">
-                <h2>Review and submit.</h2>
+                <h2>Save draft and continue in dashboard.</h2>
                 <p>Ensure your details are correct. You can edit these later from your dashboard after approval.</p>
                 <div style={{ background: 'var(--ivory-2)', padding: '24px', borderRadius: '12px', marginBottom: '24px' }}>
                   <h3>{formData.businessName || 'Business Name'}</h3>
