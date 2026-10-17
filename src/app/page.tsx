@@ -1,313 +1,160 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import SearchDock from "@/components/ui/SearchDock";
+import "./home-premium.css";
 
 export const revalidate = 300;
+export const metadata: Metadata = {
+  title: "Discover Nigerian Fashion Designers & Creative Talent | STYLEATLAS",
+  description: "Find fashion designers, stylists, bridal specialists, brands and fashion schools across Nigeria. Explore portfolios and connect with the right professionals.",
+  alternates: { canonical: "/" },
+};
 
-export default async function StagingHome() {
+type Business = {
+  id: string;
+  business_name: string;
+  slug: string;
+  city: string | null;
+  cover_image_url: string | null;
+  verification_tier: string | null;
+  is_sponsored?: boolean;
+  business_categories?: Array<{ categories?: { name?: string } | null }> | null;
+};
+
+const categories = [
+  { name: "Fashion designers", slug: "designers", number: "01", detail: "Made for you" },
+  { name: "Fashion brands", slug: "brands", number: "02", detail: "Discover labels" },
+  { name: "Personal stylists", slug: "stylists", number: "03", detail: "Find your point of view" },
+  { name: "Bridal specialists", slug: "bridal", number: "04", detail: "For the occasion" },
+  { name: "Photographers", slug: "photographers", number: "05", detail: "Create the image" },
+  { name: "Fashion schools", slug: "schools", number: "06", detail: "Learn the craft" },
+];
+const cities = [
+  { name: "Lagos", slug: "lagos" },
+  { name: "Abuja", slug: "abuja" },
+  { name: "Port Harcourt", slug: "port-harcourt" },
+  { name: "Benin City", slug: "benin-city" },
+];
+
+export default async function Home() {
   const supabase = createClient();
-  const businessesPromise = supabase
-    .from('businesses')
-    .select(`
-      id,
-      business_name,
-      slug,
-      city,
-      state,
-      cover_image_url,
-      is_verified,
-      verification_tier,
-      rating,
-      review_count,
-      business_categories(
-        categories(name)
-      )
-    `)
-    .eq('is_verified', true)
-    .limit(6); 
-
-  const adsPromise = supabase
-    .from('promoted_campaigns')
-    .select(`
-      id,
-      businesses!inner(id, business_name, slug, city, state, cover_image_url, is_verified, verification_tier, rating, review_count, business_categories(categories(name)))
-    `)
-    .eq('status', 'active');
-  
-  const [{ data: businesses }, { data: rawAds }] = await Promise.all([businessesPromise, adsPromise]);
-  
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const adBusinesses = rawAds ? rawAds.map((ad: any) => ({ ...ad.businesses, is_sponsored: true })) : [];
-  const featuredList = [...adBusinesses, ...(businesses || [])].slice(0, 6); 
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'STYLEATLAS',
-    url: 'https://styleatlas.com/',
+  const [{ data: approved }, { data: promotions }] = await Promise.all([
+    supabase.from("businesses").select("id,business_name,slug,city,cover_image_url,verification_tier,business_categories(categories(name))").eq("verification_status", "approved").limit(12),
+    supabase.from("promoted_campaigns").select("businesses!inner(id,business_name,slug,city,cover_image_url,verification_tier,business_categories(categories(name)))").eq("status", "active").eq("target_type", "profile").limit(6),
+  ]);
+  // Only show profiles approved for public discovery. Promotion does not override approval.
+  const approvedBusinesses = (approved || []) as unknown as Business[];
+  const approvedIds = new Set(approvedBusinesses.map((business) => business.id));
+  const promotedBusinesses = (promotions || []).flatMap((campaign) => {
+    const item = campaign.businesses as unknown as Business | Business[] | null;
+    return item ? (Array.isArray(item) ? item : [item]) : [];
+  }).filter((business) => approvedIds.has(business.id));
+  const featured: Business[] = Array.from(
+    new Map([
+      ...promotedBusinesses.map((business) => [business.id, { ...business, is_sponsored: true }] as const),
+      ...approvedBusinesses.filter((business) => !promotedBusinesses.some((promoted) => promoted.id === business.id)).map((business) => [business.id, business] as const),
+    ]).values()
+  ).slice(0, 4);
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "STYLEATLAS",
+    url: "https://www.thestyleatlas.com/",
     potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://styleatlas.com/directory?q={search_term_string}',
-      'query-input': 'required name=search_term_string'
-    }
+      "@type": "SearchAction",
+      target: "https://www.thestyleatlas.com/directory?q={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
   };
 
   return (
-    <main className="home-main">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      
-      <style dangerouslySetInnerHTML={{ __html: `
-        .atlas-hero-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:clamp(24px,5vw,80px); }
-        .atlas-hero-grid h1 { max-width:14ch; letter-spacing:-.04em; line-height:1.06; }
-        .atlas-hero-cta { display:flex; align-items:center; flex-wrap:wrap; gap:18px; margin:28px 0 24px; }
-        .atlas-hero-pro-link { color:#f0dfc4; text-decoration:underline; text-underline-offset:4px; font-size:14px; }
-        .atlas-hero-pro-link:focus-visible { outline:2px solid #d6a65e; outline-offset:4px; }
-        .atlas-category-grid { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); }
-        .atlas-city-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); }
-        @media(max-width:1023px) { .atlas-category-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .atlas-city-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-        @media(max-width:767px) {
-          .atlas-hero-grid { grid-template-columns:minmax(0,1fr); }
-          .atlas-hero-grid h1 { font-size:clamp(2.4rem,10vw,4rem); }
-          .atlas-hero-cta { flex-direction:column; align-items:stretch; gap:16px; }
-          .atlas-hero-cta .btn { text-align:center; }
-          .atlas-category-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-          .atlas-city-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-        }
-        @media(max-width:380px) { .atlas-city-grid { grid-template-columns:minmax(0,1fr); } }
-      ` }} />
-      {/* 1. HERO SECTION */}
-      <section className="hero home-hero">
-        <div className="container hero-grid atlas-hero-grid">
-          <div className="hero-copy" style={{ padding: '40px 0' }}>
-            <span className="eyebrow">THE PREMIER NIGERIAN FASHION DIRECTORY</span>
-            <h1 style={{ marginTop: '16px', marginBottom: '16px' }}>Discover the talent behind your next great look.</h1>
-            <p style={{ fontSize: '18px', color: '#e0d8cc' }}>Explore Nigerian designers, stylists and creative specialists. See their work, compare options and connect with confidence.</p>
-            
-            <div className="atlas-hero-cta"><Link className="btn btn-gold" href="/directory">Find fashion professionals</Link><Link href="/add-business" className="atlas-hero-pro-link">Own a fashion business? Get listed →</Link></div><div className="home-hero__search">
-              <style dangerouslySetInnerHTML={{ __html: `
-                .home-hero__search .search-dock { position: relative !important; inset: auto !important; transform: none !important; width: 100% !important; margin: 0 !important; }
-              ` }} />
-              <SearchDock />
+    <main className="atlas-home">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <section className="atlas-hero" aria-labelledby="atlas-heading">
+        <div className="atlas-hero-layout">
+          <div className="atlas-hero-content">
+            <p className="atlas-kicker atlas-kicker-light">The Nigerian fashion directory</p>
+            <h1 id="atlas-heading">Style begins with <em>the right people.</em></h1>
+            <p className="atlas-hero-description">Discover the designers, stylists, brands and creative minds shaping Nigerian fashion. Explore their work. Find your fit. Make the connection.</p>
+            <div className="atlas-hero-links">
+              <Link href="/directory" className="atlas-button atlas-button-gold">Explore the directory <span aria-hidden="true">↗</span></Link>
+              <Link href="/add-business" className="atlas-inline-link atlas-inline-light">For fashion professionals <span aria-hidden="true">↗</span></Link>
             </div>
+            <div className="atlas-hero-search"><SearchDock /></div>
           </div>
-          
-          <div className="hero-image-wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ position: 'relative', width: '80%', aspectRatio: '4/5', borderRadius: '16px', overflow: 'hidden' }}>
-              <Image className="hero-image" src="/images/hero-editorial.jpg" alt="Nigerian fashion model" fill priority style={{ objectFit: 'cover' }} />
-            </div>
+          <div className="atlas-hero-visual">
+            <Image src="/images/hero-editorial.jpg" alt="Contemporary Nigerian fashion editorial" fill priority sizes="(max-width: 800px) 100vw, 48vw" className="atlas-cover" />
+            <div className="atlas-hero-image-caption"><span>DISCOVER THE PEOPLE BEHIND THE STYLE</span><span>STYLEATLAS / NIGERIA</span></div>
           </div>
         </div>
+        <div className="atlas-hero-bottom"><span>DESIGNERS · BRANDS · STYLISTS · BRIDAL</span><Link href="#discover">Explore what&apos;s inside ↓</Link></div>
       </section>
 
-      {/* 2. CATEGORIES AND CITIES */}
-      <section className="section home-explore-section">
-        <style dangerouslySetInnerHTML={{ __html: `
-          .home-explore-section { padding: 56px 0; }
-          .home-explore-section .section-head { margin-bottom: 28px !important; }
-          .home-explore-section .category-grid { gap: 10px !important; margin-bottom: 28px !important; }
-          .home-explore-section .category-card { min-height: 96px; }
-          .home-explore-section .city-grid { gap: 12px; }
-          .home-explore-section .city-card { min-height: 124px; }
-        ` }} />
-        <div className="container">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow">Explore Nigerian fashion</span>
-              <h2>Browse by speciality or discover talent in your city.</h2>
-            </div>
-          </div>
-          
-          <div className="category-shell" style={{ border: 'none', boxShadow: 'none', padding: 0, background: 'transparent' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <h3 style={{ fontSize: '1.25rem' }}>Categories</h3>
-              <Link className="text-link" href="/directory">View all categories <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-            </div>
-            <div className="category-grid atlas-category-grid">
-              <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=designers"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-user"></use></svg></span><strong>Designers</strong></Link>
-              <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=brands"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-bag"></use></svg></span><strong>Brands</strong></Link>
-              <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=schools"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-school"></use></svg></span><strong>Schools</strong></Link>
-              <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=stylists"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-spark"></use></svg></span><strong>Stylists</strong></Link>
-              <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=bridal"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-heart"></use></svg></span><strong>Bridal</strong></Link>
-              <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=photographers"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-camera"></use></svg></span><strong>Photographers</strong></Link>
-            </div>
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <h3 style={{ fontSize: '1.25rem' }}>Cities</h3>
-              <Link className="text-link" href="/directory">View all cities <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-            </div>
-            <div className="city-grid atlas-city-grid">
-              <Link className="city-card city-lagos" href="/directory?city=lagos"><span className="city-number">01</span><h3>Lagos</h3></Link>
-              <Link className="city-card city-abuja" href="/directory?city=abuja"><span className="city-number">02</span><h3>Abuja</h3></Link>
-              <Link className="city-card city-ph" href="/directory?city=port-harcourt"><span className="city-number">03</span><h3>Port Harcourt</h3></Link>
-              <Link className="city-card city-benin" href="/directory?city=benin-city"><span className="city-number">04</span><h3>Benin City</h3></Link>
-            </div>
-          </div>
+      <section className="atlas-section atlas-intro" id="discover">
+        <div className="atlas-section-header">
+          <div><p className="atlas-kicker">01 / Discover</p><h2>Find the expertise <em>you need.</em></h2></div>
+          <p>From a made-to-measure outfit to a defining campaign, begin with the people who know the craft.</p>
         </div>
-      </section>
-
-      {/* 3. FEATURED PROFESSIONALS */}
-      {featuredList && featuredList.length > 0 && (
-        <section className="section section-dark featured-prof-section" style={{ background: '#0a0a0a', padding: '88px 0' }}>
-          <div className="container">
-            <div className="section-head">
-              <div><span className="eyebrow light">Professionals worth discovering</span><h2>Explore selected talent from across Nigeria.</h2></div>
-            </div>
-            <div className="designer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
-              <style dangerouslySetInnerHTML={{ __html: `
-                @media (max-width: 1279px) and (min-width: 768px) {
-                  .designer-grid { grid-template-columns: repeat(2, 1fr) !important; }
-                }
-                @media (max-width: 767px) { 
-                  .featured-prof-section { padding: 60px 0 !important; }
-                  .designer-grid { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 16px; margin: 0 -20px; padding: 0 20px 16px; gap: 16px; }
-                  .designer-grid .designer-card { flex: 0 0 85%; scroll-snap-align: center; }
-                  
-                }
-              ` }} />
-              {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                featuredList.slice(0, 4).map((business: any) => (
-                  <article className="designer-card" key={business.id} style={{ border: 'none', background: 'transparent' }}>
-                    <div className="designer-media" style={{ height: 'auto', aspectRatio: '4/5', borderRadius: '12px' }}>
-                      <Image src={business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name}`} fill sizes="(max-width: 900px) 100vw, 25vw" style={{ objectFit: 'cover' }} />
-                      {business.is_sponsored && <div className="card-badges"><span className="badge" style={{ background: 'var(--gold)', color: '#000', border: 'none' }}>Sponsored</span></div>}
-                      {business.verification_tier && business.verification_tier !== 'none' && !business.is_sponsored && <div className="card-badges"><span className="badge"><svg className="icon"><use href="/icons/sprite.svg#icon-verified"></use></svg>Verified</span></div>}
-                    </div>
-                    <div className="designer-body" style={{ marginTop: '16px', padding: 0 }}>
-                      <h3 style={{ fontSize: '18px', color: '#fff' }}>{business.business_name}</h3>
-                      <div className="location-line" style={{ margin: '4px 0 12px' }}>{business.business_categories?.[0]?.categories?.name || 'Professional'} · {business.city}</div>
-                      <Link className="text-link" href={`/profile/${business.slug}`}>View profile <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-                    </div>
-                  </article>
-                ))
-              }
-            </div>
-            <div style={{ marginTop: '40px', textAlign: 'center' }}>
-              <Link className="text-link" href="/directory">Browse all professionals <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 4. HOW IT WORKS */}
-      <section className="section">
-        <div className="container">
-          <div className="section-head" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <span className="eyebrow">Find the right professional in three steps</span>
-            <h2 style={{ textAlign: 'center' }}>Search. Compare. Connect.</h2>
-          </div>
-          <div className="how-it-works-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginTop: '48px', textAlign: 'center' }}>
-            <style dangerouslySetInnerHTML={{ __html: `
-              @media (max-width: 767px) { .how-it-works-grid { grid-template-columns: 1fr !important; gap: 40px !important; } }
-            ` }} />
-            <div>
-              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'grid', placeItems: 'center', fontSize: '20px', fontWeight: 'bold', margin: '0 auto 16px' }}>1</div>
-              <h3 style={{ fontSize: '20px', marginBottom: '8px' }}>Search</h3>
-              <p style={{ color: 'var(--muted)', fontSize: '14px', maxWidth: '300px', margin: '0 auto' }}>Find professionals by category, city, or specific service.</p>
-            </div>
-            <div>
-              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'grid', placeItems: 'center', fontSize: '20px', fontWeight: 'bold', margin: '0 auto 16px' }}>2</div>
-              <h3 style={{ fontSize: '20px', marginBottom: '8px' }}>Compare</h3>
-              <p style={{ color: 'var(--muted)', fontSize: '14px', maxWidth: '300px', margin: '0 auto' }}>Review approved profiles, portfolios and service information as verified businesses are added.</p>
-            </div>
-            <div>
-              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--gold)', color: '#000', display: 'grid', placeItems: 'center', fontSize: '20px', fontWeight: 'bold', margin: '0 auto 16px' }}>3</div>
-              <h3 style={{ fontSize: '20px', marginBottom: '8px' }}>Connect</h3>
-              <p style={{ color: 'var(--muted)', fontSize: '14px', maxWidth: '300px', margin: '0 auto' }}>Contact the right person with a clear brief and secure a booking.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. TRUST AND VERIFICATION */}
-      <section className="section section-ivory-2">
-        <div className="container">
-          <div className="section-head" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <span className="eyebrow">Trust built into every discovery</span>
-            <h2 style={{ textAlign: 'center' }}>Clear profiles for customers. Meaningful verification for professionals.</h2>
-          </div>
-          <div className="journey-grid" style={{ marginTop: '40px' }}>
-            <article className="journey-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <span className="kicker">For customers</span>
-              <h3 style={{ fontSize: '32px' }}>Find with confidence.</h3>
-              <p style={{ fontSize: '16px', lineHeight: '1.6' }}>Review approved profiles, portfolios and service information.</p>
-              <div style={{ marginTop: '24px' }}>
-                <Link className="text-link" href="/directory">Find professionals <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-              </div>
-            </article>
-            <article className="journey-card dark" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <span className="kicker gold">For professionals</span>
-              <h3 style={{ fontSize: '32px' }}>Stand out as verified.</h3>
-              <p style={{ fontSize: '16px', lineHeight: '1.6' }}>Complete our review and earn the verification badge.</p>
-              <div style={{ marginTop: '24px' }}>
-                <Link className="text-link" style={{ color: 'var(--gold)' }} href="/verification">Learn about verification <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. EXPLORE OPPORTUNITIES (Desktop Only) */}
-      <section className="section explore-opportunities-section">
-        <style dangerouslySetInnerHTML={{ __html: `
-          .explore-opportunities-section { padding: 52px 0; }
-          .explore-opportunities-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 28px; }
-          .explore-opportunities-card { min-height: 148px; max-height: 168px; padding: 26px; background: #fff; border: 1px solid #dfd5c8; border-radius: 16px; display: flex; flex-direction: column; justify-content: center; transition: 0.2s; text-decoration: none; color: inherit; }
-          .explore-opportunities-card:hover { transform: translateY(-4px); box-shadow: 0 12px 42px rgba(8,8,7,.06); }
-          .explore-opportunities-section .journal-link-wrap { margin-top: 22px; text-align: center; }
-          @media (max-width: 767px) { .explore-opportunities-grid { grid-template-columns: 1fr; } .explore-opportunities-card { min-height: 0; max-height: none; } }
-        ` }} />
-        <div className="container">
-          <div className="section-head" style={{ marginBottom: 0 }}>
-            <div><span className="eyebrow">More from Nigerian fashion</span><h2>Shop, learn and discover new opportunities.</h2></div>
-          </div>
-          <div className="explore-opportunities-grid">
-            <Link href="/#newsletter-email" className="explore-opportunities-card">
-              <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Marketplace launching soon</h3>
-              <p style={{ color: 'var(--muted)', margin: 0 }}>Join the launch list as verified Nigerian designers, brands and independent makers are added.</p>
+        <div className="atlas-category-list">
+          {categories.map((category) => (
+            <Link className="atlas-category-item" key={category.slug} href={`/directory?category=${category.slug}`}>
+              <span className="atlas-category-number">{category.number}</span>
+              <span className="atlas-category-name">{category.name}</span>
+              <span className="atlas-category-detail">{category.detail}</span>
+              <span className="atlas-category-arrow" aria-hidden="true">↗</span>
             </Link>
-            <Link href="/jobs" className="explore-opportunities-card">
-              <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Jobs</h3>
-              <p style={{ color: 'var(--muted)', margin: 0 }}>Find roles across the fashion industry.</p>
-            </Link>
-            <Link href="/events" className="explore-opportunities-card">
-              <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Events</h3>
-              <p style={{ color: 'var(--muted)', margin: 0 }}>Shows, exhibitions, and gatherings.</p>
-            </Link>
-            <Link href="/directory?category=schools" className="explore-opportunities-card">
-              <h3 style={{ fontSize: '24px', marginBottom: '8px' }}>Schools</h3>
-              <p style={{ color: 'var(--muted)', margin: 0 }}>Start or advance your fashion education.</p>
-            </Link>
-          </div>
-          <div className="journal-link-wrap">
-            <Link className="text-link" href="/journal">Read the StyleAtlas Journal <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* 7. BUSINESS CTA */}
-      <section className="section compact">
-        <div className="container">
-          <div className="business-cta" style={{ background: '#0a0a0a', border: 'none', borderRadius: '24px', overflow: 'hidden', display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '400px' }}>
-            <style dangerouslySetInnerHTML={{ __html: `
-              @media (max-width: 767px) { .business-cta { grid-template-columns: 1fr !important; display: flex !important; flex-direction: column-reverse !important; } .business-cta > div { padding: 32px !important; } .business-cta .hero-actions-wrap { flex-direction: column !important; width: 100%; gap: 12px; } .business-cta .hero-actions-wrap a { width: 100%; text-align: center; } }
-            ` }} />
-            <div className="business-copy" style={{ padding: '64px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <span className="eyebrow light">For businesses</span>
-              <h2 style={{ fontSize: '42px', color: '#fff', margin: '0 0 16px' }}>Put your fashion business where Nigeria can find it.</h2>
-              <p style={{ color: '#aaa', margin: '0 0 32px', maxWidth: '100%' }}>Showcase your work and reach new customers searching for your specific services.</p>
-              <div className="hero-actions-wrap" style={{ display: 'flex', gap: '16px' }}>
-                <Link className="btn btn-gold" href="/add-business">List your business</Link>
-                <Link className="btn btn-outline-light" href="/pricing">View membership plans</Link>
-              </div>
-            </div>
-            <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '300px' }}>
-              <Image src="/images/fashion-studio.jpg" alt="Nigerian fashion studio" fill style={{ objectFit: 'cover' }} />
-            </div>
-          </div>
+      <section className="atlas-section atlas-cities">
+        <div className="atlas-section-header">
+          <div><p className="atlas-kicker">02 / Places</p><h2>Talent is <em>everywhere.</em></h2></div>
+          <p>Find fashion professionals close to you, or discover a new creative connection in another city.</p>
+        </div>
+        <div className="atlas-city-grid">
+          {cities.map((city, index) => <Link href={`/directory?city=${city.slug}`} className="atlas-city" key={city.slug}><span>0{index + 1} / NIGERIA</span><strong>{city.name}</strong><span className="atlas-city-link">Explore talent ↗</span></Link>)}
         </div>
       </section>
+
+      <section className="atlas-section atlas-featured">
+        <div className="atlas-section-header">
+          <div><p className="atlas-kicker">03 / The directory</p><h2>People worth <em>discovering.</em></h2></div>
+          <Link href="/directory" className="atlas-inline-link">View all professionals ↗</Link>
+        </div>
+        {featured.length > 0 ? (
+          <div className="atlas-featured-grid">
+            {featured.map((business) => (
+              <Link className="atlas-profile" href={`/profile/${business.slug}`} key={business.id}>
+                <div className="atlas-profile-image">
+                  {business.cover_image_url ? <Image src={business.cover_image_url} alt={`Work by ${business.business_name}`} fill sizes="(max-width: 650px) 82vw, (max-width: 1024px) 45vw, 24vw" className="atlas-cover" /> : <div className="atlas-profile-placeholder"><span>STYLEATLAS</span></div>}
+                  {business.is_sponsored && <span className="atlas-profile-label">Sponsored</span>}
+                </div>
+                <div className="atlas-profile-info"><div><h3>{business.business_name}</h3><p>{business.city || "Nigeria"}</p></div><span aria-hidden="true">↗</span></div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="atlas-featured-empty"><h3>Great connections start here.</h3><p>New professional profiles are added as they are approved. Explore the directory or introduce your fashion business.</p><Link className="atlas-button atlas-button-dark" href="/directory">Explore the directory ↗</Link></div>
+        )}
+      </section>
+
+      <section className="atlas-statement">
+        <div className="atlas-statement-photo"><Image src="/images/fashion-studio.jpg" alt="Creative work inside a fashion studio" fill sizes="(max-width: 800px) 100vw, 50vw" className="atlas-cover" /></div>
+        <div className="atlas-statement-copy"><p className="atlas-kicker atlas-kicker-light">For the people who make fashion</p><h2>Your work deserves <em>to be found.</em></h2><p>Give your craft a place to be discovered. Build a professional presence, show what makes your work distinctive and connect with people looking for your expertise.</p><div className="atlas-statement-actions"><Link className="atlas-button atlas-button-gold" href="/add-business">List your business ↗</Link><Link className="atlas-inline-link atlas-inline-light" href="/pricing">Explore membership options ↗</Link></div></div>
+      </section>
+
+      <section className="atlas-section atlas-editorial">
+        <div className="atlas-section-header"><div><p className="atlas-kicker">04 / Beyond the directory</p><h2>More than <em>a listing.</em></h2></div><p>Explore the conversations, opportunities and ideas moving Nigerian fashion forward.</p></div>
+        <div className="atlas-editorial-grid">
+          <Link href="/journal"><span>READ</span><h3>The Journal</h3><p>Ideas, perspectives and stories from the world of fashion.</p><strong>Explore stories ↗</strong></Link>
+          <Link href="/jobs"><span>WORK</span><h3>Fashion careers</h3><p>Discover roles and opportunities across the industry.</p><strong>View opportunities ↗</strong></Link>
+          <Link href="/events"><span>CONNECT</span><h3>Events & culture</h3><p>Find the gatherings bringing the creative community together.</p><strong>See events ↗</strong></Link>
+        </div>
+      </section>
+      <section className="atlas-final-cta"><p className="atlas-kicker">YOUR NEXT CONNECTION</p><h2>Find the person who can <em>bring it to life.</em></h2><Link href="/directory" className="atlas-button atlas-button-gold">Discover fashion professionals ↗</Link></section>
     </main>
   );
 }
