@@ -1,0 +1,1 @@
+.atlas-how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.atlas-how-grid article{padding:30px;border:1px solid #ddd}.atlas-how-note{margin-top:20px}@media(max-width:800px){.atlas-how-grid{grid-template-columns:1fr}}
