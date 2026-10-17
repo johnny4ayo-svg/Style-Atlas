@@ -41,7 +41,7 @@ const cities = [
 export default async function Home() {
   const supabase = createClient();
   const [{ data: approved }, { data: promotions }] = await Promise.all([
-    supabase.from("businesses").select("id,business_name,slug,city,cover_image_url,verification_tier,business_categories(categories(name))").eq("verification_status", "approved").limit(12),
+    supabase.from("businesses").select("id,business_name,slug,city,cover_image_url,verification_tier,business_categories(categories(name))").eq("publication_status", "approved").limit(12),
     supabase.from("promoted_campaigns").select("businesses!inner(id,business_name,slug,city,cover_image_url,verification_tier,business_categories(categories(name)))").eq("status", "active").eq("target_type", "profile").limit(6),
   ]);
   // Only show profiles approved for public discovery. Promotion does not override approval.
