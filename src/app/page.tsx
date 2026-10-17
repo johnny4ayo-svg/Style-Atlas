@@ -57,15 +57,34 @@ export default async function StagingHome() {
     <main className="home-main">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       
+      <style dangerouslySetInnerHTML={{ __html: `
+        .atlas-hero-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:clamp(24px,5vw,80px); }
+        .atlas-hero-grid h1 { max-width:14ch; letter-spacing:-.04em; line-height:1.06; }
+        .atlas-hero-cta { display:flex; align-items:center; flex-wrap:wrap; gap:18px; margin:28px 0 24px; }
+        .atlas-hero-pro-link { color:#f0dfc4; text-decoration:underline; text-underline-offset:4px; font-size:14px; }
+        .atlas-hero-pro-link:focus-visible { outline:2px solid #d6a65e; outline-offset:4px; }
+        .atlas-category-grid { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); }
+        .atlas-city-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); }
+        @media(max-width:1023px) { .atlas-category-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .atlas-city-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+        @media(max-width:767px) {
+          .atlas-hero-grid { grid-template-columns:minmax(0,1fr); }
+          .atlas-hero-grid h1 { font-size:clamp(2.4rem,10vw,4rem); }
+          .atlas-hero-cta { flex-direction:column; align-items:stretch; gap:16px; }
+          .atlas-hero-cta .btn { text-align:center; }
+          .atlas-category-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+          .atlas-city-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+        }
+        @media(max-width:380px) { .atlas-city-grid { grid-template-columns:minmax(0,1fr); } }
+      ` }} />
       {/* 1. HERO SECTION */}
       <section className="hero home-hero">
-        <div className="container hero-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
+        <div className="container hero-grid atlas-hero-grid">
           <div className="hero-copy" style={{ padding: '40px 0' }}>
             <span className="eyebrow">THE PREMIER NIGERIAN FASHION DIRECTORY</span>
-            <h1 style={{ marginTop: '16px', marginBottom: '16px' }}>Find Nigeria’s finest fashion professionals.</h1>
-            <p style={{ fontSize: '18px', color: '#e0d8cc' }}>Verified talent. Exceptional work. One trusted directory.</p>
+            <h1 style={{ marginTop: '16px', marginBottom: '16px' }}>Discover the talent behind your next great look.</h1>
+            <p style={{ fontSize: '18px', color: '#e0d8cc' }}>Explore Nigerian designers, stylists and creative specialists. See their work, compare options and connect with confidence.</p>
             
-            <div className="home-hero__search">
+            <div className="atlas-hero-cta"><Link className="btn btn-gold" href="/directory">Find fashion professionals</Link><Link href="/add-business" className="atlas-hero-pro-link">Own a fashion business? Get listed →</Link></div><div className="home-hero__search">
               <style dangerouslySetInnerHTML={{ __html: `
                 .home-hero__search .search-dock { position: relative !important; inset: auto !important; transform: none !important; width: 100% !important; margin: 0 !important; }
               ` }} />
@@ -104,7 +123,7 @@ export default async function StagingHome() {
               <h3 style={{ fontSize: '1.25rem' }}>Categories</h3>
               <Link className="text-link" href="/directory">View all categories <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
             </div>
-            <div className="category-grid" style={{ gridTemplateColumns: 'repeat(6, 1fr)' }}>
+            <div className="category-grid atlas-category-grid">
               <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=designers"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-user"></use></svg></span><strong>Designers</strong></Link>
               <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=brands"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-bag"></use></svg></span><strong>Brands</strong></Link>
               <Link className="category-card" style={{ border: '1px solid #dfd5c8', background: '#fff' }} href="/directory?category=schools"><span className="category-icon"><svg className="icon"><use href="/icons/sprite.svg#icon-school"></use></svg></span><strong>Schools</strong></Link>
@@ -117,7 +136,7 @@ export default async function StagingHome() {
               <h3 style={{ fontSize: '1.25rem' }}>Cities</h3>
               <Link className="text-link" href="/directory">View all cities <svg className="icon"><use href="/icons/sprite.svg#icon-arrow"></use></svg></Link>
             </div>
-            <div className="city-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+            <div className="city-grid atlas-city-grid">
               <Link className="city-card city-lagos" href="/directory?city=lagos"><span className="city-number">01</span><h3>Lagos</h3></Link>
               <Link className="city-card city-abuja" href="/directory?city=abuja"><span className="city-number">02</span><h3>Abuja</h3></Link>
               <Link className="city-card city-ph" href="/directory?city=port-harcourt"><span className="city-number">03</span><h3>Port Harcourt</h3></Link>
@@ -128,7 +147,7 @@ export default async function StagingHome() {
       </section>
 
       {/* 3. FEATURED PROFESSIONALS */}
-      {featuredList && featuredList.length >= 4 && (
+      {featuredList && featuredList.length > 0 && (
         <section className="section section-dark featured-prof-section" style={{ background: '#0a0a0a', padding: '88px 0' }}>
           <div className="container">
             <div className="section-head">
@@ -143,7 +162,7 @@ export default async function StagingHome() {
                   .featured-prof-section { padding: 60px 0 !important; }
                   .designer-grid { display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 16px; margin: 0 -20px; padding: 0 20px 16px; gap: 16px; }
                   .designer-grid .designer-card { flex: 0 0 85%; scroll-snap-align: center; }
-                  .designer-grid .designer-card:nth-child(4) { display: none !important; }
+                  
                 }
               ` }} />
               {
@@ -237,7 +256,7 @@ export default async function StagingHome() {
           .explore-opportunities-card { min-height: 148px; max-height: 168px; padding: 26px; background: #fff; border: 1px solid #dfd5c8; border-radius: 16px; display: flex; flex-direction: column; justify-content: center; transition: 0.2s; text-decoration: none; color: inherit; }
           .explore-opportunities-card:hover { transform: translateY(-4px); box-shadow: 0 12px 42px rgba(8,8,7,.06); }
           .explore-opportunities-section .journal-link-wrap { margin-top: 22px; text-align: center; }
-          @media (max-width: 767px) { .explore-opportunities-section { display: none !important; } }
+          @media (max-width: 767px) { .explore-opportunities-grid { grid-template-columns: 1fr; } .explore-opportunities-card { min-height: 0; max-height: none; } }
         ` }} />
         <div className="container">
           <div className="section-head" style={{ marginBottom: 0 }}>
