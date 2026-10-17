@@ -50,7 +50,7 @@ export default async function Directory({
         categories(name)
       )
     `)
-    .eq('verification_status', 'approved');
+    .eq('publication_status', 'approved');
 
   // Apply URL filters
   if (searchParams.location) {
