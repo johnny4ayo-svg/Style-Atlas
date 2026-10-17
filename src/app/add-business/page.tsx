@@ -5,12 +5,16 @@ import "../inner-premium.css"
 import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { submitBusinessProfile } from "@/app/actions/business-onboarding";
 
 export default function AddBusinessPage() {
   const supabase = useMemo(() => createClient(), []);
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [draftSaved, setDraftSaved] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionMessage, setSubmissionMessage] = useState('');
+  const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [specialities, setSpecialities] = useState<string[]>([]);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
@@ -93,10 +97,28 @@ export default function AddBusinessPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    saveDraft(currentStep);
-    alert('Your draft has been saved on this device. No business has been submitted for approval.');
+    if (isSubmitting || submitted) return;
+    if (!formData.businessName.trim() || !formData.city.trim() || !formData.state.trim()) {
+      setSubmissionMessage('Complete your business name, city and state before submitting.');
+      setCurrentStep(2);
+      return;
+    }
+    setIsSubmitting(true);
+    setSubmissionMessage('');
+    try {
+      const result = await submitBusinessProfile(formData);
+      setSubmissionMessage(result.message);
+      if (result.ok) {
+        setSubmitted(true);
+        localStorage.removeItem('businessOnboardingDraft');
+      }
+    } catch {
+      setSubmissionMessage('Unable to submit right now. Your local draft is still available.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isLoadingAuth) {
@@ -157,7 +179,7 @@ export default function AddBusinessPage() {
           </div>
           <div className="hero-aside-card">
             <strong>Save as you go</strong>
-            <span>Your progress is stored on this device until you submit through a supported workflow</span>
+            <span>Save your progress locally, then submit your business for editorial review</span>
           </div>
         </div>
       </section>
@@ -190,14 +212,15 @@ export default function AddBusinessPage() {
               <span className="step-number">4</span>
               <div>
                 <strong>Review</strong>
-                <span>Save for later</span>
+                <span>Submit for review</span>
               </div>
             </div>
           </aside>
           
           <form className="onboarding-form" onSubmit={handleSubmit}>
             <span className="eyebrow">Step {currentStep} of 4</span>
-            {draftSaved && <p role="status" style={{ color: "#5b674b", fontSize: "13px" }}>Draft saved on this device. This is not a submission.</p>}
+            {submissionMessage && <p role="status" style={{ color: submitted ? "#365c3c" : "#8b402e", fontSize: "14px" }}>{submissionMessage}</p>}
+            {draftSaved && !submitted && <p role="status" style={{ color: "#5b674b", fontSize: "13px" }}>Draft saved on this device. This is not a submission.</p>}
             
             {currentStep === 1 && (
               <div className="step-content">
@@ -326,8 +349,8 @@ export default function AddBusinessPage() {
 
             {currentStep === 4 && (
               <div className="step-content">
-                <h2>Save draft and continue in dashboard.</h2>
-                <p>Ensure your details are correct. Your details are saved locally on this device, not submitted for review.</p>
+                <h2>Review your business details.</h2>
+                <p>Ensure your details are correct. Submitting creates a pending business profile. It will only become public after approval. Portfolio uploads are not yet available here.</p>
                 <div style={{ background: 'var(--ivory-2)', padding: '24px', borderRadius: '12px', marginBottom: '24px' }}>
                   <h3>{formData.businessName || 'Business Name'}</h3>
                   <p><strong>Category:</strong> {formData.category}</p>
@@ -349,8 +372,8 @@ export default function AddBusinessPage() {
                     Next Step 
                   </button>
                 ) : (
-                  <button type="submit" className="btn btn-gold">
-                    Save draft on this device
+                  <button type="submit" className="btn btn-gold" disabled={isSubmitting || submitted}>
+                    {isSubmitting ? "Submitting..." : submitted ? "Submitted for review" : "Submit business for review"}
                   </button>
                 )}
               </div>
