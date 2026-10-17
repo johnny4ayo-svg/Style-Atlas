@@ -1,5 +1,6 @@
-import "../inner-premium.css";
-'use client'
+'use client';
+
+import "../inner-premium.css"
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
