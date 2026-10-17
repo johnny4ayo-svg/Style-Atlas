@@ -57,7 +57,7 @@ export default async function Directory({
     query = query.ilike('city', `%${searchParams.location}%`);
   }
   if (searchParams.city) {
-    query = query.ilike('city', `%${searchParams.city}%`);
+    query = query.ilike('city', `%${String(searchParams.city).replace(/-/g, ' ')}%`);
   }
   if (searchParams.q) {
     query = query.ilike('business_name', `%${searchParams.q}%`);
@@ -70,12 +70,21 @@ export default async function Directory({
   let filteredBusinesses = businesses || [];
   if (searchParams.category) {
     const term = String(searchParams.category).toLowerCase();
+    const categoryAliases: Record<string, string[]> = {
+      designers: ['designer', 'tailor', 'atelier'],
+      brands: ['brand', 'label'],
+      stylists: ['stylist'],
+      bridal: ['bridal', 'wedding'],
+      photographers: ['photographer', 'photography'],
+      schools: ['school', 'academy', 'education'],
+    };
+    const matchingTerms = categoryAliases[term] || [term.replace(/s$/, '')];
     // basic category filtering
     if (term !== 'all' && term !== '') {
        filteredBusinesses = filteredBusinesses.filter(b => {
          const cats = b.business_categories?.map(bc => bc.categories?.name?.toLowerCase()) || [];
          // e.g. if term is "designers", check if "designer" is in cats
-         return cats.some(c => c && c.includes(term.replace(/s$/, '')));
+         return cats.some(c => c && matchingTerms.some(match => c.includes(match)));
        });
     }
   }
