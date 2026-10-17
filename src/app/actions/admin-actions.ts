@@ -31,6 +31,7 @@ export async function toggleBusinessVerification(businessId: string, currentStat
 
   revalidatePath('/dashboard/admin');
   revalidatePath('/directory');
+  revalidatePath('/');
 }
 
 export async function updateUserRole(targetUserId: string, newRole: 'customer' | 'admin' | 'professional') {
