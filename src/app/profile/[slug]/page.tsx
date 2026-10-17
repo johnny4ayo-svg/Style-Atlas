@@ -13,11 +13,11 @@ export async function generateMetadata(
   const supabase = createClient();
   const { data: business } = await supabase
     .from("businesses")
-    .select("business_name, description, cover_image_url, city, state, business_categories(categories(name))")
+    .select("business_name, description, cover_image_url, city, state, publication_status, business_categories(categories(name))")
     .eq("slug", params.slug)
     .single();
 
-  if (!business) {
+  if (!business || business.publication_status !== "approved") {
     return {
       title: "Profile Not Found - STYLEATLAS",
     };
@@ -64,7 +64,7 @@ export default async function Profile({ params }: { params: { slug: string } }) 
     .eq("slug", params.slug)
     .single();
 
-  if (!business) {
+  if (!business || business.publication_status !== "approved") {
     notFound();
   }
 
