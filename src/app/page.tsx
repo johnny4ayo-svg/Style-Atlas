@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import SearchDock from "@/components/ui/SearchDock";
 import "./home-premium.css";
+import "./home-conversion.css";
 
 export const revalidate = 300;
 export const metadata: Metadata = {
