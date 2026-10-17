@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function SearchDock() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('designers');
+  const [activeTab, setActiveTab] = useState('');
   const [query, setQuery] = useState('');
   const [city, setCity] = useState('');
 
@@ -26,7 +26,7 @@ export default function SearchDock() {
     }
 
     if (finalCategory) params.append('category', finalCategory);
-    if (city) params.append('city', city);
+    if (city) params.append('city', city.replace(/-/g, ' '));
     
     // Convert values to URL-safe slugs in params is handled by the values we set in the state
     
@@ -40,31 +40,31 @@ export default function SearchDock() {
 
   return (
     <form className="search-dock" onSubmit={handleSearch}>
-      <div className="search-tabs">
+      <div className="search-tabs" role="group" aria-label="Professional category">\n        <button type="button" className={`search-tab ${activeTab === '' ? 'active' : ''}`} aria-pressed={activeTab === ''} onClick={() => setActiveTab('')}>All professionals</button>
         <button 
           type="button" 
-          className={`search-tab ${activeTab === 'designers' ? 'active' : ''}`}
+          className={`search-tab ${activeTab === 'designers' ? 'active' : ''}`} aria-pressed={activeTab === 'designers'}
           onClick={() => setActiveTab('designers')}
         >
           A designer
         </button>
         <button 
           type="button" 
-          className={`search-tab ${activeTab === 'brands' ? 'active' : ''}`}
+          className={`search-tab ${activeTab === 'brands' ? 'active' : ''}`} aria-pressed={activeTab === 'brands'}
           onClick={() => setActiveTab('brands')}
         >
           A brand
         </button>
         <button 
           type="button" 
-          className={`search-tab ${activeTab === 'schools' ? 'active' : ''}`}
+          className={`search-tab ${activeTab === 'schools' ? 'active' : ''}`} aria-pressed={activeTab === 'schools'}
           onClick={() => setActiveTab('schools')}
         >
           A school
         </button>
         <button 
           type="button" 
-          className={`search-tab ${activeTab === 'stylists' ? 'active' : ''}`}
+          className={`search-tab ${activeTab === 'stylists' ? 'active' : ''}`} aria-pressed={activeTab === 'stylists'}
           onClick={() => setActiveTab('stylists')}
         >
           A stylist
