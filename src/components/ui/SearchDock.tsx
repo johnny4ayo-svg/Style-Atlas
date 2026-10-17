@@ -30,7 +30,7 @@ export default function SearchDock() {
     
     // Convert values to URL-safe slugs in params is handled by the values we set in the state
     
-    // Only navigate if at least one parameter is present
+    // Navigate to the directory with optional filters
     if (params.toString()) {
       router.push(`/directory?${params.toString()}`);
     } else {
@@ -39,8 +39,9 @@ export default function SearchDock() {
   };
 
   return (
-    <form className="search-dock" onSubmit={handleSearch}>
-      <div className="search-tabs" role="group" aria-label="Professional category">\n        <button type="button" className={`search-tab ${activeTab === '' ? 'active' : ''}`} aria-pressed={activeTab === ''} onClick={() => setActiveTab('')}>All professionals</button>
+    <form className="search-dock" onSubmit={handleSearch} role="search" aria-label="Find fashion professionals">
+      <div className="search-tabs" role="group" aria-label="Professional category">
+        <button type="button" className={`search-tab ${activeTab === '' ? 'active' : ''}`} aria-pressed={activeTab === ''} onClick={() => setActiveTab('')}>All professionals</button>
         <button 
           type="button" 
           className={`search-tab ${activeTab === 'designers' ? 'active' : ''}`} aria-pressed={activeTab === 'designers'}
