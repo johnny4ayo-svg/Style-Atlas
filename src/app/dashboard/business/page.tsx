@@ -43,7 +43,7 @@ export default async function BusinessDashboard() {
         </div>
         <div className="dashboard-actions">
           <Link className="btn btn-outline-dark" href={`/profile/${business.slug}`}>View public profile</Link>
-          <Link className="btn btn-gold" href="/dashboard/portfolio">Manage portfolio</Link>
+          <Link className="btn btn-gold" href="/dashboard/business/products">Manage products</Link>
         </div>
       </div>
       
