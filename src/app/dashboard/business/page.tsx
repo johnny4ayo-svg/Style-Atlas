@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { promoteToAdmin } from "@/app/actions/admin-actions";
 
 export default async function BusinessDashboard() {
   const supabase = createClient();
@@ -37,25 +36,20 @@ export default async function BusinessDashboard() {
       <div className="dashboard-top">
         <div>
           <span className="eyebrow">Business overview</span>
-          <h1>Good afternoon, {business.business_name}.</h1>
+          <h1>Your business, {business.business_name}.</h1>
           <p className="muted" style={{ fontSize: '10px', marginTop: '4px' }}>
-            Here is what has changed across your profile this month.
+            Manage your professional profile and review enquiries from prospective clients.
           </p>
         </div>
         <div className="dashboard-actions">
           <Link className="btn btn-outline-dark" href={`/profile/${business.slug}`}>View public profile</Link>
-          <button className="btn btn-gold">Add portfolio project</button>
-          <form action={promoteToAdmin}>
-            <button type="submit" className="btn btn-outline-dark" style={{ borderColor: 'var(--danger)', color: 'var(--danger)' }}>
-              Make me Admin
-            </button>
-          </form>
+          <Link className="btn btn-gold" href="/dashboard/portfolio">Manage portfolio</Link>
         </div>
       </div>
       
       <div className="result-notice">
         <Icon name="check" />
-        Your profile is active. Keep adding portfolio projects to strengthen search visibility.
+        Keep your business details and portfolio up to date. Publication depends on review status.
       </div>
       
       <section className="dashboard-kpis">
@@ -64,8 +58,8 @@ export default async function BusinessDashboard() {
             <span>Profile views</span>
             <Icon name="user" />
           </div>
-          <strong className="kpi-value">8,420</strong>
-          <span className="kpi-trend">↑ 18.4% from last month</span>
+          <strong className="kpi-value">—</strong>
+          <span className="kpi-trend">Analytics not yet connected</span>
         </article>
         
         <article className="kpi">
@@ -91,8 +85,8 @@ export default async function BusinessDashboard() {
             <span>Saved by clients</span>
             <Icon name="heart" />
           </div>
-          <strong className="kpi-value">312</strong>
-          <span className="kpi-trend">↑ 29 this month</span>
+          <strong className="kpi-value">—</strong>
+          <span className="kpi-trend">Save analytics not yet connected</span>
         </article>
       </section>
       
@@ -103,7 +97,7 @@ export default async function BusinessDashboard() {
               <span className="eyebrow">Fresh activity</span>
               <h3>New enquiries</h3>
             </div>
-            <Link className="text-link" href="#">View all</Link>
+            <Link className="text-link" href="/dashboard/business">View all</Link>
           </div>
           <div className="lead-list">
             {quoteRequests && quoteRequests.length > 0 ? (
