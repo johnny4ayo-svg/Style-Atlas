@@ -55,7 +55,7 @@ export async function submitBusinessProfile(input: {
     description,
     starting_price: price === null ? null : price * 100,
     is_verified: false,
-    verification_status: 'pending',
+    publication_status: 'pending',
   });
   if (error) {
     console.error('Business submission failed:', error.code);
