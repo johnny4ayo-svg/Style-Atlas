@@ -1,13 +1,20 @@
-'use client'
+'use client';
+
+import "../inner-premium.css"
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { submitBusinessProfile } from "@/app/actions/business-onboarding";
 
 export default function AddBusinessPage() {
-  const router = useRouter();
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [draftSaved, setDraftSaved] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionMessage, setSubmissionMessage] = useState('');
+  const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [specialities, setSpecialities] = useState<string[]>([]);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
@@ -40,7 +47,9 @@ export default function AddBusinessPage() {
         const parsed = JSON.parse(saved);
         if (parsed.formData) setFormData(parsed.formData);
         if (parsed.specialities) setSpecialities(parsed.specialities);
-        if (parsed.currentStep) setCurrentStep(parsed.currentStep);
+        if (parsed.currentStep) setCurrentStep(Math.min(4, Math.max(1, Number(parsed.currentStep) || 1)));
+        if (parsed.contactEmail) setContactEmail(parsed.contactEmail);
+        if (parsed.contactPhone) setContactPhone(parsed.contactPhone);
       } catch {
         // ignore parsing errors
       }
@@ -51,11 +60,22 @@ export default function AddBusinessPage() {
     localStorage.setItem('businessOnboardingDraft', JSON.stringify({
       formData,
       specialities,
-      currentStep: step
+      currentStep: step,
+      contactEmail,
+      contactPhone
     }));
+    setDraftSaved(true);
   };
 
   const handleNext = () => {
+    if (currentStep === 1 && (!contactEmail.includes('@') || contactPhone.trim().length < 7)) {
+      alert('Enter a valid contact email and telephone number before continuing.');
+      return;
+    }
+    if (currentStep === 2 && (!formData.businessName.trim() || !formData.city.trim() || !formData.state.trim())) {
+      alert('Complete your business name, city and state before continuing.');
+      return;
+    }
     saveDraft(currentStep + 1);
     setCurrentStep(prev => Math.min(prev + 1, 4));
   };
@@ -77,16 +97,33 @@ export default function AddBusinessPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.removeItem('businessOnboardingDraft');
-    alert('Business profile submitted! It will be reviewed by our team before going live.');
-    router.push('/dashboard');
+    if (isSubmitting || submitted) return;
+    if (!formData.businessName.trim() || !formData.city.trim() || !formData.state.trim()) {
+      setSubmissionMessage('Complete your business name, city and state before submitting.');
+      setCurrentStep(2);
+      return;
+    }
+    setIsSubmitting(true);
+    setSubmissionMessage('');
+    try {
+      const result = await submitBusinessProfile(formData);
+      setSubmissionMessage(result.message);
+      if (result.ok) {
+        setSubmitted(true);
+        localStorage.removeItem('businessOnboardingDraft');
+      }
+    } catch {
+      setSubmissionMessage('Unable to submit right now. Your local draft is still available.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isLoadingAuth) {
     return (
-      <main>
+      <main className="atlas-inner">
         <section className="section compact">
           <div className="container" style={{ textAlign: 'center', padding: '100px 20px' }}>
             <p>Loading...</p>
@@ -98,7 +135,7 @@ export default function AddBusinessPage() {
 
   if (!isAuthenticated) {
     return (
-      <main>
+      <main className="atlas-inner">
         <section className="page-hero">
           <div className="container page-hero-inner">
             <div>
@@ -121,7 +158,7 @@ export default function AddBusinessPage() {
   }
 
   return (
-    <main>
+    <main className="atlas-inner">
       <section className="page-hero">
         <div className="container page-hero-inner">
           <div>
@@ -141,8 +178,8 @@ export default function AddBusinessPage() {
             </p>
           </div>
           <div className="hero-aside-card">
-            <strong>15 min</strong>
-            <span>typical time to create the first complete profile draft</span>
+            <strong>Save as you go</strong>
+            <span>Save your progress locally, then submit your business for editorial review</span>
           </div>
         </div>
       </section>
@@ -175,13 +212,15 @@ export default function AddBusinessPage() {
               <span className="step-number">4</span>
               <div>
                 <strong>Review</strong>
-                <span>Publish or verify</span>
+                <span>Submit for review</span>
               </div>
             </div>
           </aside>
           
           <form className="onboarding-form" onSubmit={handleSubmit}>
             <span className="eyebrow">Step {currentStep} of 4</span>
+            {submissionMessage && <p role="status" style={{ color: submitted ? "#365c3c" : "#8b402e", fontSize: "14px" }}>{submissionMessage}</p>}
+            {draftSaved && !submitted && <p role="status" style={{ color: "#5b674b", fontSize: "13px" }}>Draft saved on this device. This is not a submission.</p>}
             
             {currentStep === 1 && (
               <div className="step-content">
@@ -189,11 +228,11 @@ export default function AddBusinessPage() {
                 <p>We will link this business profile to your current logged-in account.</p>
                 <div className="form-group">
                   <label htmlFor="contact-email">Contact Email</label>
-                  <input id="contact-email" name="contactEmail" className="form-control" type="email" placeholder="your@email.com" autoComplete="email" required />
+                  <input id="contact-email" name="contactEmail" className="form-control" value={contactEmail} onChange={(event) => setContactEmail(event.target.value)} type="email" placeholder="your@email.com" autoComplete="email" required />
                 </div>
                 <div className="form-group">
                   <label htmlFor="contact-phone">Phone Number (for WhatsApp enquiries)</label>
-                  <input id="contact-phone" name="contactPhone" className="form-control" type="tel" placeholder="+234..." autoComplete="tel" required />
+                  <input id="contact-phone" name="contactPhone" className="form-control" value={contactPhone} onChange={(event) => setContactPhone(event.target.value)} type="tel" placeholder="+234..." autoComplete="tel" required />
                 </div>
               </div>
             )}
@@ -281,28 +320,28 @@ export default function AddBusinessPage() {
 
             {currentStep === 3 && (
               <div className="step-content">
-                <h2>Show your work.</h2>
-                <p>Upload a profile logo and images for your portfolio.</p>
+                <h2>Prepare your portfolio.</h2>
+                <p>Portfolio uploads are not yet connected to your account. Prepare your original work images for when upload becomes available.</p>
                 
                 <div className="upload-zone" style={{ marginBottom: '24px' }}>
                   <label htmlFor="logo-upload" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', width: '100%', padding: '32px' }}>
-                    <input id="logo-upload" type="file" accept="image/*" style={{ display: 'none' }} />
+                    
                     <svg className="icon" aria-hidden="true" style={{ width: '32px', height: '32px', marginBottom: '12px' }}>
                       <use href="/icons/sprite.svg#icon-camera"></use>
                     </svg>
-                    <strong>Add your business logo or portrait</strong>
+                    <strong>Prepare your business logo or portrait</strong>
                     <span>Transparent PNG, JPG, SVG or WebP</span>
                   </label>
                 </div>
 
                 <div className="upload-zone">
                   <label htmlFor="portfolio-upload" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', width: '100%', padding: '32px' }}>
-                    <input id="portfolio-upload" type="file" accept="image/*" multiple style={{ display: 'none' }} />
+                    
                     <svg className="icon" aria-hidden="true" style={{ width: '32px', height: '32px', marginBottom: '12px' }}>
                       <use href="/icons/sprite.svg#icon-grid"></use>
                     </svg>
-                    <strong>Add portfolio images</strong>
-                    <span>Upload up to 10 high-quality photos</span>
+                    <strong>Prepare portfolio images</strong>
+                    <span>Select up to 10 high-quality photos when uploads launch</span>
                   </label>
                 </div>
               </div>
@@ -310,8 +349,8 @@ export default function AddBusinessPage() {
 
             {currentStep === 4 && (
               <div className="step-content">
-                <h2>Review and submit.</h2>
-                <p>Ensure your details are correct. You can edit these later from your dashboard after approval.</p>
+                <h2>Review your business details.</h2>
+                <p>Ensure your details are correct. Submitting creates a pending business profile. It will only become public after approval. Portfolio uploads are not yet available here.</p>
                 <div style={{ background: 'var(--ivory-2)', padding: '24px', borderRadius: '12px', marginBottom: '24px' }}>
                   <h3>{formData.businessName || 'Business Name'}</h3>
                   <p><strong>Category:</strong> {formData.category}</p>
@@ -333,8 +372,8 @@ export default function AddBusinessPage() {
                     Next Step 
                   </button>
                 ) : (
-                  <button type="submit" className="btn btn-gold">
-                    Review and submit
+                  <button type="submit" className="btn btn-gold" disabled={isSubmitting || submitted}>
+                    {isSubmitting ? "Submitting..." : submitted ? "Submitted for review" : "Submit business for review"}
                   </button>
                 )}
               </div>

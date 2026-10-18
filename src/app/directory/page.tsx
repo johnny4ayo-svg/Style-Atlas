@@ -1,3 +1,4 @@
+import "../inner-premium.css";
 /* eslint-disable */
 // @ts-nocheck
 
@@ -11,7 +12,7 @@ export const revalidate = 300;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function generateMetadata({ searchParams }: any): Promise<Metadata> {
-  const q = searchParams?.q ? ` - ${searchParams.q}` : "";
+  const q = searchParams?.q ? ` - ${String(searchParams.q).slice(0, 70)}` : "";
   return {
     title: `Nigerian Fashion Professionals Directory${q} | STYLEATLAS`,
     description: "Find top Nigerian fashion designers, tailors, photographers, and brands. Browse verified professionals for your next custom outfit or styling project.",
@@ -49,14 +50,14 @@ export default async function Directory({
         categories(name)
       )
     `)
-    .eq('verification_status', 'approved');
+    .eq('publication_status', 'approved');
 
   // Apply URL filters
   if (searchParams.location) {
     query = query.ilike('city', `%${searchParams.location}%`);
   }
   if (searchParams.city) {
-    query = query.ilike('city', `%${searchParams.city}%`);
+    query = query.ilike('city', `%${String(searchParams.city).replace(/-/g, ' ')}%`);
   }
   if (searchParams.q) {
     query = query.ilike('business_name', `%${searchParams.q}%`);
@@ -69,12 +70,21 @@ export default async function Directory({
   let filteredBusinesses = businesses || [];
   if (searchParams.category) {
     const term = String(searchParams.category).toLowerCase();
+    const categoryAliases: Record<string, string[]> = {
+      designers: ['designer', 'tailor', 'atelier'],
+      brands: ['brand', 'label'],
+      stylists: ['stylist'],
+      bridal: ['bridal', 'wedding'],
+      photographers: ['photographer', 'photography'],
+      schools: ['school', 'academy', 'education'],
+    };
+    const matchingTerms = categoryAliases[term] || [term.replace(/s$/, '')];
     // basic category filtering
     if (term !== 'all' && term !== '') {
        filteredBusinesses = filteredBusinesses.filter(b => {
          const cats = b.business_categories?.map(bc => bc.categories?.name?.toLowerCase()) || [];
          // e.g. if term is "designers", check if "designer" is in cats
-         return cats.some(c => c && c.includes(term.replace(/s$/, '')));
+         return cats.some(c => c && matchingTerms.some(match => c.includes(match)));
        });
     }
   }
@@ -92,7 +102,7 @@ export default async function Directory({
   const regularBusinesses = filteredBusinesses?.filter(b => !sponsoredBusinessIds.includes(b.id)) || [];
 
   return (
-    <main>
+    <main className="atlas-inner">
       <section className="page-hero">
         <div className="container page-hero-inner">
           <div>
@@ -113,7 +123,7 @@ export default async function Directory({
           {filteredBusinesses.length > 0 ? (
             <div className="result-notice">
               <svg className="icon"><use href="/icons/sprite.svg#icon-spark"></use></svg>
-              Showing the strongest matches for your search. Adjust the filters to refine your shortlist.
+              Showing available matching profiles. Refine your search to explore more relevant professionals.
             </div>
           ) : (
             <div className="result-notice" style={{ background: '#f8f8f8', color: '#555' }}>
@@ -151,7 +161,7 @@ export default async function Directory({
                       <p style={{ marginBottom: '1.5rem' }}>No professionals found matching your criteria. Please adjust your filters.</p>
                       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <Link href={`/contact?category=professional-request&city=${searchParams.city || searchParams.location || ''}&speciality=${searchParams.category || ''}`} className="btn btn-dark">Request a professional</Link>
-                        <Link href="#newsletter-email" className="btn btn-outline-dark">Get new-profile updates</Link>
+                        <Link href="/contact?category=professional-request" className="btn btn-outline-dark">Ask for help finding talent</Link>
                       </div>
                     </div>
                   )

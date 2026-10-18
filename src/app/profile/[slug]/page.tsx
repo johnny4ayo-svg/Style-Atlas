@@ -1,3 +1,4 @@
+import "../../inner-premium.css";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import ProfileActions from "@/components/ui/ProfileActions";
@@ -12,11 +13,11 @@ export async function generateMetadata(
   const supabase = createClient();
   const { data: business } = await supabase
     .from("businesses")
-    .select("business_name, description, cover_image_url, city, state, business_categories(categories(name))")
+    .select("business_name, description, cover_image_url, city, state, publication_status, business_categories(categories(name))")
     .eq("slug", params.slug)
     .single();
 
-  if (!business) {
+  if (!business || business.publication_status !== "approved") {
     return {
       title: "Profile Not Found - STYLEATLAS",
     };
@@ -63,7 +64,7 @@ export default async function Profile({ params }: { params: { slug: string } }) 
     .eq("slug", params.slug)
     .single();
 
-  if (!business) {
+  if (!business || business.publication_status !== "approved") {
     notFound();
   }
 
@@ -78,7 +79,7 @@ export default async function Profile({ params }: { params: { slug: string } }) 
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: business.business_name,
-    image: business.cover_image_url || business.logo_url || "https://styleatlas.com/images/designer-blue.jpg",
+    image: business.cover_image_url || business.logo_url || "https://www.thestyleatlas.com/images/designer-blue.jpg",
     description: business.description || `Fashion professional in ${business.city}`,
     address: {
       '@type': 'PostalAddress',
@@ -86,19 +87,19 @@ export default async function Profile({ params }: { params: { slug: string } }) 
       addressRegion: business.state,
       addressCountry: 'NG'
     },
-    url: `https://styleatlas.com/profile/${business.slug}`,
-    ...((business.rating ?? 0) > 0 && {
+    url: `https://www.thestyleatlas.com/profile/${business.slug}`,
+    ...((business.rating ?? 0) > 0 && (business.review_count ?? 0) > 0 && {
       aggregateRating: {
         '@type': 'AggregateRating',
         ratingValue: business.rating,
-        reviewCount: business.review_count || 1
+        reviewCount: business.review_count
       }
     }),
-    priceRange: business.starting_price ? `₦${business.starting_price / 1000}k+` : '$$'
+    priceRange: business.starting_price ? `₦${business.starting_price / 1000}k+` : undefined
   };
 
   return (
-    <main>
+    <main className="atlas-inner">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="profile-hero">
         <div className="profile-cover relative h-[300px] md:h-[400px]">
@@ -109,7 +110,7 @@ export default async function Profile({ params }: { params: { slug: string } }) 
             <Image src={business.logo_url || business.cover_image_url || "/images/designer-blue.jpg"} alt={`${business.business_name} logo`} fill className="object-cover" priority />
           </div>
           <div className="profile-title">
-            <div className="eyebrow light">Verified profile</div>
+            {business.is_verified && <div className="eyebrow light">Verified profile</div>}
             <h1>
               {business.business_name}
               {business.is_verified && (
@@ -242,7 +243,7 @@ export default async function Profile({ params }: { params: { slug: string } }) 
               <p>A useful first message helps the atelier respond with clearer timing and next steps.</p>
               <ProfileActions businessId={business.id} businessName={business.business_name} style="aside" />
               <div className="contact-meta">
-                <div className="contact-line"><svg className="icon"><use href="/icons/sprite.svg#icon-message"></use></svg>Usually replies within 6 hours</div>
+                <div className="contact-line"><svg className="icon"><use href="/icons/sprite.svg#icon-message"></use></svg>Contact this professional</div>
                 <div className="contact-line"><svg className="icon"><use href="/icons/sprite.svg#icon-pin"></use></svg>{business.city}, {business.state}</div>
               </div>
             </div>

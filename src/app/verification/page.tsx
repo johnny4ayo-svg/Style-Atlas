@@ -1,3 +1,4 @@
+import "../inner-premium.css";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function VerificationPage() {
   return (
-    <main>
+    <main className="atlas-inner">
       <section className="page-hero">
         <div className="container page-hero-inner">
           <div>
@@ -26,7 +27,7 @@ export default function VerificationPage() {
             </div>
             <span className="eyebrow light">Trust & Safety</span>
             <h1 className="page-title">The STYLEATLAS Verification Process</h1>
-            <p>How we ensure you are working with genuine, professional fashion talent in Nigeria.</p>
+            <p>Understand what our review process checks, what it does not guarantee, and how to make an informed choice.</p>
           </div>
         </div>
       </section>
@@ -37,7 +38,7 @@ export default function VerificationPage() {
             <h2>Building a High-Trust Directory</h2>
             <p>
               The Nigerian fashion industry is incredibly vibrant, but finding reliable, authentic talent can be challenging. 
-              The STYLEATLAS verification badge <svg className="icon" style={{ display: 'inline', color: '#c69a52', width: '20px', height: '20px' }}><use href="/icons/sprite.svg#icon-verified"></use></svg> indicates that a business has undergone our manual review process.
+              Where awarded, the STYLEATLAS verification badge <svg className="icon" style={{ display: 'inline', color: '#c69a52', width: '20px', height: '20px' }}><use href="/icons/sprite.svg#icon-verified"></use></svg> indicates that a business has undergone our review process. Verification is not a guarantee of service quality, delivery or outcomes.
             </p>
             
             <h3>What Verification Means</h3>
@@ -48,7 +49,7 @@ export default function VerificationPage() {
             </ul>
 
             <h3>How Businesses Get Verified</h3>
-            <p>When a professional claims their profile or upgrades to a premium plan, they submit supporting documents (such as CAC registration, ID, and social links). Our team reviews these manually before awarding the verification badge.</p>
+            <p>Businesses may be asked to submit supporting documents (such as CAC registration, ID, and social links). Our team assesses submitted information before deciding whether to award a badge.</p>
 
             <div style={{ marginTop: '40px', padding: '24px', background: 'var(--ivory-2)', borderRadius: '12px' }}>
               <h4>Are you a fashion professional?</h4>
